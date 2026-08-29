@@ -1,0 +1,7 @@
+interface:
+  display_name: "DSH Plugin Dev"
+  short_description: "Scaffold verified DeepSeek Harness plugins"
+  default_prompt: "Use $dsh-plugin-dev to turn my business requirement into a verified DSH plugin project."
+
+policy:
+  allow_implicit_invocation: true

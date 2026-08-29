@@ -1,0 +1,152 @@
+# Tool Plugins
+
+Read this reference when adding or changing a model-facing DSH tool, its
+execution policy, canonical result, or UI presentation.
+
+## Package and activation contract
+
+A tool consumer normally namespace-exports `name`, `inject`, optional `Config`,
+and `apply` without a default export. Inject `tools` plus every hard service the
+tool uses:
+
+```ts
+import type { Context } from '@deepseek-ai/cordis'
+import { defineTool } from '@deepseek-ai/dsh-tools'
+
+export const name = 'tool-example'
+export const inject = ['tools']
+
+export function apply(ctx: Context): void {
+  ctx.tools.register(defineTool({
+    name: 'example',
+    description: 'Return one normalized example value.',
+    parameters: {
+      input: { type: 'string', required: true },
+    },
+    output: {
+      schema: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          value: { type: 'string', required: true },
+        },
+      },
+      render: (_args, value) => [{ type: 'text', text: value.value }],
+    },
+    async execute(args, exec) {
+      if (exec.signal.aborted) throw exec.signal.reason
+      return { value: args.input.trim() }
+    },
+  }))
+}
+```
+
+Treat the parameter and output DSL as runtime contracts. Use
+`additionalProperties: false` when the logged/model-visible value must equal the
+declared object exactly. Validate constraints the schema cannot express before
+committing state.
+
+Canonical examples:
+
+- `docs/user/develop/basic/tool.md`
+- `docs/subsystems/tools.md`
+- `docs/tool-execution-pipeline.md`
+- `packages/todo/tool-todo/src/index.ts`
+- `packages/jobs/tool-jobs/src/index.ts`
+
+## Canonical value versus presentation
+
+`execute` returns the canonical JSON value. The output schema validates and
+freezes that value. `output.render` converts it to model-visible content.
+
+Keep these concerns separate:
+
+- canonical value: stable programmatic result for policy, tests, PTC, and
+  in-process callers;
+- rendered content: bounded model-facing blocks;
+- call/result presentation: pure, replayable UI metadata;
+- durable Session result: content/error/meta owned by the tool pipeline, not an
+  arbitrary duplicate of execution-local objects.
+
+Do not stringify JSON inside `execute` merely because the current model display
+needs text. Do not let a renderer make domain decisions or access mutable
+runtime services.
+
+Return a typed canonical outcome for expected domain states such as `notFound`,
+`denied`, or `conflict` when callers can act on them. Throw for invalid input
+that escaped schema validation, broken invariants, provider failure, transport
+failure, or another infrastructure condition.
+
+## Identity and authority
+
+The executor owns `callId`, caller `agent`, signal, inherited restrictions, and
+execution metadata. A wrapper or nested call must preserve those identities.
+Never accept a model-supplied Session or Agent id as a substitute for
+`exec.agent` when the operation needs caller authority.
+
+If the operation has no valid non-Agent meaning, reject an invocation without
+`exec.agent` rather than silently writing global state.
+
+## Cancellation and ownership
+
+Pass `exec.signal` through every provider, network request, child tool,
+subprocess, parser, and wait. A cancellation result is not complete until owned
+callbacks and streams are quiet.
+
+When the call creates durable background work through `ctx.jobs`, define the
+publication point. Before publication, caller cancellation rolls it back. After
+publication, the job registry owns cancellation and the tool returns the job
+identity instead of retaining hidden work.
+
+## Concurrency and restrictions
+
+Tools are exclusive by default. Opt into concurrency only for an operation that
+is explicitly safe, independent, and free of hidden shared mutation. A true
+concurrency flag is a contract, not a performance guess.
+
+Inherited tool restrictions intersect; nested policy may narrow but never
+widen permissions. Enforce denial inside the executor or guard that all call
+paths traverse. Schema omission, prompt text, UI hiding, and listener order are
+not enforcement.
+
+Use `ctx.tools.guard` only for monotonic policy. A guard may deny or narrow; it
+must not replace identity or elevate authority.
+
+## Session effects
+
+If a tool writes a durable event:
+
+1. validate the full candidate value;
+2. establish exact caller/session authority;
+3. append the event;
+4. flush when success must survive a process crash;
+5. return the committed canonical result;
+6. let projections and subscribers derive their views.
+
+Do not mutate an object after append. Do not add coordination events to the
+conversation surface unless the model must actually receive them as history.
+
+## Programmatic tool calling
+
+PTC may execute nested tools without re-entering model history for every
+subcall. Nested calls still receive start/end logging, policy, schema,
+cancellation, and canonical results. Keep results programmatically useful and
+do not depend on a human-oriented text renderer as the only contract.
+
+## Required tests
+
+- schema advertises the exact model contract;
+- valid input returns a schema-valid canonical value and expected rendering;
+- malformed and beyond-schema input fails before state changes;
+- authority and inherited restrictions are enforced at execution;
+- cancellation reaches the underlying operation and teardown becomes quiet;
+- a domain rejection does not masquerade as infrastructure success or vice
+  versa;
+- durable events contain detached complete snapshots;
+- disposing the plugin removes its tools and optional projections;
+- a real `cordis.yml` Loader test proves configuration controls behavior;
+- one full agent-loop or profile test proves the model-visible/durable outcome.
+
+Use `packages/todo/tool-todo/tests/loader-composition.spec.ts` as the smallest
+canonical Loader/config example and `packages/todo/tool-todo/tests/integration.spec.ts`
+as the full-loop reference.

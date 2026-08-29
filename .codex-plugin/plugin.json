@@ -1,0 +1,20 @@
+{
+  "name": "dsh-plugin-dev",
+  "version": "0.1.0",
+  "description": "Turn business requirements into verified DeepSeek Harness plugin projects",
+  "author": {
+    "name": "dsh-plugin-dev contributors"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "DSH Plugin Dev",
+    "shortDescription": "Scaffold verified DeepSeek Harness plugins.",
+    "longDescription": "Teach Codex the pinned DeepSeek Harness plugin contracts, generate a safe project baseline from a business requirement, and drive it through lifecycle and Loader verification.",
+    "developerName": "dsh-plugin-dev contributors",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": "Create and verify a DeepSeek Harness plugin project from my business requirement."
+  }
+}

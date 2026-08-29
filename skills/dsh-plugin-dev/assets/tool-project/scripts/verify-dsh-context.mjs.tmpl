@@ -1,0 +1,156 @@
+#!/usr/bin/env node
+
+import { spawnSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
+import { existsSync, readFileSync, readdirSync, realpathSync, statSync } from 'node:fs'
+import { dirname, join, relative, resolve, sep } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const requireSource = process.argv.includes('--require-source')
+const failures = []
+const warnings = []
+const passes = []
+
+function check(condition, message) {
+  if (condition) passes.push(message)
+  else failures.push(message)
+}
+
+function listFiles(root) {
+  const result = []
+  const visit = directory => {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      const absolute = join(directory, entry.name)
+      if (entry.isDirectory()) visit(absolute)
+      else if (entry.isFile()) result.push(absolute)
+    }
+  }
+  visit(root)
+  return result.sort((left, right) => Buffer.from(left).compare(Buffer.from(right)))
+}
+
+function digestDocs(sourceRoot) {
+  const docsRoot = join(sourceRoot, 'docs')
+  if (!existsSync(docsRoot) || !statSync(docsRoot).isDirectory()) {
+    throw new Error(`missing docs directory under ${sourceRoot}`)
+  }
+  const aggregate = createHash('sha256')
+  for (const absolute of listFiles(docsRoot)) {
+    const fileDigest = createHash('sha256').update(readFileSync(absolute)).digest('hex')
+    const sourceRelative = relative(sourceRoot, absolute).split(sep).join('/')
+    aggregate.update(`${fileDigest}  ${sourceRelative}\n`)
+  }
+  return aggregate.digest('hex')
+}
+
+function gitHead(sourceRoot) {
+  const result = spawnSync('git', ['-C', sourceRoot, 'rev-parse', 'HEAD'], { encoding: 'utf8' })
+  if (result.status !== 0) {
+    throw new Error(result.stderr.trim() || `git rev-parse failed for ${sourceRoot}`)
+  }
+  return result.stdout.trim()
+}
+
+const requiredFiles = [
+  'README.md',
+  'AGENTS.md',
+  'TODO.md',
+  'package.json',
+  'dsh-reference.lock.json',
+  'docs/agent/PROJECT_CONTRACT.md',
+  'src/index.ts',
+  'cordis.patch.yml',
+  'tests/plugin.spec.ts',
+  'tests/loader.spec.ts',
+  'tests/fixtures/cordis.yml',
+]
+for (const path of requiredFiles) {
+  check(existsSync(join(projectRoot, path)), `${path} exists`)
+}
+
+let manifest
+let lock
+try {
+  manifest = JSON.parse(readFileSync(join(projectRoot, 'package.json'), 'utf8'))
+} catch (error) {
+  failures.push(`package.json is invalid: ${error instanceof Error ? error.message : String(error)}`)
+}
+try {
+  lock = JSON.parse(readFileSync(join(projectRoot, 'dsh-reference.lock.json'), 'utf8'))
+} catch (error) {
+  failures.push(`dsh-reference.lock.json is invalid: ${error instanceof Error ? error.message : String(error)}`)
+}
+
+if (manifest) {
+  check(manifest.name === '__PACKAGE_NAME__', 'package name matches the generated contract')
+  check(manifest.private === true, 'source-linked package remains private')
+  check(manifest.type === 'module', 'package uses ESM')
+  check(manifest.dsh?.bundle?.patch === './cordis.patch.yml', 'package declares its DSH bundle patch')
+  check(
+    manifest.scripts?.['context:check:strict'] === 'node scripts/verify-dsh-context.mjs --require-source',
+    'strict context script requires the source baseline',
+  )
+  const serialized = JSON.stringify(manifest)
+  check(!serialized.includes('workspace:'), 'external package contains no workspace protocol dependency')
+}
+
+if (lock) {
+  check(lock.schemaVersion === 1, 'reference lock schema is supported')
+  check(/^[0-9a-f]{40}$/.test(lock.upstream?.commit ?? ''), 'reference lock has a full Git commit')
+  check(/^[0-9a-f]{64}$/.test(lock.upstream?.docsDigest ?? ''), 'reference lock has a docs SHA-256')
+
+  const environmentName = lock.localResolution?.environmentVariable ?? 'DSH_HARNESS_ROOT'
+  const configuredRoot = process.env[environmentName]
+  const fallback = lock.localResolution?.fallbackRelativePath
+  const sourceRoot = resolve(configuredRoot || join(projectRoot, fallback || ''))
+
+  if (!existsSync(sourceRoot)) {
+    const message = `pinned DSH source not found at ${sourceRoot}`
+    if (requireSource) failures.push(message)
+    else warnings.push(`${message}; set ${environmentName} for strict validation`)
+  } else {
+    try {
+      const sourceManifest = JSON.parse(readFileSync(join(sourceRoot, 'package.json'), 'utf8'))
+      check(sourceManifest.version === lock.upstream.version, `DSH version matches ${lock.upstream.version}`)
+      check(gitHead(sourceRoot) === lock.upstream.commit, `DSH commit matches ${lock.upstream.commit}`)
+      check(digestDocs(sourceRoot) === lock.upstream.docsDigest, 'DSH docs digest matches the audited baseline')
+
+      const expectedLinks = {
+        '@deepseek-ai/cordis': 'vendor/cordis',
+        '@deepseek-ai/cordis-plugin-include': 'vendor/include',
+        '@deepseek-ai/cordis-plugin-loader': 'vendor/loader',
+        '@deepseek-ai/dsh-llm': 'packages/llm/llm',
+        '@deepseek-ai/dsh-system-prompt': 'packages/core/system-prompt',
+        '@deepseek-ai/dsh-tools': 'packages/core/tools',
+      }
+      for (const [packageName, sourcePath] of Object.entries(expectedLinks)) {
+        const specifier = manifest?.devDependencies?.[packageName]
+        const linkedPath = typeof specifier === 'string' && specifier.startsWith('link:')
+          ? resolve(projectRoot, specifier.slice('link:'.length))
+          : undefined
+        const expectedPath = join(sourceRoot, sourcePath)
+        check(
+          linkedPath !== undefined
+            && existsSync(linkedPath)
+            && realpathSync(linkedPath) === realpathSync(expectedPath),
+          `${packageName} development dependency links to the audited source`,
+        )
+      }
+      passes.push(`validated DSH source at ${sourceRoot}`)
+    } catch (error) {
+      failures.push(`cannot validate DSH source at ${sourceRoot}: ${error instanceof Error ? error.message : String(error)}`)
+    }
+  }
+}
+
+for (const message of passes) console.log(`PASS ${message}`)
+for (const message of warnings) console.warn(`WARN ${message}`)
+for (const message of failures) console.error(`FAIL ${message}`)
+
+if (failures.length > 0) {
+  console.error(`\ncontext check failed: ${failures.length} failure(s), ${warnings.length} warning(s)`)
+  process.exitCode = 1
+} else {
+  console.log(`\ncontext check passed: ${passes.length} check(s), ${warnings.length} warning(s)`)
+}

@@ -1,0 +1,45 @@
+# Project Contract
+
+## Product outcome
+
+Package `__PACKAGE_NAME_RAW__` contributes the model-facing `__TOOL_NAME_RAW__` Tool to DeepSeek Harness: __DESCRIPTION_RAW__
+
+The generated normalization executor is an executable starting point, not the finished domain implementation. The product behavior, authority, external effects, canonical result, and tests must be made specific before completion.
+
+## Runtime shape
+
+- Plugin form: Host-side Cordis namespace function plugin.
+- Required service: `tools`, declared through `inject`.
+- Activation: bundle patch `cordis.patch.yml`, stable row id `__ROW_ID_RAW__`.
+- Configuration: a TypeScript `Config` paired with a same-named Schemastery schema.
+- Public result: one canonical JSON value validated before model rendering.
+- Cancellation: caller-owned `exec.signal` reaches every asynchronous or external boundary until an explicit durable ownership transfer.
+- Disposal: the owning Fiber removes the Tool and awaits every resource owned by the implementation.
+- Development route: local source overlay against the audited Harness lock.
+- Publication status: blocked while required DSH packages are unavailable from an ordinary registry install.
+
+## Required startup
+
+1. Read this contract, `TODO.md`, and `dsh-reference.lock.json`.
+2. Before dependency installation, run `node scripts/verify-dsh-context.mjs`.
+3. Load `$dsh-plugin-dev`, then its core, Tool, and packaging references.
+4. Inspect the worktree and preserve unrelated changes.
+5. Run `node scripts/verify-dsh-context.mjs --require-source` before changing
+   runtime behavior; after `pnpm install`, the equivalent command is
+   `pnpm context:check:strict`.
+
+## Invariants
+
+- Export `name`, `inject`, `Config`, and `apply` as named exports; do not add a default export.
+- Treat parameter and output schemas as public runtime contracts.
+- Keep the canonical JSON value separate from model-facing rendering and optional UI presentation.
+- Reject or model expected domain outcomes deliberately; do not hide infrastructure failure in a success string.
+- Never accept a caller-supplied Agent or Session id as authority when `exec.agent` owns the operation.
+- Do not publish state or notify observers before the authoritative operation commits.
+- Stop admission, abort owned work, and await quiescence during disposal.
+- Keep the Loader test and Fiber-removal test when changing implementation structure.
+- Do not replace source-linked dependencies with guessed registry versions or claim publication readiness without a clean external closure.
+
+## Completion
+
+The business capability is complete only when its exact behavior replaces the generated normalization baseline, `pnpm verify` passes, the bundle is exercised through a real development profile when available, and one assertion observes the filesystem, network boundary, durable log, model-visible result, or other external world owned by the requirement.

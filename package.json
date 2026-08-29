@@ -1,0 +1,28 @@
+{
+  "name": "dsh-plugin-dev",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Codex and Claude Code Skill plus project generator for DeepSeek Harness plugin development",
+  "type": "module",
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    ".codex-plugin/plugin.json",
+    "skills/dsh-plugin-dev/**",
+    "scripts/install-user-skill.mjs",
+    "dsh-reference.lock.json",
+    "README.md"
+  ],
+  "scripts": {
+    "context:check": "node scripts/verify-context.mjs",
+    "context:check:strict": "node scripts/verify-context.mjs --require-source",
+    "install:skill": "node scripts/install-user-skill.mjs",
+    "install:codex": "node scripts/install-user-skill.mjs --agent codex",
+    "install:claude": "node scripts/install-user-skill.mjs --agent claude",
+    "test": "node --test tests/*.unit.test.mjs",
+    "test:e2e": "node --test tests/*.e2e.test.mjs",
+    "verify": "pnpm context:check:strict && pnpm test && pnpm test:e2e"
+  }
+}

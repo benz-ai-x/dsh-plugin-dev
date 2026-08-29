@@ -1,0 +1,53 @@
+import type { Context } from '@deepseek-ai/cordis'
+import z from '@deepseek-ai/schemastery'
+import { defineTool } from '@deepseek-ai/dsh-tools'
+
+export const name = '__PLUGIN_NAME__'
+export const inject = ['tools']
+
+export interface Config {
+  maxInputLength: number
+}
+
+export const Config: z<Config> = z.object({
+  maxInputLength: z.number().min(1).default(2000),
+})
+
+export function apply(ctx: Context, config: Config): void {
+  ctx.tools.register(defineTool({
+    name: '__TOOL_NAME__',
+    description: __DESCRIPTION_LITERAL_RAW__,
+    parameters: {
+      input: {
+        type: 'string',
+        required: true,
+        description: 'Input for the __TOOL_NAME__ operation.',
+      },
+    },
+    output: {
+      schema: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          value: { type: 'string', required: true },
+        },
+      },
+      render: (_args, value) => [{ type: 'text', text: value.value }],
+    },
+    async execute(args, exec) {
+      if (exec.signal.aborted) {
+        throw exec.signal.reason ?? new Error('operation aborted')
+      }
+
+      const input = args.input.trim()
+      if (input.length === 0) throw new Error('input must not be empty')
+      if (input.length > config.maxInputLength) {
+        throw new Error(`input exceeds maxInputLength (${config.maxInputLength})`)
+      }
+
+      // Replace this normalization baseline with the requested business operation.
+      // Preserve exec.signal through every asynchronous or external boundary.
+      return { value: input }
+    },
+  }))
+}

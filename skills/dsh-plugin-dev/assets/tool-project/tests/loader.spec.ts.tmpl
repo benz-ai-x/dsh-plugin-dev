@@ -1,0 +1,76 @@
+import { afterEach, describe, expect, it } from 'vitest'
+import { Context } from '@deepseek-ai/cordis'
+import Include from '@deepseek-ai/cordis-plugin-include'
+import Loader from '@deepseek-ai/cordis-plugin-loader'
+import { ToolCallId } from '@deepseek-ai/dsh-llm'
+import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
+import ToolRuntime from '@deepseek-ai/dsh-tools'
+
+import * as plugin from '../src/index.ts'
+
+let context: Context | undefined
+
+afterEach(async () => {
+  await context?.fiber.dispose()
+  context = undefined
+})
+
+async function boot(): Promise<Context> {
+  const root = new URL('./fixtures/', import.meta.url)
+  const next = new Context()
+  context = next
+  next.baseUrl = root.href
+  await next.plugin(Loader)
+  next.loader.builtins.include = Include
+
+  const modules = new Map<string, unknown>([
+    ['@deepseek-ai/dsh-system-prompt', SystemPrompt],
+    ['@deepseek-ai/dsh-tools', ToolRuntime],
+    ['__PACKAGE_NAME__', plugin],
+  ])
+  next.loader.internal = {
+    version: 'v2',
+    async import(specifier: string) {
+      if (!modules.has(specifier)) throw new Error(`unexpected Loader import: ${specifier}`)
+      return modules.get(specifier)
+    },
+  } as unknown as NonNullable<typeof next.loader.internal>
+
+  await next.loader.create({
+    name: 'cordis:include',
+    config: { path: new URL('cordis.yml', root).href },
+  })
+  await next.loader.await()
+  return next
+}
+
+function text(result: { content: { type: string; text?: string }[] }): string {
+  return result.content
+    .filter(block => block.type === 'text')
+    .map(block => block.text)
+    .join('')
+}
+
+describe('real Loader composition', () => {
+  it('boots cordis.yml and applies runtime configuration to the tool', async () => {
+    const next = await boot()
+    expect(next.tools.schemas().some(schema => schema.name === '__TOOL_NAME__')).toBe(true)
+
+    const accepted = await next.tools.execute({
+      callId: ToolCallId('loader-accepted'),
+      name: '__TOOL_NAME__',
+      arguments: { input: '12345678' },
+      signal: new AbortController().signal,
+    })
+    expect(accepted.isError).toBe(false)
+
+    const rejected = await next.tools.execute({
+      callId: ToolCallId('loader-rejected'),
+      name: '__TOOL_NAME__',
+      arguments: { input: '123456789' },
+      signal: new AbortController().signal,
+    })
+    expect(rejected.isError).toBe(true)
+    expect(text(rejected)).toContain('input exceeds maxInputLength (8)')
+  })
+})

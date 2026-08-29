@@ -1,0 +1,100 @@
+import { afterEach, describe, expect, it } from 'vitest'
+import { Context } from '@deepseek-ai/cordis'
+import Loader from '@deepseek-ai/cordis-plugin-loader'
+import { ToolCallId } from '@deepseek-ai/dsh-llm'
+import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
+import ToolRuntime from '@deepseek-ai/dsh-tools'
+
+import * as plugin from '../src/index.ts'
+
+const contexts: Context[] = []
+let callSequence = 0
+
+afterEach(async () => {
+  await Promise.all(contexts.splice(0).map(context => context.fiber.dispose()))
+})
+
+async function setup(maxInputLength = 2000): Promise<Context> {
+  const context = new Context()
+  contexts.push(context)
+  await context.plugin(SystemPrompt)
+  await context.plugin(ToolRuntime)
+  await context.plugin(plugin, { maxInputLength })
+  return context
+}
+
+function call(context: Context, input: string, signal = new AbortController().signal) {
+  callSequence += 1
+  return context.tools.execute({
+    callId: ToolCallId(`test-${callSequence}`),
+    name: '__TOOL_NAME__',
+    arguments: { input },
+    signal,
+  })
+}
+
+function text(result: { content: { type: string; text?: string }[] }): string {
+  return result.content
+    .filter(block => block.type === 'text')
+    .map(block => block.text)
+    .join('')
+}
+
+describe('__PACKAGE_NAME__', () => {
+  it('registers the advertised schema and returns a canonical structured value', async () => {
+    const context = await setup()
+    const schema = context.tools.schemas().find(candidate => candidate.name === '__TOOL_NAME__')
+    expect(schema?.description).toBe(__DESCRIPTION_LITERAL_RAW__)
+
+    const result = await call(context, '  example input  ')
+    expect(result.isError).toBe(false)
+    if (result.isError) throw new Error('expected a successful tool result')
+    expect(result.value).toEqual({ value: 'example input' })
+    expect(text(result)).toBe('example input')
+  })
+
+  it('rejects constraints the parameter DSL cannot express', async () => {
+    const context = await setup(8)
+
+    const empty = await call(context, '   ')
+    expect(empty.isError).toBe(true)
+    expect(text(empty)).toContain('input must not be empty')
+
+    const oversized = await call(context, '123456789')
+    expect(oversized.isError).toBe(true)
+    expect(text(oversized)).toContain('input exceeds maxInputLength (8)')
+  })
+
+  it('settles a pre-aborted call as an error', async () => {
+    const context = await setup()
+    const controller = new AbortController()
+    controller.abort(new Error('cancelled by caller'))
+
+    const result = await call(context, 'example', controller.signal)
+    expect(result.isError).toBe(true)
+  })
+
+  it('removes the tool when its contributing Fiber is disposed', async () => {
+    const context = new Context()
+    contexts.push(context)
+    await context.plugin(SystemPrompt)
+    await context.plugin(ToolRuntime)
+    const fiber = await context.plugin(plugin, { maxInputLength: 2000 })
+
+    expect(context.tools.schemas().some(schema => schema.name === '__TOOL_NAME__')).toBe(true)
+    await fiber.dispose()
+    expect(context.tools.schemas().some(schema => schema.name === '__TOOL_NAME__')).toBe(false)
+  })
+
+  it('keeps namespace metadata visible through Loader export normalization', () => {
+    expect('default' in plugin).toBe(false)
+    expect(plugin.name).toBe('__PLUGIN_NAME__')
+    expect(plugin.inject).toEqual(['tools'])
+
+    const loader = Object.create(Loader.prototype) as Loader
+    const unwrapped = loader.unwrapExports(plugin) as Record<string, unknown>
+    expect(unwrapped).toBe(plugin)
+    expect(unwrapped.inject).toEqual(['tools'])
+    expect(typeof unwrapped.apply).toBe('function')
+  })
+})
