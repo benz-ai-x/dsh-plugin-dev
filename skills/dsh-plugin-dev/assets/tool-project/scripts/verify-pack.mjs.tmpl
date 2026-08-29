@@ -1,46 +1,52 @@
 #!/usr/bin/env node
 
 import { spawnSync } from 'node:child_process'
+import { existsSync, mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 
-const result = spawnSync('pnpm', ['pack', '--dry-run', '--json'], {
-  encoding: 'utf8',
-  env: { ...process.env, npm_config_ignore_scripts: 'true' },
-})
-if (result.status !== 0) {
-  console.error(result.stderr.trim() || result.stdout.trim() || 'pnpm pack --dry-run failed')
-  process.exit(1)
-}
-
-let packed
+const destination = mkdtempSync(join(tmpdir(), 'dsh-pack-check-'))
 try {
+  const result = spawnSync('pnpm', ['pack', '--json', '--pack-destination', destination], {
+    encoding: 'utf8',
+    env: { ...process.env, npm_config_ignore_scripts: 'true' },
+  })
+  if (result.status !== 0) {
+    throw new Error(result.stderr.trim() || result.stdout.trim() || 'pnpm pack failed')
+  }
+
   const start = result.stdout.indexOf('{')
   const end = result.stdout.lastIndexOf('}')
-  packed = JSON.parse(result.stdout.slice(start, end + 1))
-} catch (error) {
-  console.error(`cannot parse pnpm pack output: ${error instanceof Error ? error.message : String(error)}`)
-  process.exit(1)
-}
+  const packed = JSON.parse(result.stdout.slice(start, end + 1))
+  if (typeof packed.filename !== 'string' || !existsSync(packed.filename)) {
+    throw new Error('pnpm pack did not create the reported archive')
+  }
 
-const files = new Set((packed.files ?? []).map(file => file.path))
-const required = [
-  'README.md',
-  'cordis.patch.yml',
-  'lib/index.d.ts',
-  'lib/index.js',
-  'package.json',
-]
-const forbidden = [
-  'src/index.ts',
-  'tests/plugin.spec.ts',
-  'tests/loader.spec.ts',
-]
+  const files = new Set((packed.files ?? []).map(file => file.path))
+  const required = [
+    'README.md',
+    'cordis.patch.yml',
+    'lib/index.d.ts',
+    'lib/index.js',
+    'package.json',
+  ]
+  const forbidden = [
+    'src/index.ts',
+    'tests/plugin.spec.ts',
+    'tests/loader.spec.ts',
+    'lib/index.js.map',
+    'lib/index.d.ts.map',
+  ]
 
-const missing = required.filter(file => !files.has(file))
-const leaked = forbidden.filter(file => files.has(file))
-if (missing.length > 0 || leaked.length > 0) {
+  const missing = required.filter(file => !files.has(file))
+  const leaked = forbidden.filter(file => files.has(file))
   if (missing.length > 0) console.error(`packed artifact is missing: ${missing.join(', ')}`)
   if (leaked.length > 0) console.error(`packed artifact leaks development files: ${leaked.join(', ')}`)
-  process.exit(1)
+  if (missing.length > 0 || leaked.length > 0) process.exitCode = 1
+  else console.log(`packed artifact check passed: ${files.size} file(s)`)
+} catch (error) {
+  console.error(`packed artifact check failed: ${error instanceof Error ? error.message : String(error)}`)
+  process.exitCode = 1
+} finally {
+  rmSync(destination, { recursive: true, force: true })
 }
-
-console.log(`packed artifact check passed: ${files.size} file(s)`)

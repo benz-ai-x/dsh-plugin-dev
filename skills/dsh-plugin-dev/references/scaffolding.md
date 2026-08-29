@@ -43,7 +43,7 @@ node <skill-directory>/scripts/create-project.mjs \
 
 `--target` defaults to the current directory. `--name`, `--plugin-name`, and `--tool-name` derive from the target directory when omitted. `--harness-root` resolves in this order: the explicit option, `DSH_HARNESS_ROOT`, the target's sibling `deepseek-harness`, then the skill repository's locked fallback.
 
-The generator accepts lowercase npm package names, kebab-case Cordis plugin names, and snake_case tool names. It refuses unsupported kinds, a mismatched Harness version/commit/docs digest, a non-empty target, and every output collision. It never has a force or overwrite mode.
+The generator accepts lowercase npm package names, kebab-case Cordis plugin names, and snake_case tool names except the registry-reserved `run_code`. It refuses unsupported kinds, a mismatched or dirty Harness worktree, missing/stale linked build entries, a non-empty target, and every output collision. It also pins the Harness Node engine and rejects a generator process outside it. It never has a force or overwrite mode.
 
 Stable generator failures:
 
@@ -51,12 +51,17 @@ Stable generator failures:
 |---|---|
 | `DSH_SCAFFOLD_USAGE` | A required option value is missing or an unknown argument was supplied. |
 | `DSH_SCAFFOLD_INVALID_NAME` | A package, plugin, or tool name violates its public naming contract. |
+| `DSH_SCAFFOLD_RESERVED_NAME` | The requested/derived tool name is reserved by DSH (`run_code`). |
 | `DSH_SCAFFOLD_INVALID_DESCRIPTION` | The product description is empty or too large for a stable scaffold boundary. |
 | `DSH_SCAFFOLD_UNSUPPORTED_KIND` | No deterministic template exists for the requested plugin kind. |
 | `DSH_SCAFFOLD_TARGET_NOT_EMPTY` | The target contains project material; generation did not start. |
 | `DSH_SCAFFOLD_TARGET_COLLISION` | A generated path appeared before its exclusive write; no overwrite occurred. |
 | `DSH_SCAFFOLD_HARNESS_NOT_FOUND` | No usable local Harness checkout resolved. |
 | `DSH_SCAFFOLD_HARNESS_MISMATCH` | The checkout does not match the audited lock. |
+| `DSH_SCAFFOLD_HARNESS_DIRTY` | The Harness has tracked/non-ignored changes or an ignored root `.env` that would affect the source CLI. |
+| `DSH_SCAFFOLD_HARNESS_ARTIFACT_MISSING` | A directly linked package's declared build entry is absent. |
+| `DSH_SCAFFOLD_HARNESS_ARTIFACT_STALE` | A linked build entry predates its manifest/source inputs. |
+| `DSH_SCAFFOLD_NODE_UNSUPPORTED` | The running Node version is outside the pinned Harness engine. |
 
 ## After generation
 
@@ -66,9 +71,14 @@ Stable generator failures:
    script may cause pnpm to attempt dependency installation first.
 3. Run `pnpm install` to materialize the local source-linked development
    closure. After that, use `pnpm context:check:strict` normally.
-4. Replace the normalization baseline with the user's actual domain contract and add a failing test first when the request asks for test-driven work.
-5. Preserve named namespace exports, runtime Config validation, cancellation propagation, canonical JSON results, and lifecycle cleanup.
-6. Run `pnpm verify`, then exercise the real `dsh plugin add`, config dump, boot, and remove path when the local CLI/profile is in scope.
-7. Report that source-linked verification proves compatibility with the pinned checkout, not npm publication readiness.
+4. If the Harness checkout moves, set `DSH_HARNESS_ROOT` (or pass
+   `--harness-root`) and run `pnpm context:sync`. That command rewrites the
+   links and refreshes the package-manager lock with a non-frozen install. The
+   environment variable selects the source; it does not rewrite existing
+   `link:` specs by itself.
+5. Replace the normalization baseline with the user's actual domain contract and add a failing test first when the request asks for test-driven work.
+6. Preserve named namespace exports, runtime Config validation, cancellation propagation, canonical JSON results, and lifecycle cleanup.
+7. Run `pnpm verify`, then exercise the real `dsh plugin add`, config dump, boot, and remove path when the local CLI/profile is in scope.
+8. Report that source-linked verification proves compatibility with the pinned checkout, not npm publication readiness.
 
 Generated projects remain `private: true` until all DSH runtime and peer dependencies are available outside the source monorepo and a clean packed-artifact/profile smoke proves the install form.

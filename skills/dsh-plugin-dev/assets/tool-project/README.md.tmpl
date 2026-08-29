@@ -6,14 +6,25 @@ This project is a source-linked DeepSeek Harness Tool plugin scaffold generated 
 
 ## Development
 
-The project targets DeepSeek Harness `__HARNESS_VERSION_RAW__` at commit `__HARNESS_COMMIT_RAW__`. When the checkout moves, set `DSH_HARNESS_ROOT` before reinstalling dependencies.
+The project targets DeepSeek Harness `__HARNESS_VERSION_RAW__` at commit `__HARNESS_COMMIT_RAW__` and requires Node `__NODE_ENGINE_RAW__`. Its tracked/non-ignored source inputs must be clean, its root must not contain a CLI-loaded `.env`, and it must be built (`pnpm install && pnpm run build`) because source-linked packages expose their generated `lib/` entries.
 
 ```sh
 pnpm install
 pnpm verify
 ```
 
-`pnpm verify` checks the pinned source, typechecks, runs the real Tool registry and HMR tests, boots `tests/fixtures/cordis.yml` through the Cordis Loader, builds declarations and JavaScript, and inspects the packed file list.
+If the Harness checkout moves, point at the new location and synchronize the
+six development links plus the package-manager lock:
+
+```sh
+DSH_HARNESS_ROOT=/new/path/to/deepseek-harness pnpm context:sync
+```
+
+`pnpm verify` checks the pinned clean source and linked build entries,
+typechecks, runs the real Tool registry and HMR tests, boots
+`tests/fixtures/cordis.yml` through the Cordis Loader, builds declarations and
+JavaScript, imports the built package through its public export, and inspects
+a real generated `.tgz` archive.
 
 ## Profile installation
 

@@ -49,6 +49,23 @@ Do not append `export default apply`. Loader normalizes a module with
 `name`, `inject`, and `Config` exports. Service packages instead normally
 default-export their Service class.
 
+That same normalization means metadata for a default-exported concrete Service
+class belongs on the class itself:
+
+```ts
+export default class ExampleProvider extends ExampleService {
+  static inject = ['credentials']
+  static Config = Config
+}
+```
+
+A sibling named `inject` or `Config` export is not consulted after Loader has
+selected the default class. Point the static field at an exported schema when
+library consumers also need that schema. If the package deliberately uses a
+namespace wrapper instead, keep all metadata and `apply` on that namespace and
+let the wrapper lifecycle-own the Service; do not mix the two normalization
+forms.
+
 Canonical implementation and regression evidence:
 
 - `vendor/loader/src/index.ts` — `unwrapExports()`
@@ -165,14 +182,36 @@ durable facts. Use a Session event when behavior must survive restart, replay,
 or appear consistently in queries and clients.
 
 Session event values must be lossless JSON. Treat appended values as detached
-and immutable. Domain extensions should use merge-extensible event maps and
-default branches rather than closed exhaustive switches that break external
-events.
+and immutable. `SessionEventMap` is declaration-merge extensible at compile
+time, but the pinned persistence runtime does not offer an out-of-repo event
+registration surface. Its accepted vocabulary is a generated, build-time
+closed set.
 
-Only deliberate model-visible surface events enter derived conversation
-history. Plugin coordination, telemetry, roster, plan, and task records are
-normally log-only. Never inject a record into model history merely because it
-is persisted.
+`SurfaceEventType` is the closed core set `user/message`,
+`assistant/message`, and `tool/result`. An event type added to a matching
+Harness build is log-only unless that build also deliberately changes the
+surface contract; type augmentation alone cannot give it `surfaceOp`. If a
+fact must affect the model, let an owner-controlled surface producer or
+prompt/context contribution derive a core model-visible value deliberately.
+Never inject a record into model history merely because it is persisted.
+
+On the stock pinned Harness, an external plugin must not append a new custom
+Session event type. Merely declaration-merging `SessionEventMap` and keeping
+the owning plugin composed does not add the type to
+`KNOWN_SESSION_EVENT_TYPES`; persistence will reject the whole Session on
+recovery. Use a semantically correct existing Session event, a Cordis live
+event for process-only coordination, or plugin-owned versioned storage.
+
+If custom durable Session vocabulary is essential, integrate it into the
+Harness source tree or a deliberately maintained source overlay, regenerate
+the persistence catalog/known-event module, rebuild and distribute that
+matching Harness runtime, and own its format/version migration. In that
+matching Harness delivery line, every runtime build that may recover those
+logs must contain the generated catalog entry. Compose the event's
+validation/invariants and the relevant projection, query, migration, or UI
+readers on the paths that actually interpret the fact. Readers should retain a
+default branch, and persisted types must not be removed or renamed without a
+format/version and migration decision.
 
 Projections are pure, synchronous folds producing complete JSON values. Return
 the same reference when an unrelated event leaves state unchanged. A client
@@ -182,6 +221,7 @@ Canonical reading:
 
 - `docs/event-producer-consumer.md`
 - `docs/subsystems/session.md`
+- `docs/subsystems/persistence.md`
 - `docs/subsystems/session-projection.md`
 - `docs/persistence-catalog.md`
 - `packages/core/session/src/index.ts`

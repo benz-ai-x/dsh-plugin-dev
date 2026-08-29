@@ -5,9 +5,11 @@
 - `.codex-plugin/plugin.json` validates as a skills-only Codex Plugin and points at the canonical skill directory.
 - Codex repository discovery, Codex Plugin discovery, and the Claude Code adapter reach one canonical `SKILL.md` body.
 - Every routed reference exists, and scaffolding instructions select only the references required by the requested DSH shape.
-- The pinned Harness checkout resolves through `DSH_HARNESS_ROOT` or the recorded fallback; version, commit, and docs digest match the lock.
+- The pinned Harness checkout resolves through `DSH_HARNESS_ROOT` or the recorded fallback; version, commit, docs digest, and Node engine match the lock; tracked/non-ignored inputs are clean; the ignored root `.env` loaded by the source CLI is absent; and every directly linked package has present, fresh declared build entries. Ignored dependency/build output is allowed.
 - The user-skill installer preflights and creates both Codex and Claude Code personal links, is idempotent for the same source, supports either agent independently, and refuses partial installation when either target conflicts.
-- Unit tests cover generator validation, collision refusal, deterministic output, and unsupported plugin kinds.
+- Unit tests cover generator validation, reserved `run_code` rejection,
+  collision refusal, deterministic output, dual-Agent templates, and
+  unsupported plugin kinds.
 
 Run:
 
@@ -24,12 +26,21 @@ pnpm verify
 From a temporary empty directory, the supported Tool vertical slice must:
 
 1. invoke the installed `dsh-plugin-dev` generator with a business-shaped name and description;
-2. create a package manifest, TypeScript source, runtime Config schema, tests, Loader fixture, bundle patch, project contract, TODO, and copied DSH reference lock;
+2. create a package manifest, TypeScript source, runtime Config schema, tests,
+   Loader fixture with stable row ids, exported bundle patch, thin `AGENTS.md`
+   and `CLAUDE.md` adapters, project contract, TODO, and copied DSH reference
+   lock;
 3. refuse a second generation that would overwrite those files;
 4. install its development closure against the audited local Harness source;
-5. pass strict context validation, typecheck, unit/HMR tests, real `cordis.yml` Loader composition, build, and packed-file inspection;
+5. pass strict source/build-entry validation, typecheck, Config boundary and
+   exact-schema tests, unit/HMR tests, real `cordis.yml` Loader composition,
+   build, public-name import from `lib`, and inspection of a real `.tgz`;
 6. expose no namespace-plugin default export;
-7. remain marked private while its DSH dependency closure is source-linked.
+7. add/dump/remove the actual bundle through an isolated pinned DSH profile and
+   prove the expected stable Loader row/config appears and disappears;
+8. resynchronize its `link:` dependencies after a Harness checkout move;
+9. remain marked private while its DSH dependency closure is source-linked and
+   omit accidental source/declaration maps from the package.
 
 ## Fresh-agent semantic smoke
 

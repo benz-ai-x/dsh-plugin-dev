@@ -5,11 +5,13 @@ catalog, routing, retry behavior, usage accounting, or provider configuration.
 
 ## Adapter boundary
 
-An adapter converts immutable Harness `GenerateOptions` into one provider
-request and yields normalized `StreamChunk` values. It owns provider transport,
-credentials, request serialization, streaming parse, stable provider errors,
-and exact model metadata. It does not own agent-loop policy or silently reroute
-unknown provider/model identities.
+An adapter converts immutable Harness `GenerateOptions` into one semantic
+provider attempt and yields normalized `StreamChunk` values. That attempt may
+contain bounded protocol-owned auxiliary requests such as file upload or stale
+handle repair; it must not hide a second model attempt. The adapter owns
+provider transport, credentials, request serialization, streaming parse,
+stable provider errors, and exact model metadata. It does not own agent-loop
+policy or silently reroute unknown provider/model identities.
 
 Canonical reading:
 
@@ -34,6 +36,12 @@ The adapter must:
 - pass the caller signal into fetch/stream parsing;
 - produce only valid normalized chunks;
 - remove all routes atomically on disposal.
+
+One adapter `stream()` call is exactly one provider attempt. Disable SDK or
+HTTP-library automatic retries (`maxRetries: 0` or its equivalent). Agent-level
+recovery owns visible retry attempts and durable turn numbering; direct
+`ctx.llm.stream()` callers remain single-attempt. A provider retry-after value
+is failure metadata, not permission for the adapter to retry internally.
 
 ## Stream protocol
 
@@ -64,8 +72,21 @@ Make provider selection explicit. Duplicate or ambiguous routes fail loudly.
 Adapter registration and replacement are atomic so one provider cannot leave a
 half-updated route set.
 
-If the registry supports HMR replay, capture the minimal lossless state and
-reuse the same adapter instance where identity is part of the contract.
+If native follow-up needs provider response ids, signatures, or other metadata,
+emit a lossless `ReplayEnvelope`: opaque response-level data plus optional
+per-block entries aligned one-for-one with emitted content blocks. Assembly
+prunes block metadata whenever it prunes the corresponding block, so never
+store an independent list that can drift from content.
+
+`LlmRuntime` passes stored replay state only when the historical provider route
+and target provider route are currently owned by the exact same adapter
+instance. The adapter must validate the envelope and decide whether same-model,
+cross-model, or cross-provider reuse is legal. Never infer private replay state
+from provider/model strings, and degrade unusable stored state to the durable
+provider-neutral content rather than corrupting or rejecting that history.
+
+On HMR, reuse the same adapter instance only when the replacement contract
+intentionally preserves that identity and its validated state.
 
 ## Credentials and dynamic settings
 
@@ -93,8 +114,10 @@ Distinguish:
 - idle timeout;
 - malformed or prematurely closed stream.
 
-Retries must not duplicate already committed visible output. Retry ownership,
-attempt events, and cancellation remain explicit.
+Retries must not duplicate already committed visible output. The adapter does
+not retry; the owning recovery layer closes the failed attempt and deliberately
+starts another one. Attempt events, backoff, cancellation, and retry policy
+remain explicit and registration-bound.
 
 ## Usage and pricing
 
@@ -112,7 +135,12 @@ pricing snapshot and token-meter calculation, not to UI rendering.
 - usage-before-finish and no-output-after-terminal;
 - EOF, malformed frames, provider terminal error, idle timeout, and abort;
 - cancellation reaches fetch and stream readers and leaves no callbacks;
+- one adapter call forms one semantic provider attempt with SDK/library model
+  retries disabled; protocol-owned auxiliary requests remain bounded,
+  cancellation-aware, and explicitly tested;
 - atomic registration/replacement and HMR removal;
+- replay envelopes stay block-aligned and are withheld across adapter-instance
+  boundaries;
 - dynamic whole-snapshot validation and last-good retention;
 - real Loader composition with no real credential where possible;
 - a key-gated real provider test for the actual protocol when credentials are

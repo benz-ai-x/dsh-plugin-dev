@@ -11,13 +11,12 @@
       "types": "./lib/index.d.ts",
       "default": "./lib/index.js"
     },
+    "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
-    "lib/index.js.map",
     "lib/index.d.ts",
-    "lib/index.d.ts.map",
     "cordis.patch.yml",
     "README.md"
   ],
@@ -28,17 +27,19 @@
   },
   "packageManager": "pnpm@11.17.0",
   "engines": {
-    "node": ">=20"
+    "node": "__NODE_ENGINE__"
   },
   "scripts": {
     "context:check": "node scripts/verify-dsh-context.mjs",
     "context:check:strict": "node scripts/verify-dsh-context.mjs --require-source",
+    "context:sync": "node scripts/verify-dsh-context.mjs --sync-links --require-source && pnpm install --no-frozen-lockfile",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:loader": "vitest run tests/loader.spec.ts",
     "build": "tsc -p tsconfig.json",
+    "built:check": "node scripts/verify-built.mjs",
     "pack:check": "node scripts/verify-pack.mjs",
-    "verify": "pnpm context:check:strict && pnpm typecheck && pnpm test && pnpm build && pnpm pack:check",
+    "verify": "pnpm context:check:strict && pnpm typecheck && pnpm test && pnpm build && pnpm built:check && pnpm pack:check",
     "prepare": "pnpm build"
   },
   "dependencies": {

@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+import { readFile } from 'node:fs/promises'
+
+const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
+const plugin = await import(manifest.name)
+
+const failures = []
+if ('default' in plugin) failures.push('built namespace plugin unexpectedly has a default export')
+if (plugin.name !== '__PLUGIN_NAME__') failures.push(`built plugin name is ${JSON.stringify(plugin.name)}`)
+if (!Array.isArray(plugin.inject) || !plugin.inject.includes('tools')) failures.push('built plugin lost its tools injection')
+if (typeof plugin.Config !== 'function') failures.push('built plugin lost its runtime Config schema')
+if (typeof plugin.apply !== 'function') failures.push('built plugin lost its apply function')
+
+if (failures.length > 0) {
+  for (const failure of failures) console.error(`FAIL ${failure}`)
+  process.exit(1)
+}
+
+console.log(`built package smoke passed: ${manifest.name}`)

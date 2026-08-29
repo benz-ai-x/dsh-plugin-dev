@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
-import { mkdtemp, readFile, realpath, rm, symlink } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, realpath, rm, symlink, utimes, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -9,11 +9,22 @@ import test from 'node:test'
 import {
   ScaffoldError,
   createProject,
+  harnessWorktreeChanges,
+  nodeSatisfies,
   parseArgs,
+  validateHarnessArtifacts,
 } from '../skills/dsh-plugin-dev/scripts/create-project.mjs'
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const harnessRoot = resolve(repositoryRoot, '..', 'deepseek-harness')
+const linkedPackageLocations = [
+  'vendor/cordis',
+  'vendor/loader',
+  'vendor/include',
+  'packages/llm/llm',
+  'packages/core/system-prompt',
+  'packages/core/tools',
+]
 
 async function withTemporaryDirectory(prefix, operation) {
   const root = await mkdtemp(join(tmpdir(), prefix))
@@ -32,6 +43,22 @@ function hasCode(code) {
   }
 }
 
+async function createLinkedArtifactFixture(root) {
+  for (const [index, location] of linkedPackageLocations.entries()) {
+    const packageRoot = join(root, location)
+    await mkdir(join(packageRoot, 'src'), { recursive: true })
+    await mkdir(join(packageRoot, 'lib', 'types'), { recursive: true })
+    await writeFile(join(packageRoot, 'package.json'), JSON.stringify({
+      name: `@fixture/linked-${index}`,
+      main: 'lib/index.js',
+      types: 'lib/types/index.d.ts',
+    }))
+    await writeFile(join(packageRoot, 'src', 'index.ts'), 'export const source = true\n')
+    await writeFile(join(packageRoot, 'lib', 'index.js'), 'export const built = true\n')
+    await writeFile(join(packageRoot, 'lib', 'types', 'index.d.ts'), 'export declare const built: true\n')
+  }
+}
+
 test('creates a deterministic source-linked Tool project without overwriting it', async () => {
   await withTemporaryDirectory('dsh-generator-unit-', async root => {
     const requestedTarget = join(root, 'repository-audit')
@@ -46,14 +73,22 @@ test('creates a deterministic source-linked Tool project without overwriting it'
     assert.equal(result.pluginName, 'repository-audit')
     assert.equal(result.toolName, 'repository_audit')
     assert.ok(result.files.includes('.gitignore'))
+    assert.ok(result.files.includes('CLAUDE.md'))
     assert.ok(result.files.includes('src/index.ts'))
     assert.ok(result.files.includes('tests/loader.spec.ts'))
 
     const manifest = JSON.parse(await readFile(join(result.target, 'package.json'), 'utf8'))
     assert.equal(manifest.description, 'Inspect a repository and return an audit summary.')
     assert.equal(manifest.private, true)
+    assert.equal(manifest.engines.node, '^22.19.0 || >=24.0.0')
     assert.equal(manifest.dependencies['@deepseek-ai/schemastery'], '3.18.1')
     assert.equal(manifest.devDependencies.typescript, '6.0.3')
+    assert.equal(
+      manifest.scripts['context:sync'],
+      'node scripts/verify-dsh-context.mjs --sync-links --require-source && pnpm install --no-frozen-lockfile',
+    )
+    assert.equal(manifest.exports['./cordis.patch.yml'], './cordis.patch.yml')
+    assert.equal(manifest.files.some(path => path.endsWith('.map')), false)
 
     const toolsLink = manifest.devDependencies['@deepseek-ai/dsh-tools']
     assert.match(toolsLink, /^link:/)
@@ -96,6 +131,21 @@ test('validates project intent before touching the target', async () => {
       createProject({ target: join(root, 'long'), description: 'x'.repeat(301) }),
       hasCode('DSH_SCAFFOLD_INVALID_DESCRIPTION'),
     )
+    await assert.rejects(
+      createProject({
+        target: join(root, 'explicit-reserved'),
+        toolName: 'run_code',
+        description: 'Attempt to claim the reserved Tool transport.',
+      }),
+      hasCode('DSH_SCAFFOLD_RESERVED_NAME'),
+    )
+    await assert.rejects(
+      createProject({
+        target: join(root, 'run-code'),
+        description: 'Derive the reserved Tool transport from the directory.',
+      }),
+      hasCode('DSH_SCAFFOLD_RESERVED_NAME'),
+    )
   })
 })
 
@@ -117,6 +167,70 @@ test('reports missing and mismatched Harness checkouts with stable errors', asyn
       }),
       hasCode('DSH_SCAFFOLD_HARNESS_MISMATCH'),
     )
+  })
+})
+
+test('validates the pinned Node range without accepting the Node 23 gap', () => {
+  const range = '^22.19.0 || >=24.0.0'
+  assert.equal(nodeSatisfies(range, 'v22.19.0'), true)
+  assert.equal(nodeSatisfies(range, 'v22.99.0'), true)
+  assert.equal(nodeSatisfies(range, 'v23.0.0'), false)
+  assert.equal(nodeSatisfies(range, 'v24.0.0'), true)
+})
+
+test('rejects missing and stale linked Harness build entries', async () => {
+  await withTemporaryDirectory('dsh-generator-artifacts-', async root => {
+    await createLinkedArtifactFixture(root)
+    await validateHarnessArtifacts(root)
+
+    const missingTypes = join(root, linkedPackageLocations[0], 'lib', 'types', 'index.d.ts')
+    await rm(missingTypes)
+    await assert.rejects(
+      validateHarnessArtifacts(root),
+      hasCode('DSH_SCAFFOLD_HARNESS_ARTIFACT_MISSING'),
+    )
+
+    await writeFile(missingTypes, 'export declare const built: true\n')
+    const newerSource = join(root, linkedPackageLocations[1], 'src', 'index.ts')
+    const future = new Date(Date.now() + 60_000)
+    await utimes(newerSource, future, future)
+    await assert.rejects(
+      validateHarnessArtifacts(root),
+      hasCode('DSH_SCAFFOLD_HARNESS_ARTIFACT_STALE'),
+    )
+  })
+})
+
+test('detects changes anywhere in the Harness worktree while respecting ignores', async () => {
+  await withTemporaryDirectory('dsh-generator-worktree-', async root => {
+    const init = spawnSync('git', ['-C', root, 'init', '--quiet'], { encoding: 'utf8' })
+    assert.equal(init.status, 0, init.stderr)
+    await writeFile(join(root, '.gitignore'), '**/lib/\n.env\n')
+    const add = spawnSync('git', ['-C', root, 'add', '.gitignore'], { encoding: 'utf8' })
+    assert.equal(add.status, 0, add.stderr)
+    const commit = spawnSync('git', [
+      '-C', root,
+      '-c', 'user.name=DSH Fixture',
+      '-c', 'user.email=dsh-fixture@example.invalid',
+      'commit', '--quiet', '-m', 'fixture baseline',
+    ], { encoding: 'utf8' })
+    assert.equal(commit.status, 0, commit.stderr)
+
+    await mkdir(join(root, 'vendor', 'cordis', 'lib'), { recursive: true })
+    await writeFile(join(root, 'vendor', 'cordis', 'lib', 'index.js'), 'ignored build output\n')
+    assert.equal(harnessWorktreeChanges(root), '')
+
+    await writeFile(join(root, '.env'), 'DSH_FIXTURE=runtime-input\n')
+    const ignoredRuntimeInput = harnessWorktreeChanges(root)
+    assert.match(ignoredRuntimeInput, /!! \.env/)
+    assert.doesNotMatch(ignoredRuntimeInput, /vendor\/cordis\/lib/)
+    await rm(join(root, '.env'))
+
+    await mkdir(join(root, 'apps', 'cli', 'src'), { recursive: true })
+    await writeFile(join(root, 'apps', 'cli', 'src', 'dirty.ts'), 'export const dirty = true\n')
+    const dirty = harnessWorktreeChanges(root)
+    assert.match(dirty, /apps\/cli\/src\/dirty\.ts/)
+    assert.doesNotMatch(dirty, /vendor\/cordis\/lib/)
   })
 })
 

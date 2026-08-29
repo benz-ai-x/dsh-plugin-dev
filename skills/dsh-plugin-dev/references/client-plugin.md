@@ -26,6 +26,7 @@ Canonical reading:
 - `docs/subsystems/web-client.md`
 - `docs/subsystems/slots.md`
 - `docs/subsystems/session-projection.md`
+- `docs/subsystems/conversation.md`
 - `docs/api-gateway.md`
 - `packages/client/ui-goal/`
 
@@ -65,6 +66,13 @@ External Client packages must ship built JavaScript, declarations, CSS, and any
 assets listed by their exports. Test package discovery from the packed artifact;
 source aliases can hide missing `./client` files.
 
+The browser loader consumes DSH's lazy-CJS bundle protocol, not an arbitrary ESM
+browser entry. The pinned monorepo's `clientBundle()` tsdown helper is internal
+build infrastructure, not a published external-project preset. Until an
+official preset is published, an external Client package must supply and test a
+compatible factory bundle deliberately; copying a monorepo-relative build
+import is not a distributable solution.
+
 ## Slots instead of cross-feature imports
 
 A feature contributes UI through `ctx.slots`. It must not runtime-import
@@ -91,6 +99,19 @@ Use Host-computed Session projections for durable session-derived state. A
 projection publishes a complete value with an `asOfSeq`/version fence; the
 Client replaces its mirror rather than applying a second domain fold.
 
+Choose the two similarly named extension points by output shape:
+
+- A Host Session projection (`ProjectionDefinition` plus
+  `SessionProjectionMap`) is a pure fold that publishes a whole current
+  business value and may be cached or served without replaying the UI.
+- `ConversationNodeDefinition` is a Client-side event-to-node state machine for
+  transcript or trajectory rows. It derives presentation from transported
+  Session records and is not the authority for the domain snapshot.
+
+Do not implement one as a substitute for the other. A feature may use both: a
+whole projection for current controls/status and a Conversation Definition for
+historical rows.
+
 Represent these states distinctly when the UI needs them:
 
 - capability not composed or still loading (`undefined`);
@@ -111,6 +132,13 @@ Use concrete Typert Remote services and generated descriptors. Define named
 arguments and browser-safe codecs. Keep the final `AbortSignal` out of wire
 arguments and carry it through the transport as cancellation.
 
+A business Remote package exposes generated Host reflection and Client
+contribution faces through `./typert` and `./remote` respectively (plus
+`./client` only when it also has browser UI). Generate/build the Host Typert
+contract before compiling the Client face; a Client-only rebuild cannot infer
+new Host decorators. The Client composition owner mounts selected `./remote`
+contributions rather than making business components load the Gateway.
+
 Mount generated Remote contributions explicitly with `$mount`, then compose UI
 only after the named Remote service becomes available. If UI mounting fails,
 dispose the partial UI and the Remote contribution. On unload, dispose both in
@@ -119,6 +147,24 @@ the reverse ownership order.
 Separate transport and domain results. A successful RPC may contain a typed
 domain rejection such as a stale revision; a disconnected transport is a
 different outer failure.
+
+For the pinned source, Typert descriptors and the Gateway implementation also
+support `@Remote({ mode: 'stream' })`/`mode: 'stream'`. The older unary-only
+boundary prose in `docs/api-gateway.md` is stale relative to
+`docs/subsystems/typert.md` and the implementation. Treat the pinned source as
+authoritative.
+
+Keep the two stream layers distinct. A generated stream method opens one
+logical stream and returns its `AsyncIterable`; carrier failure ends that
+iterator. The decorator layer does not reconnect or infer replay. When a
+domain needs continuity across physical carrier generations, supervise a new
+opening per generation with `ctx.remote.$stream()`. The domain must validate
+and accept each opening value, own the resume cursor or replacement baseline,
+and classify whether normal completion is terminal or reconnectable.
+`RemoteSnapshotStream` supplies the snapshot-then-deltas pattern;
+`RemoteJournalStream` supplies follow-before-page, catch-up, duplicate removal,
+and gap repair for domain-defined journal ranges. Test only the layer the
+feature actually uses.
 
 Canonical references:
 
@@ -139,17 +185,41 @@ under a namespace owned by the feature.
 
 ## Required tests
 
-- package manifest exposes a built `./client` entry and valid `dsh.client`;
-- Client dependency discovery and load order;
-- Remote contribution mount, partial-failure rollback, and unmount;
+Apply only the groups matching the package shape; do not create unused exports
+or services merely to satisfy this list. An ordinary UI package runs the UI
+group, a Remote-only contributor runs the Remote group and does not need
+`./client` or `dsh.client`, and a UI-plus-Remote package runs both.
+
+UI package tests:
+
+- the manifest exposes a built `./client` entry and valid `dsh.client`;
+- Client dependency discovery and load order are correct;
 - Slot registration appears and disappears with the Client Fiber;
-- projection loading/absent/value/replacement behavior;
-- stale revision and transport failure render differently;
-- rapid duplicate actions are fenced before the next React render;
-- entity replacement resets transient drafts;
 - component tests receive ordinary props without Context;
-- reconnect/resume obtains the current whole snapshot;
-- packed browser entry imports without Host-only dependencies.
+- the packed browser entry imports without Host-only dependencies.
+
+Remote contributor tests:
+
+- Host-first Typert generation produces packed `./typert` and `./remote`
+  exports;
+- contribution mount, partial-failure rollback, and unmount work;
+- unary domain rejection and transport failure remain distinct.
+
+Add the applicable feature-specific tests:
+
+- a Session projection covers loading, absent, value, and whole-value
+  replacement;
+- a Conversation Definition keeps stable `(kind, id)` keys and equivalent
+  state across packed records, page/prepend/replace windows, and live append
+  without rescanning retained history;
+- mutating UI distinguishes stale revision from transport failure, fences rapid
+  duplicate actions before the next React render, and resets transient drafts
+  on entity replacement;
+- a direct generated stream validates items, propagates cancellation and
+  carrier termination, and becomes quiet on disposal;
+- a reconnecting stream validates every generation opening, owns its resume
+  cursor or replacement baseline and normal-end classification, obtains the
+  current whole snapshot when required, and never duplicates accepted items.
 
 Use `packages/client/ui-goal` as the small canonical projection/Slot example and
 `packages/experimental/client-ui-agent-team` for Remote mount plus UI lifecycle.

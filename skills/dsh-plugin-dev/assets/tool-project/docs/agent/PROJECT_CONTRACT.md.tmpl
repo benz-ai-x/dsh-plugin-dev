@@ -22,7 +22,8 @@ The generated normalization executor is an executable starting point, not the fi
 
 1. Read this contract, `TODO.md`, and `dsh-reference.lock.json`.
 2. Before dependency installation, run `node scripts/verify-dsh-context.mjs`.
-3. Load `$dsh-plugin-dev`, then its core, Tool, and packaging references.
+3. Load `$dsh-plugin-dev` in Codex or `/dsh-plugin-dev` in Claude Code, then its
+   core, Tool, and packaging references.
 4. Inspect the worktree and preserve unrelated changes.
 5. Run `node scripts/verify-dsh-context.mjs --require-source` before changing
    runtime behavior; after `pnpm install`, the equivalent command is
@@ -39,6 +40,9 @@ The generated normalization executor is an executable starting point, not the fi
 - Stop admission, abort owned work, and await quiescence during disposal.
 - Keep the Loader test and Fiber-removal test when changing implementation structure.
 - Do not replace source-linked dependencies with guessed registry versions or claim publication readiness without a clean external closure.
+- When the Harness checkout moves, run `pnpm context:sync` to rewrite the
+  development links and dependency lock; changing `DSH_HARNESS_ROOT` alone
+  does neither.
 
 ## Completion
 

@@ -18,7 +18,7 @@ either code agent started in an unrelated directory
                  |
 business requirement -> classified DSH shape
                  |
-generated project -> pinned Harness source -> Loader/profile verification
+generated project -> pinned source + built entries -> Loader/profile verification
 ```
 
 The authoring repository and each generated DSH project have different responsibilities. This repository owns reusable knowledge, generator behavior, installation, and forward tests. A generated project owns its business contract, runtime implementation, configuration, tests, profile layer, and delivery decisions.
@@ -48,9 +48,11 @@ The first generator implements the `tool` kind. Unsupported kinds fail explicitl
 
 ## Source-linked development
 
-Generated projects use semver peer contracts for their eventual runtime package shape, but their development dependencies link to the audited local Harness checkout. This gives typecheck, real Cordis services, Loader tests, and lifecycle tests access to the exact source baseline even while the DSH runtime packages are unpublished.
+Generated projects use semver peer contracts for their eventual runtime package shape, but their development dependencies link to the audited local Harness checkout. Static `link:` specs point at each directly consumed package's declared build output, so strict validation covers two distinct planes: clean tracked/non-ignored inputs at the pinned commit with no ignored root `.env` for the source CLI to load, and present, timestamp-fresh `main`/`types` entries. Ignored dependency/build output remains allowed. This includes the source-launched CLI used by profile acceptance as well as package/build inputs. It gives typecheck, real Cordis services, Loader tests, lifecycle tests, and built public-import smokes access to the audited baseline even while the DSH runtime packages are unpublished.
 
-Source-linked success is not publication evidence. A later registry delivery mode must replace those links with ordinary installable versions and pass a clean packed-artifact smoke outside the monorepo.
+The timestamp check detects absent and visibly older artifacts; it is not a content digest. If the Harness checkout moves, generated projects run `context:sync` with the selected new root so package links, the fallback lock, and the package-manager lock move together. An environment override by itself cannot rewrite an already generated manifest.
+
+Source-linked success is not publication evidence. A later registry delivery mode must replace those links with ordinary installable versions and pass a clean packed-artifact install/profile smoke outside the monorepo.
 
 ## Updating the upstream baseline
 

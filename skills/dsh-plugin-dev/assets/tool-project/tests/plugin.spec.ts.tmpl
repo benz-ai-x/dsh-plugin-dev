@@ -14,23 +14,28 @@ afterEach(async () => {
   await Promise.all(contexts.splice(0).map(context => context.fiber.dispose()))
 })
 
-async function setup(maxInputLength = 2000): Promise<Context> {
+async function setup(maxInputLength?: number): Promise<Context> {
   const context = new Context()
   contexts.push(context)
   await context.plugin(SystemPrompt)
   await context.plugin(ToolRuntime)
-  await context.plugin(plugin, { maxInputLength })
+  if (maxInputLength === undefined) await context.plugin(plugin)
+  else await context.plugin(plugin, { maxInputLength })
   return context
 }
 
-function call(context: Context, input: string, signal = new AbortController().signal) {
+function callRaw(context: Context, args: Record<string, unknown>, signal = new AbortController().signal) {
   callSequence += 1
   return context.tools.execute({
     callId: ToolCallId(`test-${callSequence}`),
     name: '__TOOL_NAME__',
-    arguments: { input },
+    arguments: args,
     signal,
   })
+}
+
+function call(context: Context, input: string, signal = new AbortController().signal) {
+  return callRaw(context, { input }, signal)
 }
 
 function text(result: { content: { type: string; text?: string }[] }): string {
@@ -45,12 +50,52 @@ describe('__PACKAGE_NAME__', () => {
     const context = await setup()
     const schema = context.tools.schemas().find(candidate => candidate.name === '__TOOL_NAME__')
     expect(schema?.description).toBe(__DESCRIPTION_LITERAL_RAW__)
+    expect(schema?.parameters).toEqual({
+      type: 'object',
+      properties: {
+        input: {
+          type: 'string',
+          description: 'Input for the __TOOL_NAME__ operation.',
+        },
+      },
+      required: ['input'],
+    })
 
     const result = await call(context, '  example input  ')
     expect(result.isError).toBe(false)
     if (result.isError) throw new Error('expected a successful tool result')
     expect(result.value).toEqual({ value: 'example input' })
     expect(text(result)).toBe('example input')
+  })
+
+  it('validates malformed model arguments while retaining the open parameter root', async () => {
+    const context = await setup()
+
+    const missing = await callRaw(context, {})
+    expect(missing.isError).toBe(true)
+    const wrongType = await callRaw(context, { input: 42 })
+    expect(wrongType.isError).toBe(true)
+
+    const extra = await callRaw(context, { input: 'kept', forwardCompatible: true })
+    expect(extra.isError).toBe(false)
+    if (extra.isError) throw new Error('expected the implicit parameter root to stay open')
+    expect(extra.value).toEqual({ value: 'kept' })
+  })
+
+  it('applies the Config schema default when configuration is omitted', async () => {
+    const context = await setup()
+    expect((await call(context, 'x'.repeat(2000))).isError).toBe(false)
+    expect((await call(context, 'x'.repeat(2001))).isError).toBe(true)
+  })
+
+  it('rejects invalid configuration before publishing the tool', async () => {
+    const context = new Context()
+    contexts.push(context)
+    await context.plugin(SystemPrompt)
+    await context.plugin(ToolRuntime)
+
+    await expect(context.plugin(plugin, { maxInputLength: 0 })).rejects.toThrow()
+    expect(context.tools.schemas().some(schema => schema.name === '__TOOL_NAME__')).toBe(false)
   })
 
   it('rejects constraints the parameter DSL cannot express', async () => {

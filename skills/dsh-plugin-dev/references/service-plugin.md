@@ -65,6 +65,39 @@ A concrete provider subclasses the Definition or publishes the same stable
 service key. It owns transport, credentials, resource limits, retries, and
 shutdown. Configuration must validate before the provider becomes observable.
 
+When the provider is the module's default export, put Loader metadata on that
+class. Named sibling metadata is discarded when Loader unwraps the default:
+
+```ts
+import type { Context } from '@deepseek-ai/cordis'
+import z from '@deepseek-ai/schemastery'
+import ExampleService from 'dsh-example-definition'
+
+export interface Config {
+  timeoutMs: number
+}
+
+export const Config: z<Config> = z.object({
+  timeoutMs: z.number().min(1).default(30_000),
+})
+
+export default class ExampleProvider extends ExampleService {
+  static inject = ['credentials']
+  static Config = Config
+
+  constructor(ctx: Context, readonly config: Config) {
+    super(ctx)
+  }
+
+  // implement the Definition's provider-neutral API
+}
+```
+
+Use either this class-plugin form or a namespace plugin with named
+`name`/`inject`/`Config`/`apply`. A namespace wrapper can mount a provider when
+it owns additional sibling effects, but it must also own their rollback and
+must not add a default export.
+
 Publish a provider atomically. If registration consists of multiple routes or
 capabilities, either all become visible or none do. On replacement, retain a
 minimal lossless replay/configuration state only when the seam promises it.

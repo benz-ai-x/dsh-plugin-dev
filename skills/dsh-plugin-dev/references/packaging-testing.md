@@ -34,6 +34,13 @@ a Definition may add browser-safe `./client` or `./types`; a bundle exports its
 patch file. Test the published `files` list rather than assuming the workspace
 tree represents the tarball.
 
+Import the package through its public name after build so Node traverses
+`exports` and the actual `lib` entry. Then create the real `.tgz` archive and
+inspect that archive's file list; a dry-run manifest alone does not prove the
+reported artifact exists. Unless source maps are a deliberate supported
+deliverable, omit `.js.map` and `.d.ts.map` from `files` and reject them in the
+pack smoke.
+
 Cordis and DSH contract packages normally belong in `peerDependencies` and are
 mirrored in `devDependencies` for local build/test. Schemastery belongs in
 `dependencies` when runtime schema code imports it. An external project uses
@@ -128,6 +135,17 @@ normally through `prepare`. Modern pnpm may block dependency build scripts
 until the exact package is allowlisted. Registry tarballs should already
 contain built output and are a safer distribution path.
 
+For a source-linked project, distinguish the source plane from the executable
+artifact plane. Matching the pinned commit and docs is insufficient when
+package manifests resolve `main`/`types` into ignored `lib` directories. Before
+claiming source compatibility, require clean tracked/non-ignored Harness
+inputs and reject the ignored root `.env` that the source CLI would load.
+Ignored dependency/build output may remain. Require every directly linked
+package's declared entries to exist and be at least as fresh as its
+manifest/source inputs. This timestamp guard catches missing and obviously
+stale builds; it is not a content-addressed proof, so publication still
+requires a clean ordinary-resolution packed install.
+
 ## Test ladder
 
 Use the lowest useful test, but do not stop below the surface that ships:
@@ -140,8 +158,9 @@ Use the lowest useful test, but do not stop below the surface that ships:
    validation, and declared injection behavior.
 5. Profile/application: launch the real CLI/profile or process and assert a
    model-visible, durable, filesystem, protocol, or user-visible outcome.
-6. Packed artifact: `npm pack`, install into a clean temp directory, and import
-   or boot with ordinary Node resolution.
+6. Packed artifact: create the real archive with `pnpm pack`/`npm pack`, inspect
+   it, install it into a clean temp directory, and import or boot with ordinary
+   Node resolution.
 7. Real external service: credential-gated only where the actual provider
    protocol is part of the contract.
 

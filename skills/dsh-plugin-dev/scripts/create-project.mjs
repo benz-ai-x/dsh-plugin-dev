@@ -23,6 +23,15 @@ const PACKAGE_NAME = /^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/
 const PLUGIN_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const TOOL_NAME = /^[a-z][a-z0-9_]*$/
 const ALLOWED_EMPTY_ENTRIES = new Set(['.DS_Store', '.git'])
+const RESERVED_TOOL_NAMES = new Set(['run_code'])
+const LINKED_PACKAGE_LOCATIONS = Object.freeze({
+  CORDIS_LINK: 'vendor/cordis',
+  LOADER_LINK: 'vendor/loader',
+  INCLUDE_LINK: 'vendor/include',
+  DSH_LLM_LINK: 'packages/llm/llm',
+  SYSTEM_PROMPT_LINK: 'packages/core/system-prompt',
+  DSH_TOOLS_LINK: 'packages/core/tools',
+})
 
 export class ScaffoldError extends Error {
   constructor(code, message) {
@@ -73,6 +82,45 @@ function validateToolName(value) {
       `tool name must be snake_case, start with a letter, and be at most 64 characters: ${value}`,
     )
   }
+  if (RESERVED_TOOL_NAMES.has(value)) {
+    fail(
+      'DSH_SCAFFOLD_RESERVED_NAME',
+      `tool name is reserved by the Harness runtime and cannot be registered: ${value}`,
+    )
+  }
+}
+
+function compareVersions(left, right) {
+  for (let index = 0; index < 3; index += 1) {
+    const difference = left[index] - right[index]
+    if (difference !== 0) return difference
+  }
+  return 0
+}
+
+function parseVersion(value) {
+  const match = /^(?:v)?(\d+)\.(\d+)\.(\d+)/.exec(value)
+  return match ? match.slice(1).map(Number) : undefined
+}
+
+export function nodeSatisfies(range, version = process.version) {
+  const actual = parseVersion(version)
+  if (!actual) return false
+  return range.split('||').some(rawClause => {
+    const clause = rawClause.trim()
+    const minimum = parseVersion(clause.replace(/^(?:\^|>=)\s*/, ''))
+    if (!minimum || compareVersions(actual, minimum) < 0) return false
+    if (clause.startsWith('>=')) return true
+    if (clause.startsWith('^')) {
+      const ceiling = minimum[0] > 0
+        ? [minimum[0] + 1, 0, 0]
+        : minimum[1] > 0
+          ? [0, minimum[1] + 1, 0]
+          : [0, 0, minimum[2] + 1]
+      return compareVersions(actual, ceiling) < 0
+    }
+    return compareVersions(actual, minimum) === 0
+  })
 }
 
 function deriveNames(target, options) {
@@ -145,6 +193,67 @@ function gitHead(sourceRoot) {
   return result.stdout.trim()
 }
 
+export function harnessWorktreeChanges(sourceRoot) {
+  const statusCommands = [
+    ['status', '--porcelain=v1', '--untracked-files=all'],
+    ['status', '--porcelain=v1', '--ignored=matching', '--untracked-files=all', '--', '.env'],
+  ]
+  const changes = new Set()
+  for (const args of statusCommands) {
+    const result = spawnSync('git', ['-C', sourceRoot, ...args], { encoding: 'utf8' })
+    if (result.status !== 0) {
+      fail(
+        'DSH_SCAFFOLD_HARNESS_MISMATCH',
+        result.stderr.trim() || `cannot inspect Harness runtime worktree at ${sourceRoot}`,
+      )
+    }
+    for (const line of result.stdout.split(/\r?\n/)) {
+      if (line) changes.add(line)
+    }
+  }
+  return [...changes].join('\n')
+}
+
+export async function validateHarnessArtifacts(sourceRoot) {
+  for (const packagePath of Object.values(LINKED_PACKAGE_LOCATIONS)) {
+    const packageRoot = join(sourceRoot, packagePath)
+    let manifest
+    try {
+      manifest = JSON.parse(await readFile(join(packageRoot, 'package.json'), 'utf8'))
+    } catch (error) {
+      fail(
+        'DSH_SCAFFOLD_HARNESS_ARTIFACT_MISSING',
+        `cannot read linked Harness package ${packagePath}: ${error instanceof Error ? error.message : String(error)}`,
+      )
+    }
+
+    const entryFields = ['main', 'types']
+    const entries = entryFields.map(field => ({ field, value: manifest[field] }))
+    for (const entry of entries) {
+      if (typeof entry.value !== 'string' || !await exists(join(packageRoot, entry.value))) {
+        fail(
+          'DSH_SCAFFOLD_HARNESS_ARTIFACT_MISSING',
+          `linked Harness package ${manifest.name ?? packagePath} is missing its built ${entry.field} entry; run pnpm install && pnpm run build in ${sourceRoot}`,
+        )
+      }
+    }
+
+    const inputPaths = [join(packageRoot, 'package.json')]
+    const sourceDirectory = join(packageRoot, 'src')
+    if (await exists(sourceDirectory)) inputPaths.push(...await listFiles(sourceDirectory))
+    const newestInput = Math.max(...await Promise.all(inputPaths.map(async path => (await stat(path)).mtimeMs)))
+    for (const entry of entries) {
+      const artifactPath = join(packageRoot, entry.value)
+      if ((await stat(artifactPath)).mtimeMs < newestInput) {
+        fail(
+          'DSH_SCAFFOLD_HARNESS_ARTIFACT_STALE',
+          `linked Harness package ${manifest.name ?? packagePath} has a stale ${entry.field} entry; rebuild ${sourceRoot}`,
+        )
+      }
+    }
+  }
+}
+
 async function loadBaselineLock() {
   try {
     return JSON.parse(await readFile(baselineLockPath, 'utf8'))
@@ -169,6 +278,7 @@ async function validateHarnessRoot(sourceRoot, lock) {
 
   const actual = {
     version: manifest.version,
+    node: manifest.engines?.node,
     commit: gitHead(sourceRoot),
     docsDigest: await digestDocs(sourceRoot),
   }
@@ -182,6 +292,21 @@ async function validateHarnessRoot(sourceRoot, lock) {
       `Harness source at ${sourceRoot} does not match the audited baseline (${mismatches.join('; ')})`,
     )
   }
+
+  if (!nodeSatisfies(expected.node)) {
+    fail(
+      'DSH_SCAFFOLD_NODE_UNSUPPORTED',
+      `Node ${process.version} does not satisfy the pinned Harness engine ${expected.node}`,
+    )
+  }
+  const dirty = harnessWorktreeChanges(sourceRoot)
+  if (dirty) {
+    fail(
+      'DSH_SCAFFOLD_HARNESS_DIRTY',
+      `Harness worktree has changes and is not the exact audited snapshot:\n${dirty}`,
+    )
+  }
+  await validateHarnessArtifacts(sourceRoot)
 
   return realpath(sourceRoot)
 }
@@ -229,14 +354,6 @@ function jsonContent(value) {
 }
 
 function templateValues({ target, harnessRoot, lock, description, names }) {
-  const packageLocations = {
-    CORDIS_LINK: 'vendor/cordis',
-    LOADER_LINK: 'vendor/loader',
-    INCLUDE_LINK: 'vendor/include',
-    DSH_LLM_LINK: 'packages/llm/llm',
-    SYSTEM_PROMPT_LINK: 'packages/core/system-prompt',
-    DSH_TOOLS_LINK: 'packages/core/tools',
-  }
   const values = {
     PACKAGE_NAME: names.packageName,
     PLUGIN_NAME: names.pluginName,
@@ -246,12 +363,13 @@ function templateValues({ target, harnessRoot, lock, description, names }) {
     DESCRIPTION_LITERAL: JSON.stringify(description),
     HARNESS_REPOSITORY: lock.upstream.repository,
     HARNESS_VERSION: lock.upstream.version,
+    NODE_ENGINE: lock.upstream.node,
     HARNESS_COMMIT: lock.upstream.commit,
     HARNESS_DOCS_DIGEST: lock.upstream.docsDigest,
     HARNESS_VERIFIED_ON: lock.verifiedOn,
     HARNESS_FALLBACK: relativeProjectPath(target, harnessRoot),
   }
-  for (const [key, path] of Object.entries(packageLocations)) {
+  for (const [key, path] of Object.entries(LINKED_PACKAGE_LOCATIONS)) {
     values[key] = `link:${relativeProjectPath(target, join(harnessRoot, path))}`
   }
   return values

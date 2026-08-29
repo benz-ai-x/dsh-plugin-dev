@@ -3,6 +3,7 @@
   "upstream": {
     "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
     "version": "0.1.2-alpha.1",
+    "node": "^22.19.0 || >=24.0.0",
     "commit": "cd5ef8148158c3a752a658978873241fdf8e2bbc",
     "docsDigest": "80f2fb6fc17b9d071a7985ae331ccd6cec0be637d53916c574f92fdce1b75c07"
   },

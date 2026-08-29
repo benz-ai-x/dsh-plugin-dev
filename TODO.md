@@ -9,6 +9,27 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 - [x] Validate Codex and Claude Code repository discovery against the same canonical body.
 - [x] Add deterministic context/source verification.
 
+## P0 — Full-document audit remediation
+
+- [x] Reject the reserved `run_code` Tool name before generation, including
+  names derived from the target directory, with a stable error and regression
+  tests.
+- [x] Match the pinned Harness Node engine and make strict validation reject a
+  dirty Harness worktree plus missing or stale linked-package build
+  entries.
+- [x] Make a generated project's Harness links relocatable through one explicit
+  sync command instead of claiming that `DSH_HARNESS_ROOT` rewrites them.
+- [x] Generate a thin `CLAUDE.md` project entry so Codex and Claude Code retain
+  the same startup contract without duplicating the canonical Skill.
+- [x] Exercise built package exports and the actual bundle/profile layer in the
+  deterministic acceptance path; keep registry publication claims blocked.
+- [x] Correct the Service-class metadata, Session event/surface, Client
+  Conversation/Remote build, LLM replay/retry, and Tool presentation guidance.
+- [x] Add progressively disclosed routing for filesystem, sandbox/approval,
+  persistence/session, subprocess/jobs, and subagent capability work.
+- [x] Tighten the Tool template with stable Loader ids, Config default/invalid
+  tests, exact parameter-schema tests, and package-map hygiene.
+
 ## P1 — Reposition as reusable development tooling
 
 - [x] Confirm the user-visible outcome: install once, start Codex in an unrelated directory, describe a DSH business capability, and receive a verified project scaffold.

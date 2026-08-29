@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
-import { mkdtemp, readFile, rm } from 'node:fs/promises'
+import { mkdtemp, readFile, rm, symlink } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -11,11 +11,11 @@ import { createProject } from '../skills/dsh-plugin-dev/scripts/create-project.m
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const harnessRoot = resolve(repositoryRoot, '..', 'deepseek-harness')
 
-function run(command, args, cwd) {
+function run(command, args, cwd, extraEnvironment = {}) {
   const result = spawnSync(command, args, {
     cwd,
     encoding: 'utf8',
-    env: { ...process.env, CI: '1' },
+    env: { ...process.env, CI: '1', ...extraEnvironment },
     maxBuffer: 20 * 1024 * 1024,
   })
   assert.equal(
@@ -43,14 +43,71 @@ test('an unrelated empty directory becomes a fully verified DSH Tool project', {
     })
 
     run('pnpm', ['install'], result.target)
+    const relocatedHarness = join(root, 'relocated-harness')
+    await symlink(harnessRoot, relocatedHarness, 'dir')
+    const synchronized = run(
+      'pnpm',
+      ['context:sync'],
+      result.target,
+      { DSH_HARNESS_ROOT: relocatedHarness },
+    )
+    assert.match(synchronized, /synchronized Harness links to/)
+    const synchronizedManifest = JSON.parse(await readFile(join(result.target, 'package.json'), 'utf8'))
+    for (const packageName of [
+      '@deepseek-ai/cordis',
+      '@deepseek-ai/cordis-plugin-include',
+      '@deepseek-ai/cordis-plugin-loader',
+      '@deepseek-ai/dsh-llm',
+      '@deepseek-ai/dsh-system-prompt',
+      '@deepseek-ai/dsh-tools',
+    ]) {
+      assert.match(synchronizedManifest.devDependencies[packageName], /\/relocated-harness\//)
+    }
     const verification = run('pnpm', ['verify'], result.target)
     assert.match(verification, /context check passed:/)
     assert.match(verification, /Test Files\s+2 passed/)
-    assert.match(verification, /Tests\s+6 passed/)
+    assert.match(verification, /Tests\s+9 passed/)
+    assert.match(verification, /built package smoke passed:/)
     assert.match(verification, /packed artifact check passed:/)
+
+    const claude = await readFile(join(result.target, 'CLAUDE.md'), 'utf8')
+    assert.match(claude, /\/dsh-plugin-dev/)
+    assert.match(claude, /docs\/agent\/PROJECT_CONTRACT\.md/)
 
     const lockfile = await readFile(join(result.target, 'pnpm-lock.yaml'), 'utf8')
     assert.match(lockfile, /specifier: 3\.18\.1/)
+    assert.match(lockfile, /relocated-harness\/vendor\/cordis/)
+
+    const profileEnvironment = { DSH_HOME: join(root, 'dsh-home') }
+    run(
+      'pnpm',
+      ['dsh', 'plugin', '--profile', 'scaffold-e2e', 'add', result.target],
+      harnessRoot,
+      profileEnvironment,
+    )
+    const dump = run(
+      'pnpm',
+      ['dsh', '--profile', 'scaffold-e2e', '--dump-config'],
+      harnessRoot,
+      profileEnvironment,
+    )
+    assert.match(dump, /id: repository-audit/)
+    assert.match(dump, /name: '@example\/dsh-repository-audit'/)
+    assert.match(dump, /maxInputLength: 2000/)
+
+    run(
+      'pnpm',
+      ['dsh', 'plugin', '--profile', 'scaffold-e2e', 'remove', result.packageName],
+      harnessRoot,
+      profileEnvironment,
+    )
+    const afterRemove = run(
+      'pnpm',
+      ['dsh', '--profile', 'scaffold-e2e', '--dump-config'],
+      harnessRoot,
+      profileEnvironment,
+    )
+    assert.doesNotMatch(afterRemove, /id: repository-audit/)
   } finally {
     await rm(root, { recursive: true, force: true })
   }

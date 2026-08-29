@@ -44,6 +44,10 @@ load only the applicable references:
   read [client plugins](references/client-plugin.md).
 - Model provider, streaming parser, routing, retry, or usage accounting:
   read [LLM adapters](references/llm-adapter.md).
+- Filesystem, subprocess, background job, sandbox, approval, durable Session,
+  persistence, or subagent authority/lifecycle work: read
+  [runtime capabilities](references/runtime-capabilities.md), then the
+  subsystem-specific upstream documents it selects.
 - Package creation, bundle patch, profile install, HMR, tests, or publication:
   read [packaging and testing](references/packaging-testing.md).
 - Agent Team, teammate, mailbox, shared task, or Team UI behavior:

@@ -108,12 +108,88 @@ function gitHead(sourceRoot) {
   return result.stdout.trim()
 }
 
+function harnessWorktreeChanges(sourceRoot) {
+  const statusCommands = [
+    ['status', '--porcelain=v1', '--untracked-files=all'],
+    ['status', '--porcelain=v1', '--ignored=matching', '--untracked-files=all', '--', '.env'],
+  ]
+  const changes = new Set()
+  for (const args of statusCommands) {
+    const result = spawnSync('git', ['-C', sourceRoot, ...args], { encoding: 'utf8' })
+    if (result.status !== 0) {
+      throw new Error(result.stderr.trim() || `git status failed for ${sourceRoot}`)
+    }
+    for (const line of result.stdout.split(/\r?\n/)) {
+      if (line) changes.add(line)
+    }
+  }
+  return [...changes].join('\n')
+}
+
+function compareVersions(left, right) {
+  for (let index = 0; index < 3; index += 1) {
+    const difference = left[index] - right[index]
+    if (difference !== 0) return difference
+  }
+  return 0
+}
+
+function parseVersion(value) {
+  const match = /^(?:v)?(\d+)\.(\d+)\.(\d+)/.exec(value)
+  return match ? match.slice(1).map(Number) : undefined
+}
+
+function nodeSatisfies(range, version = process.version) {
+  const actual = parseVersion(version)
+  if (!actual || typeof range !== 'string') return false
+  return range.split('||').some(rawClause => {
+    const clause = rawClause.trim()
+    const minimum = parseVersion(clause.replace(/^(?:\^|>=)\s*/, ''))
+    if (!minimum || compareVersions(actual, minimum) < 0) return false
+    if (clause.startsWith('>=')) return true
+    if (clause.startsWith('^')) return compareVersions(actual, [minimum[0] + 1, 0, 0]) < 0
+    return compareVersions(actual, minimum) === 0
+  })
+}
+
+const linkedPackageLocations = Object.freeze({
+  '@deepseek-ai/cordis': 'vendor/cordis',
+  '@deepseek-ai/cordis-plugin-include': 'vendor/include',
+  '@deepseek-ai/cordis-plugin-loader': 'vendor/loader',
+  '@deepseek-ai/dsh-llm': 'packages/llm/llm',
+  '@deepseek-ai/dsh-system-prompt': 'packages/core/system-prompt',
+  '@deepseek-ai/dsh-tools': 'packages/core/tools',
+})
+
+function validateLinkedArtifacts(sourceRoot) {
+  for (const [packageName, sourcePath] of Object.entries(linkedPackageLocations)) {
+    const packageRoot = join(sourceRoot, sourcePath)
+    const packageManifest = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8'))
+    const entries = [
+      ['main', packageManifest.main],
+      ['types', packageManifest.types],
+    ]
+    const inputs = [join(packageRoot, 'package.json')]
+    const sourceDirectory = join(packageRoot, 'src')
+    if (existsSync(sourceDirectory)) inputs.push(...listFiles(sourceDirectory))
+    const newestInput = Math.max(...inputs.map(path => statSync(path).mtimeMs))
+    for (const [field, entry] of entries) {
+      const artifact = typeof entry === 'string' ? join(packageRoot, entry) : undefined
+      check(artifact !== undefined && existsSync(artifact), `${packageName} has a built ${field} entry`)
+      if (artifact !== undefined && existsSync(artifact)) {
+        check(statSync(artifact).mtimeMs >= newestInput, `${packageName} built ${field} entry is fresh`)
+      }
+    }
+  }
+}
+
 const canonicalPath = 'skills/dsh-plugin-dev/SKILL.md'
 const codexAdapterPath = '.agents/skills/dsh-plugin-dev/SKILL.md'
 const claudeAdapterPath = '.claude/skills/dsh-plugin-dev/SKILL.md'
 const requiredTemplates = [
   '.gitignore.tmpl',
   'AGENTS.md.tmpl',
+  'CLAUDE.md.tmpl',
   'README.md.tmpl',
   'TODO.md.tmpl',
   'cordis.patch.yml.tmpl',
@@ -122,6 +198,7 @@ const requiredTemplates = [
   'package.json.tmpl',
   'pnpm-workspace.yaml.tmpl',
   'scripts/verify-dsh-context.mjs.tmpl',
+  'scripts/verify-built.mjs.tmpl',
   'scripts/verify-pack.mjs.tmpl',
   'src/index.ts.tmpl',
   'tests/fixtures/cordis.yml.tmpl',
@@ -143,6 +220,7 @@ const requiredFiles = [
   'docs/agent/ACCEPTANCE.md',
   'docs/decisions/0001-cross-agent-context.md',
   'docs/decisions/0002-product-scope.md',
+  'docs/decisions/0003-source-artifact-readiness.md',
   canonicalPath,
   codexAdapterPath,
   claudeAdapterPath,
@@ -249,6 +327,7 @@ if (manifest) {
   check(manifest.version === '0.1.0', 'package has the initial reusable-tooling version')
   check(manifest.private === true, 'repository package remains private while dependencies are source-linked')
   check(manifest.type === 'module', 'project uses ESM')
+  check(manifest.engines?.node === '^22.19.0 || >=24.0.0', 'project Node engine matches the pinned Harness')
   check(manifest.scripts?.['context:check'] === 'node scripts/verify-context.mjs', 'context:check script is canonical')
   check(
     manifest.scripts?.['context:check:strict'] === 'node scripts/verify-context.mjs --require-source',
@@ -277,6 +356,7 @@ if (pluginManifest) {
 const generator = readProjectFile('skills/dsh-plugin-dev/scripts/create-project.mjs')
 const installer = readProjectFile('scripts/install-user-skill.mjs')
 check(generator.includes("kind !== 'tool'"), 'generator rejects unsupported deterministic project kinds')
+check(generator.includes("RESERVED_TOOL_NAMES = new Set(['run_code'])"), 'generator rejects the reserved run_code Tool name')
 check(generator.includes("flag: 'wx'"), 'generator creates files without overwrite permission')
 check(generator.includes('DSH_SCAFFOLD_HARNESS_MISMATCH'), 'generator exposes a stable Harness mismatch error')
 check(installer.includes('DSH_SKILL_INSTALL_CONFLICT'), 'installer exposes a stable conflict error')
@@ -296,6 +376,8 @@ if (lock) {
   check(lock.schemaVersion === 1, 'reference lock schema is supported')
   check(/^[0-9a-f]{40}$/.test(lock.upstream?.commit ?? ''), 'reference lock has a full Git commit')
   check(/^[0-9a-f]{64}$/.test(lock.upstream?.docsDigest ?? ''), 'reference lock has a docs SHA-256')
+  check(lock.upstream?.node === '^22.19.0 || >=24.0.0', 'reference lock records the pinned Node engine')
+  check(nodeSatisfies(lock.upstream?.node), `Node ${process.version} satisfies ${lock.upstream?.node}`)
 
   const environmentVariable = lock.localResolution?.environmentVariable
   const configuredRoot = environmentVariable ? process.env[environmentVariable] : undefined
@@ -310,8 +392,14 @@ if (lock) {
     try {
       const sourceManifest = JSON.parse(readFileSync(join(sourceRoot, 'package.json'), 'utf8'))
       check(sourceManifest.version === lock.upstream.version, `DSH version matches ${lock.upstream.version}`)
+      check(sourceManifest.engines?.node === lock.upstream.node, `DSH Node engine matches ${lock.upstream.node}`)
       check(gitHead(sourceRoot) === lock.upstream.commit, `DSH commit matches ${lock.upstream.commit}`)
       check(digestDocs(sourceRoot) === lock.upstream.docsDigest, 'DSH docs digest matches the audited baseline')
+      const dirty = harnessWorktreeChanges(sourceRoot)
+      check(dirty.length === 0, dirty.length === 0
+        ? 'DSH Harness attested source inputs are clean'
+        : `DSH Harness attested source inputs have changes:\n${dirty}`)
+      validateLinkedArtifacts(sourceRoot)
       pass(`validated DSH source at ${sourceRoot}`)
     } catch (error) {
       fail(`cannot validate DSH source at ${sourceRoot}: ${error instanceof Error ? error.message : String(error)}`)
