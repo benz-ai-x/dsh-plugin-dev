@@ -16,7 +16,10 @@ import {
 } from '../skills/dsh-plugin-dev/scripts/create-project.mjs'
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const harnessRoot = resolve(repositoryRoot, '..', 'deepseek-harness')
+const harnessRoot = resolve(
+  process.env.DSH_HARNESS_BASELINE_ROOT
+    ?? join(repositoryRoot, '..', 'deepseek-harness-baseline'),
+)
 const linkedPackageLocations = [
   'vendor/cordis',
   'vendor/loader',
@@ -69,6 +72,7 @@ test('creates a deterministic source-linked Tool project without overwriting it'
     })
 
     assert.equal(result.kind, 'tool')
+    assert.equal(result.channel, process.env.DSH_BASELINE_CHANNEL ?? 'stable')
     assert.equal(result.packageName, 'dsh-repository-audit')
     assert.equal(result.pluginName, 'repository-audit')
     assert.equal(result.toolName, 'repository_audit')
@@ -80,9 +84,10 @@ test('creates a deterministic source-linked Tool project without overwriting it'
     const manifest = JSON.parse(await readFile(join(result.target, 'package.json'), 'utf8'))
     assert.equal(manifest.description, 'Inspect a repository and return an audit summary.')
     assert.equal(manifest.private, true)
+    assert.equal(manifest.packageManager, 'pnpm@11.7.0')
     assert.equal(manifest.engines.node, '^22.19.0 || >=24.0.0')
     assert.equal(manifest.dependencies['@deepseek-ai/schemastery'], '3.18.1')
-    assert.equal(manifest.devDependencies.typescript, '6.0.3')
+    assert.equal(manifest.devDependencies.typescript, '^6.0.3')
     assert.equal(
       manifest.scripts['context:sync'],
       'node scripts/verify-dsh-context.mjs --sync-links --require-source && pnpm install --no-frozen-lockfile',
@@ -244,6 +249,7 @@ test('parses the public generator CLI contract', () => {
       '--tool-name', 'audit_repository',
       '--description', 'Audit a repository.',
       '--harness-root', '/tmp/harness',
+      '--channel', 'edge',
       '--json',
     ]),
     {
@@ -254,6 +260,7 @@ test('parses the public generator CLI contract', () => {
       toolName: 'audit_repository',
       description: 'Audit a repository.',
       harnessRoot: '/tmp/harness',
+      channel: 'edge',
       json: true,
     },
   )

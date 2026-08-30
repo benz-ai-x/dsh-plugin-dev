@@ -9,7 +9,10 @@ import test from 'node:test'
 import { createProject } from '../skills/dsh-plugin-dev/scripts/create-project.mjs'
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const harnessRoot = resolve(repositoryRoot, '..', 'deepseek-harness')
+const harnessRoot = resolve(
+  process.env.DSH_HARNESS_BASELINE_ROOT
+    ?? join(repositoryRoot, '..', 'deepseek-harness-baseline'),
+)
 
 function run(command, args, cwd, extraEnvironment = {}) {
   const result = spawnSync(command, args, {
@@ -63,7 +66,12 @@ test('an unrelated empty directory becomes a fully verified DSH Tool project', {
     ]) {
       assert.match(synchronizedManifest.devDependencies[packageName], /\/relocated-harness\//)
     }
-    const verification = run('pnpm', ['verify'], result.target)
+    const verification = run(
+      'pnpm',
+      ['verify'],
+      result.target,
+      { DSH_HARNESS_ROOT: relocatedHarness },
+    )
     assert.match(verification, /context check passed:/)
     assert.match(verification, /Test Files\s+2 passed/)
     assert.match(verification, /Tests\s+9 passed/)
@@ -73,6 +81,13 @@ test('an unrelated empty directory becomes a fully verified DSH Tool project', {
     const claude = await readFile(join(result.target, 'CLAUDE.md'), 'utf8')
     assert.match(claude, /\/dsh-plugin-dev/)
     assert.match(claude, /docs\/agent\/PROJECT_CONTRACT\.md/)
+
+    const generatedLock = JSON.parse(await readFile(join(result.target, 'dsh-reference.lock.json'), 'utf8'))
+    assert.equal(generatedLock.schemaVersion, 2)
+    assert.equal(generatedLock.channel, process.env.DSH_BASELINE_CHANNEL ?? 'stable')
+    assert.equal(generatedLock.upstream.tag, 'dsh-v0.1.2-alpha.1')
+    assert.equal(generatedLock.upstream.packageManager, 'pnpm@11.7.0')
+    assert.match(generatedLock.upstream.catalogDigest, /^[0-9a-f]{64}$/)
 
     const lockfile = await readFile(join(result.target, 'pnpm-lock.yaml'), 'utf8')
     assert.match(lockfile, /specifier: 3\.18\.1/)

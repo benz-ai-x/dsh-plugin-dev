@@ -50,6 +50,10 @@ load only the applicable references:
   subsystem-specific upstream documents it selects.
 - Package creation, bundle patch, profile install, HMR, tests, or publication:
   read [packaging and testing](references/packaging-testing.md).
+- Harness release, audited version upgrade, stable/edge synchronization,
+  official Skill drift, or generated-project migration: read
+  [baseline upgrades](references/baseline-upgrade.md) plus
+  [packaging and testing](references/packaging-testing.md).
 - Agent Team, teammate, mailbox, shared task, or Team UI behavior:
   read [Agent Team extensions](references/agent-team.md) plus every other
   reference required by the actual surface.

@@ -68,6 +68,19 @@ Latest recorded evidence (2026-08-29): a fresh ephemeral Codex process started i
 
 Claude Code evidence (2026-08-29): Claude Code `2.1.251`, authenticated through its configured account, started in an unrelated empty directory and resolved the personal `/dsh-plugin-dev` Skill through the installed symlink. It used the deterministic generator to create `dsh-count-markdown-files`, replaced the generic baseline with canonical recursive filesystem behavior, corrected a TypeScript `Dirent` error through its own verification loop, and documented the source-linked boundary. Independent reruns passed 30 strict source checks, typecheck, 17 Tool/Loader/HMR/cancellation and external-filesystem tests, build, and a 7-file packed-artifact check. An outer isolated profile smoke additionally passed add, effective dump, real headless boot, remove, and post-remove absence using the pinned Harness CLI.
 
+## Baseline evolution acceptance
+
+An upstream baseline update is acceptable when a clean official tagged
+worktree scans deterministically into edge, stable-to-edge diff reports package,
+Skill, toolchain, and Tool-closure changes, both official Cordis product Skills
+match their materialized hashes, strict source and the complete repository
+verification ladder pass against edge, and Registry status is persisted.
+
+Promotion additionally requires the Registry report to be `ready` and the
+verification report to be `passed`, with both reports bound to the same catalog
+and current project-contract digests. A `blocked` Registry report is successful
+edge evidence but must make promotion and release preflight fail.
+
 ## Future scaffold acceptance
 
 Each new deterministic plugin kind needs the same minimum evidence before it becomes supported: validated public contract, configuration failure/default tests, lifecycle disposal, real Loader composition, one external-world assertion, generated-project build, and an honest delivery route. Client, persistence, background work, and LLM adapters add their applicable reconnect, replay, cancellation, quiescence, and provider-protocol tiers.

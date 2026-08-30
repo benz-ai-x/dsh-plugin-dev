@@ -92,7 +92,7 @@ pnpm verify
 pnpm verify
 ```
 
-架构、验收证据和后续计划分别见 `docs/agent/ARCHITECTURE.md`、`docs/agent/ACCEPTANCE.md` 和 `TODO.md`。
+架构、验收证据、项目交接和后续计划分别见 `docs/agent/ARCHITECTURE.md`、`docs/agent/ACCEPTANCE.md`、[`docs/agent/HANDOFF.md`](docs/agent/HANDOFF.md) 和 `TODO.md`。
 
 ---
 
@@ -186,6 +186,6 @@ pnpm verify
 pnpm verify
 ```
 
-See `docs/agent/ARCHITECTURE.md`, `docs/agent/ACCEPTANCE.md`, and `TODO.md` for architecture, acceptance evidence, and the live roadmap.
+See `docs/agent/ARCHITECTURE.md`, `docs/agent/ACCEPTANCE.md`, the [maintainer handoff](docs/agent/HANDOFF.md), and `TODO.md` for architecture, acceptance evidence, current handoff state, and the live roadmap.
 
 The discovery model follows the official [OpenAI Skills](https://learn.chatgpt.com/docs/build-skills), [OpenAI Plugins](https://learn.chatgpt.com/docs/build-plugins), and [Claude Code Skills](https://code.claude.com/docs/en/skills) documentation.

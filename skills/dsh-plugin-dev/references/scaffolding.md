@@ -38,10 +38,11 @@ node <skill-directory>/scripts/create-project.mjs \
   --plugin-name example \
   --tool-name example \
   --description "Describe the model-visible operation precisely." \
+  --channel stable \
   --harness-root <audited-deepseek-harness-checkout>
 ```
 
-`--target` defaults to the current directory. `--name`, `--plugin-name`, and `--tool-name` derive from the target directory when omitted. `--harness-root` resolves in this order: the explicit option, `DSH_HARNESS_ROOT`, the target's sibling `deepseek-harness`, then the skill repository's locked fallback.
+`--target` defaults to the current directory. `--name`, `--plugin-name`, and `--tool-name` derive from the target directory when omitted. `--channel` defaults to the repository lock's `stable` channel; use `edge` only for an explicit candidate migration. `--harness-root` resolves from the explicit option, the selected baseline environment, the target's sibling `deepseek-harness`, the selected channel's locked fallback, then a generic `DSH_HARNESS_ROOT` compatibility override.
 
 The generator accepts lowercase npm package names, kebab-case Cordis plugin names, and snake_case tool names except the registry-reserved `run_code`. It refuses unsupported kinds, a mismatched or dirty Harness worktree, missing/stale linked build entries, a non-empty target, and every output collision. It also pins the Harness Node engine and rejects a generator process outside it. It never has a force or overwrite mode.
 
@@ -80,5 +81,9 @@ Stable generator failures:
 6. Preserve named namespace exports, runtime Config validation, cancellation propagation, canonical JSON results, and lifecycle cleanup.
 7. Run `pnpm verify`, then exercise the real `dsh plugin add`, config dump, boot, and remove path when the local CLI/profile is in scope.
 8. Report that source-linked verification proves compatibility with the pinned checkout, not npm publication readiness.
+9. To adopt a newer Harness baseline, regenerate the selected schema-v2 lock
+   and dependency/toolchain specifications as an explicit reviewable migration,
+   run `context:sync`, and repeat the full verification ladder. Never change a
+   generated project's channel or links implicitly.
 
 Generated projects remain `private: true` until all DSH runtime and peer dependencies are available outside the source monorepo and a clean packed-artifact/profile smoke proves the install form.

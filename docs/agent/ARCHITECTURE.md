@@ -38,7 +38,8 @@ The authoring repository and each generated DSH project have different responsib
 5. Generator scripts enforce deterministic naming, collision, and source-lock behavior.
 6. Assets are output templates; agents do not load them as general instructions.
 7. `TODO.md` carries mutable implementation state, while decision records own durable choices.
-8. The reference lock and validator tie guidance and generated output to an audited DSH source snapshot.
+8. The schema-v2 reference lock, channel catalogs, and validator tie guidance
+   and generated output to content-addressed stable or edge DSH snapshots.
 
 ## Generation boundary
 
@@ -56,4 +57,11 @@ Source-linked success is not publication evidence. A later registry delivery mod
 
 ## Updating the upstream baseline
 
-Changing `dsh-reference.lock.json` is an audit task. The updater inspects relevant upstream documentation, Loader behavior, canonical packages, public package availability, and test policy; revises affected references and templates; then runs strict context validation, generator e2e, and fresh-agent discovery smokes.
+Changing `dsh-reference.lock.json` is an audit task. The updater scans a clean
+official tagged worktree into edge, including all 264 workspace packages, the
+250-package DSH/vendor release families, all upstream Skills, two materialized
+product-Skill snapshots, and the Tool publication closure. Stable-to-edge diff
+drives revisions to affected references and templates. Full strict/generator
+verification and exact Registry closure are bound to the catalog digest; only
+passed evidence may promote edge to stable. The operational sequence lives in
+`BASELINE_UPGRADE.md`.

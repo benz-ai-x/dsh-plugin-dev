@@ -11,8 +11,12 @@ import {
 import { dirname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { BaselineError, loadLockedChannel, sha256 } from './baseline.mjs'
+
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const requireSource = process.argv.includes('--require-source')
+const channelIndex = process.argv.indexOf('--channel')
+const requestedChannel = channelIndex >= 0 ? process.argv[channelIndex + 1] : undefined
 const failures = []
 const warnings = []
 const passes = []
@@ -152,7 +156,7 @@ function nodeSatisfies(range, version = process.version) {
   })
 }
 
-const linkedPackageLocations = Object.freeze({
+const defaultLinkedPackageLocations = Object.freeze({
   '@deepseek-ai/cordis': 'vendor/cordis',
   '@deepseek-ai/cordis-plugin-include': 'vendor/include',
   '@deepseek-ai/cordis-plugin-loader': 'vendor/loader',
@@ -161,7 +165,7 @@ const linkedPackageLocations = Object.freeze({
   '@deepseek-ai/dsh-tools': 'packages/core/tools',
 })
 
-function validateLinkedArtifacts(sourceRoot) {
+function validateLinkedArtifacts(sourceRoot, linkedPackageLocations = defaultLinkedPackageLocations) {
   for (const [packageName, sourcePath] of Object.entries(linkedPackageLocations)) {
     const packageRoot = join(sourceRoot, sourcePath)
     const packageManifest = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8'))
@@ -228,6 +232,9 @@ const requiredFiles = [
   'skills/dsh-plugin-dev/references/scaffolding.md',
   'skills/dsh-plugin-dev/scripts/create-project.mjs',
   'scripts/install-user-skill.mjs',
+  'scripts/baseline.mjs',
+  'docs/agent/BASELINE_UPGRADE.md',
+  'docs/decisions/0004-baseline-channels.md',
   ...requiredTemplates.map(path => `skills/dsh-plugin-dev/assets/tool-project/${path}`),
 ]
 
@@ -328,6 +335,7 @@ if (manifest) {
   check(manifest.private === true, 'repository package remains private while dependencies are source-linked')
   check(manifest.type === 'module', 'project uses ESM')
   check(manifest.engines?.node === '^22.19.0 || >=24.0.0', 'project Node engine matches the pinned Harness')
+  check(manifest.packageManager === 'pnpm@11.7.0', 'project package manager matches the pinned Harness')
   check(manifest.scripts?.['context:check'] === 'node scripts/verify-context.mjs', 'context:check script is canonical')
   check(
     manifest.scripts?.['context:check:strict'] === 'node scripts/verify-context.mjs --require-source',
@@ -338,9 +346,19 @@ if (manifest) {
   check(manifest.scripts?.['install:claude'] === 'node scripts/install-user-skill.mjs --agent claude', 'Claude-only Skill installer is exposed')
   check(manifest.scripts?.test === 'node --test tests/*.unit.test.mjs', 'unit and e2e test entrypoints are separated')
   check(manifest.scripts?.['test:e2e'] === 'node --test tests/*.e2e.test.mjs', 'e2e test entrypoint is exposed')
+  check(manifest.scripts?.['upstream:scan'] === 'node scripts/baseline.mjs scan', 'upstream scan command is exposed')
+  check(manifest.scripts?.['upstream:update'] === 'node scripts/baseline.mjs update --channel edge', 'edge update command is exposed')
+  check(manifest.scripts?.['upstream:diff'] === 'node scripts/baseline.mjs diff --from stable --to edge', 'baseline diff command is exposed')
+  check(manifest.scripts?.['upstream:check'] === 'node scripts/baseline.mjs check', 'baseline source check command is exposed')
+  check(manifest.scripts?.['registry:check'] === 'node scripts/baseline.mjs registry-check', 'Registry closure command is exposed')
+  check(manifest.scripts?.['baseline:verify'] === 'node scripts/baseline.mjs verify --channel edge', 'edge verification command is exposed')
+  check(manifest.scripts?.['baseline:promote'] === 'node scripts/baseline.mjs promote --from edge --to stable', 'baseline promotion command is exposed')
+  check(manifest.scripts?.['release:preflight'] === 'node scripts/baseline.mjs preflight --channel stable', 'release preflight command is exposed')
   check(manifest.files?.includes('.codex-plugin/plugin.json'), 'package includes the Codex Plugin manifest')
   check(manifest.files?.includes('skills/dsh-plugin-dev/**'), 'package includes the canonical Skill')
   check(manifest.files?.includes('scripts/install-user-skill.mjs'), 'package includes the dual-agent installer')
+  check(manifest.files?.includes('scripts/baseline.mjs'), 'package includes baseline automation')
+  check(manifest.files?.includes('baselines/**'), 'package includes pinned baseline catalogs and Skill snapshots')
 }
 if (pluginManifest) {
   check(pluginManifest.name === 'dsh-plugin-dev', 'Codex Plugin name is dsh-plugin-dev')
@@ -372,16 +390,52 @@ const repositoryText = [
 check(!repositoryText.includes('dsh-agent-team-ultra'), 'obsolete Agent Team Ultra product name is absent')
 
 const lock = parseJson('dsh-reference.lock.json')
+let loadedBaseline
 if (lock) {
-  check(lock.schemaVersion === 1, 'reference lock schema is supported')
-  check(/^[0-9a-f]{40}$/.test(lock.upstream?.commit ?? ''), 'reference lock has a full Git commit')
-  check(/^[0-9a-f]{64}$/.test(lock.upstream?.docsDigest ?? ''), 'reference lock has a docs SHA-256')
-  check(lock.upstream?.node === '^22.19.0 || >=24.0.0', 'reference lock records the pinned Node engine')
-  check(nodeSatisfies(lock.upstream?.node), `Node ${process.version} satisfies ${lock.upstream?.node}`)
+  try {
+    loadedBaseline = loadLockedChannel(projectRoot, requestedChannel)
+  } catch (error) {
+    fail(error instanceof BaselineError ? `[${error.code}] ${error.message}` : String(error))
+  }
+}
+if (lock && loadedBaseline) {
+  const baseline = loadedBaseline.baseline
+  const catalog = loadedBaseline.catalog
+  check(lock.schemaVersion === 2, 'reference lock schema v2 is supported')
+  check(['stable', 'edge'].every(channel => lock.channels?.[channel]), 'reference lock defines stable and edge channels')
+  check(lock.defaultChannel === 'stable', 'stable is the default baseline channel')
+  check(/^[0-9a-f]{40}$/.test(baseline.upstream?.commit ?? ''), 'reference lock has a full Git commit')
+  check(/^[0-9a-f]{64}$/.test(baseline.upstream?.docsDigest ?? ''), 'reference lock has a docs SHA-256')
+  check(/^dsh-v/.test(baseline.upstream?.tag ?? ''), 'reference lock records an official DSH tag')
+  check(baseline.upstream?.node === '^22.19.0 || >=24.0.0', 'reference lock records the pinned Node engine')
+  check(baseline.upstream?.packageManager === 'pnpm@11.7.0', 'reference lock records the pinned package manager')
+  check(nodeSatisfies(baseline.upstream?.node), `Node ${process.version} satisfies ${baseline.upstream?.node}`)
+  check(catalog?.summary?.packageCount === baseline.catalog?.packageCount, 'catalog package count matches the lock')
+  check(catalog?.summary?.skillCount === baseline.catalog?.skillCount, 'catalog Skill count matches the lock')
+  check(catalog?.summary?.productSkillCount === 2, 'catalog identifies the two product Cordis Skills')
+  check(catalog?.summary?.releasePackageCount === 250, 'catalog covers the official DSH and vendor release families')
 
-  const environmentVariable = lock.localResolution?.environmentVariable
+  for (const kind of ['registry', 'verification']) {
+    const report = baseline[kind]
+    const reportPath = resolve(projectRoot, report?.path ?? '')
+    check(existsSync(reportPath), `${loadedBaseline.channel} ${kind} report exists`)
+    if (existsSync(reportPath)) {
+      check(sha256(readFileSync(reportPath)) === report.sha256, `${loadedBaseline.channel} ${kind} report digest matches`)
+    }
+  }
+  for (const skill of catalog?.skills?.filter(entry => entry.role === 'product') ?? []) {
+    for (const file of skill.files) {
+      const snapshot = projectPath(`baselines/${loadedBaseline.channel}/skills/${skill.name}/${file.path}`)
+      check(existsSync(snapshot), `${loadedBaseline.channel} product Skill snapshot ${skill.name}/${file.path} exists`)
+      if (existsSync(snapshot)) {
+        check(sha256(readFileSync(snapshot)) === file.sha256, `${loadedBaseline.channel} product Skill snapshot ${skill.name}/${file.path} matches`)
+      }
+    }
+  }
+
+  const environmentVariable = baseline.localResolution?.environmentVariable
   const configuredRoot = environmentVariable ? process.env[environmentVariable] : undefined
-  const fallback = lock.localResolution?.fallbackRelativePath
+  const fallback = baseline.localResolution?.fallbackRelativePath
   const sourceRoot = resolve(configuredRoot || join(projectRoot, fallback || ''))
 
   if (!existsSync(sourceRoot)) {
@@ -391,15 +445,16 @@ if (lock) {
   } else {
     try {
       const sourceManifest = JSON.parse(readFileSync(join(sourceRoot, 'package.json'), 'utf8'))
-      check(sourceManifest.version === lock.upstream.version, `DSH version matches ${lock.upstream.version}`)
-      check(sourceManifest.engines?.node === lock.upstream.node, `DSH Node engine matches ${lock.upstream.node}`)
-      check(gitHead(sourceRoot) === lock.upstream.commit, `DSH commit matches ${lock.upstream.commit}`)
-      check(digestDocs(sourceRoot) === lock.upstream.docsDigest, 'DSH docs digest matches the audited baseline')
+      check(sourceManifest.version === baseline.upstream.version, `DSH version matches ${baseline.upstream.version}`)
+      check(sourceManifest.engines?.node === baseline.upstream.node, `DSH Node engine matches ${baseline.upstream.node}`)
+      check(sourceManifest.packageManager === baseline.upstream.packageManager, `DSH package manager matches ${baseline.upstream.packageManager}`)
+      check(gitHead(sourceRoot) === baseline.upstream.commit, `DSH commit matches ${baseline.upstream.commit}`)
+      check(digestDocs(sourceRoot) === baseline.upstream.docsDigest, 'DSH docs digest matches the audited baseline')
       const dirty = harnessWorktreeChanges(sourceRoot)
       check(dirty.length === 0, dirty.length === 0
         ? 'DSH Harness attested source inputs are clean'
         : `DSH Harness attested source inputs have changes:\n${dirty}`)
-      validateLinkedArtifacts(sourceRoot)
+      validateLinkedArtifacts(sourceRoot, catalog?.capabilities?.tool?.linkedPackages)
       pass(`validated DSH source at ${sourceRoot}`)
     } catch (error) {
       fail(`cannot validate DSH source at ${sourceRoot}: ${error instanceof Error ? error.message : String(error)}`)

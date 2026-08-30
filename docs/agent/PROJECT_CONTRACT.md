@@ -16,7 +16,7 @@ This repository is development tooling for DSH plugins. It is not itself a DSH r
 | Deterministic generation code and assets | `skills/dsh-plugin-dev/scripts/` and `assets/` |
 | Current work and progress | `TODO.md` |
 | Settled product and delivery decisions | `docs/decisions/` |
-| Audited upstream baseline | `dsh-reference.lock.json` |
+| Audited upstream baselines | `dsh-reference.lock.json` and `baselines/` |
 | Mechanical repository validation | `scripts/verify-context.mjs` |
 
 Discovery adapters and plugin metadata point at these sources but do not duplicate their policy.
@@ -41,6 +41,9 @@ Discovery adapters and plugin metadata point at these sources but do not duplica
   configuration schema, lifecycle test, Loader composition test, and bundle
   patch when applicable.
 - The first deterministic vertical slice is a Host-side model-facing Tool plugin. Other plugin shapes remain guided workflows until their templates have equivalent external-world acceptance.
+- Generation defaults to the content-addressed `stable` DSH channel. A new
+  official tag enters `edge`, invalidates prior candidate evidence, and cannot
+  replace stable until its Registry closure and full verification reports pass.
 - Installation and generation do not train or mutate the model. They supply progressively disclosed instructions, references, scripts, and templates.
 
 ## Delivery constraint
@@ -68,6 +71,8 @@ Generated packages remain private and use source-linked development dependencies
 - Do not encode a local absolute Harness path as a universal default. Resolve it per generated project and record a relocatable fallback plus `DSH_HARNESS_ROOT` override. After a checkout moves, the generated `context:sync` command rewrites static `link:` specs; setting the environment variable alone does not mutate them.
 - Add an abstraction only for a current provider/consumer, Host/Client, or deterministic-generation boundary.
 - Update tests, TODO, installation documentation, and a decision record with the behavior they govern.
+- Update an audited Harness baseline only through the clean tagged-worktree
+  workflow in `docs/agent/BASELINE_UPGRADE.md`; never edit stable directly.
 
 ## Completion reporting
 

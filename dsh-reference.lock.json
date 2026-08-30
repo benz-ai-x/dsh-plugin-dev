@@ -1,15 +1,76 @@
 {
-  "schemaVersion": 1,
-  "upstream": {
-    "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
-    "version": "0.1.2-alpha.1",
-    "node": "^22.19.0 || >=24.0.0",
-    "commit": "cd5ef8148158c3a752a658978873241fdf8e2bbc",
-    "docsDigest": "80f2fb6fc17b9d071a7985ae331ccd6cec0be637d53916c574f92fdce1b75c07"
+  "channels": {
+    "edge": {
+      "catalog": {
+        "packageCount": 264,
+        "path": "baselines/edge/catalog.json",
+        "productSkillCount": 2,
+        "sha256": "d957d2c087f3a3ecb946acdfeec7b6d0511f57516326d7259c3a931f6fdbc141",
+        "skillCount": 16
+      },
+      "localResolution": {
+        "environmentVariable": "DSH_HARNESS_BASELINE_ROOT",
+        "fallbackRelativePath": "../deepseek-harness-baseline"
+      },
+      "registry": {
+        "checkedAt": "2026-08-30T12:06:57.762Z",
+        "path": "baselines/edge/registry.json",
+        "sha256": "f4c3e59c53816b268bb503cf56917fea58d649b46a27ab59daeaed1bed9d2128",
+        "status": "blocked"
+      },
+      "upstream": {
+        "commit": "cd5ef8148158c3a752a658978873241fdf8e2bbc",
+        "docsDigest": "80f2fb6fc17b9d071a7985ae331ccd6cec0be637d53916c574f92fdce1b75c07",
+        "node": "^22.19.0 || >=24.0.0",
+        "packageManager": "pnpm@11.7.0",
+        "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
+        "tag": "dsh-v0.1.2-alpha.1",
+        "version": "0.1.2-alpha.1"
+      },
+      "verification": {
+        "checkedAt": "2026-08-30T14:29:47.186Z",
+        "path": "baselines/edge/verification.json",
+        "sha256": "c2e83b58bc71a0cf6bea093a6f4317b628a90f2bacb65374300a12d37b2338bd",
+        "status": "passed"
+      },
+      "verifiedOn": "2026-08-30"
+    },
+    "stable": {
+      "catalog": {
+        "packageCount": 264,
+        "path": "baselines/stable/catalog.json",
+        "productSkillCount": 2,
+        "sha256": "d957d2c087f3a3ecb946acdfeec7b6d0511f57516326d7259c3a931f6fdbc141",
+        "skillCount": 16
+      },
+      "localResolution": {
+        "environmentVariable": "DSH_HARNESS_BASELINE_ROOT",
+        "fallbackRelativePath": "../deepseek-harness-baseline"
+      },
+      "registry": {
+        "checkedAt": "2026-08-30T12:06:41.911Z",
+        "path": "baselines/stable/registry.json",
+        "sha256": "5c5555c6644cd610608a1239ef34d8d8c5aa42d1da5a6b10547762934dce60fd",
+        "status": "blocked"
+      },
+      "upstream": {
+        "commit": "cd5ef8148158c3a752a658978873241fdf8e2bbc",
+        "docsDigest": "80f2fb6fc17b9d071a7985ae331ccd6cec0be637d53916c574f92fdce1b75c07",
+        "node": "^22.19.0 || >=24.0.0",
+        "packageManager": "pnpm@11.7.0",
+        "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
+        "tag": "dsh-v0.1.2-alpha.1",
+        "version": "0.1.2-alpha.1"
+      },
+      "verification": {
+        "checkedAt": "2026-08-30T14:29:32.391Z",
+        "path": "baselines/stable/verification.json",
+        "sha256": "9ae283359d21d137cc0c5ad12e533a2c08172dcdd52244d9c37cdf0761b857f5",
+        "status": "passed"
+      },
+      "verifiedOn": "2026-08-30"
+    }
   },
-  "localResolution": {
-    "environmentVariable": "DSH_HARNESS_ROOT",
-    "fallbackRelativePath": "../deepseek-harness"
-  },
-  "verifiedOn": "2026-08-29"
+  "defaultChannel": "stable",
+  "schemaVersion": 2
 }

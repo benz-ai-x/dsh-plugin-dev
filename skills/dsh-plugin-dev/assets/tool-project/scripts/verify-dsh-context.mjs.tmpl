@@ -14,14 +14,7 @@ const explicitHarnessRoot = harnessRootIndex >= 0 ? process.argv[harnessRootInde
 const failures = []
 const warnings = []
 const passes = []
-const expectedLinks = Object.freeze({
-  '@deepseek-ai/cordis': 'vendor/cordis',
-  '@deepseek-ai/cordis-plugin-include': 'vendor/include',
-  '@deepseek-ai/cordis-plugin-loader': 'vendor/loader',
-  '@deepseek-ai/dsh-llm': 'packages/llm/llm',
-  '@deepseek-ai/dsh-system-prompt': 'packages/core/system-prompt',
-  '@deepseek-ai/dsh-tools': 'packages/core/tools',
-})
+const expectedLinks = Object.freeze(__EXPECTED_LINKS_JSON_RAW__)
 
 function check(condition, message) {
   if (condition) passes.push(message)
@@ -178,6 +171,7 @@ if (manifest) {
   check(manifest.private === true, 'source-linked package remains private')
   check(manifest.type === 'module', 'package uses ESM')
   check(manifest.engines?.node === '__NODE_ENGINE__', 'package Node engine matches the pinned Harness')
+  check(manifest.packageManager === '__PACKAGE_MANAGER__', 'package manager matches the pinned Harness')
   check(manifest.dsh?.bundle?.patch === './cordis.patch.yml', 'package declares its DSH bundle patch')
   check(manifest.exports?.['./cordis.patch.yml'] === './cordis.patch.yml', 'package exports its bundle patch')
   check(
@@ -193,10 +187,14 @@ if (manifest) {
 }
 
 if (lock) {
-  check(lock.schemaVersion === 1, 'reference lock schema is supported')
+  check(lock.schemaVersion === 2, 'reference lock schema v2 is supported')
+  check(lock.channel === '__BASELINE_CHANNEL__', 'reference lock records the selected baseline channel')
   check(/^[0-9a-f]{40}$/.test(lock.upstream?.commit ?? ''), 'reference lock has a full Git commit')
   check(/^[0-9a-f]{64}$/.test(lock.upstream?.docsDigest ?? ''), 'reference lock has a docs SHA-256')
+  check(/^[0-9a-f]{64}$/.test(lock.upstream?.catalogDigest ?? ''), 'reference lock has a catalog SHA-256')
+  check(lock.upstream?.tag === '__HARNESS_TAG__', 'reference lock records the audited DSH tag')
   check(lock.upstream?.node === '__NODE_ENGINE__', 'reference lock records the pinned Node engine')
+  check(lock.upstream?.packageManager === '__PACKAGE_MANAGER__', 'reference lock records the pinned package manager')
   check(nodeSatisfies(lock.upstream?.node), `Node ${process.version} satisfies ${lock.upstream?.node}`)
 
   const environmentName = lock.localResolution?.environmentVariable ?? 'DSH_HARNESS_ROOT'
@@ -213,6 +211,7 @@ if (lock) {
       const sourceManifest = JSON.parse(readFileSync(join(sourceRoot, 'package.json'), 'utf8'))
       check(sourceManifest.version === lock.upstream.version, `DSH version matches ${lock.upstream.version}`)
       check(sourceManifest.engines?.node === lock.upstream.node, `DSH Node engine matches ${lock.upstream.node}`)
+      check(sourceManifest.packageManager === lock.upstream.packageManager, `DSH package manager matches ${lock.upstream.packageManager}`)
       check(gitHead(sourceRoot) === lock.upstream.commit, `DSH commit matches ${lock.upstream.commit}`)
       check(digestDocs(sourceRoot) === lock.upstream.docsDigest, 'DSH docs digest matches the audited baseline')
       const dirty = harnessWorktreeChanges(sourceRoot)

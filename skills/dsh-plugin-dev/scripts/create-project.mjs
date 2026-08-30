@@ -24,13 +24,21 @@ const PLUGIN_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const TOOL_NAME = /^[a-z][a-z0-9_]*$/
 const ALLOWED_EMPTY_ENTRIES = new Set(['.DS_Store', '.git'])
 const RESERVED_TOOL_NAMES = new Set(['run_code'])
-const LINKED_PACKAGE_LOCATIONS = Object.freeze({
-  CORDIS_LINK: 'vendor/cordis',
-  LOADER_LINK: 'vendor/loader',
-  INCLUDE_LINK: 'vendor/include',
-  DSH_LLM_LINK: 'packages/llm/llm',
-  SYSTEM_PROMPT_LINK: 'packages/core/system-prompt',
-  DSH_TOOLS_LINK: 'packages/core/tools',
+const LINKED_PACKAGE_NAMES = Object.freeze({
+  CORDIS_LINK: '@deepseek-ai/cordis',
+  LOADER_LINK: '@deepseek-ai/cordis-plugin-loader',
+  INCLUDE_LINK: '@deepseek-ai/cordis-plugin-include',
+  DSH_LLM_LINK: '@deepseek-ai/dsh-llm',
+  SYSTEM_PROMPT_LINK: '@deepseek-ai/dsh-system-prompt',
+  DSH_TOOLS_LINK: '@deepseek-ai/dsh-tools',
+})
+const DEFAULT_LINKED_PACKAGE_LOCATIONS = Object.freeze({
+  '@deepseek-ai/cordis': 'vendor/cordis',
+  '@deepseek-ai/cordis-plugin-loader': 'vendor/loader',
+  '@deepseek-ai/cordis-plugin-include': 'vendor/include',
+  '@deepseek-ai/dsh-llm': 'packages/llm/llm',
+  '@deepseek-ai/dsh-system-prompt': 'packages/core/system-prompt',
+  '@deepseek-ai/dsh-tools': 'packages/core/tools',
 })
 
 export class ScaffoldError extends Error {
@@ -214,9 +222,12 @@ export function harnessWorktreeChanges(sourceRoot) {
   return [...changes].join('\n')
 }
 
-export async function validateHarnessArtifacts(sourceRoot) {
-  for (const packagePath of Object.values(LINKED_PACKAGE_LOCATIONS)) {
-    const packageRoot = join(sourceRoot, packagePath)
+export async function validateHarnessArtifacts(sourceRoot, linkedPackageLocations = DEFAULT_LINKED_PACKAGE_LOCATIONS) {
+  for (const packagePath of Object.values(linkedPackageLocations)) {
+    const packageRoot = resolve(sourceRoot, packagePath)
+    if (packageRoot === sourceRoot || !packageRoot.startsWith(`${sourceRoot}${sep}`)) {
+      fail('DSH_SCAFFOLD_HARNESS_MISMATCH', `linked package path escapes Harness root: ${packagePath}`)
+    }
     let manifest
     try {
       manifest = JSON.parse(await readFile(join(packageRoot, 'package.json'), 'utf8'))
@@ -254,10 +265,44 @@ export async function validateHarnessArtifacts(sourceRoot) {
   }
 }
 
-async function loadBaselineLock() {
+async function loadBaselineLock(requestedChannel) {
   try {
-    return JSON.parse(await readFile(baselineLockPath, 'utf8'))
+    const repositoryLock = JSON.parse(await readFile(baselineLockPath, 'utf8'))
+    if (repositoryLock.schemaVersion !== 2) {
+      fail(
+        'DSH_SCAFFOLD_HARNESS_MISMATCH',
+        `generator baseline schema ${repositoryLock.schemaVersion} is unsupported; run the baseline upgrade workflow`,
+      )
+    }
+    const channel = requestedChannel
+      ?? process.env.DSH_BASELINE_CHANNEL
+      ?? repositoryLock.defaultChannel
+    if (!['stable', 'edge'].includes(channel)) {
+      fail('DSH_SCAFFOLD_HARNESS_MISMATCH', `baseline channel must be stable or edge: ${channel}`)
+    }
+    const baseline = repositoryLock.channels?.[channel]
+    if (!baseline) {
+      fail(
+        'DSH_SCAFFOLD_HARNESS_MISMATCH',
+        `unknown baseline channel ${channel}; available: ${Object.keys(repositoryLock.channels ?? {}).sort().join(', ')}`,
+      )
+    }
+    const catalogPath = resolve(pluginRoot, baseline.catalog?.path ?? '')
+    if (catalogPath === pluginRoot || !catalogPath.startsWith(`${pluginRoot}${sep}`)) {
+      fail('DSH_SCAFFOLD_HARNESS_MISMATCH', `baseline catalog escapes the Plugin root: ${catalogPath}`)
+    }
+    const catalogContent = await readFile(catalogPath, 'utf8')
+    const catalogDigest = createHash('sha256').update(catalogContent).digest('hex')
+    if (catalogDigest !== baseline.catalog?.sha256) {
+      fail(
+        'DSH_SCAFFOLD_HARNESS_MISMATCH',
+        `baseline channel ${channel} catalog digest does not match ${catalogPath}`,
+      )
+    }
+    const catalog = JSON.parse(catalogContent)
+    return { channel, ...baseline, catalog, catalogDigest }
   } catch (error) {
+    if (error instanceof ScaffoldError) throw error
     fail(
       'DSH_SCAFFOLD_HARNESS_MISMATCH',
       `cannot read generator baseline ${baselineLockPath}: ${error instanceof Error ? error.message : String(error)}`,
@@ -279,6 +324,7 @@ async function validateHarnessRoot(sourceRoot, lock) {
   const actual = {
     version: manifest.version,
     node: manifest.engines?.node,
+    packageManager: manifest.packageManager,
     commit: gitHead(sourceRoot),
     docsDigest: await digestDocs(sourceRoot),
   }
@@ -306,7 +352,7 @@ async function validateHarnessRoot(sourceRoot, lock) {
       `Harness worktree has changes and is not the exact audited snapshot:\n${dirty}`,
     )
   }
-  await validateHarnessArtifacts(sourceRoot)
+  await validateHarnessArtifacts(sourceRoot, lock.catalog?.capabilities?.tool?.linkedPackages)
 
   return realpath(sourceRoot)
 }
@@ -323,6 +369,9 @@ async function canonicalTarget(path) {
 async function resolveHarnessRoot({ explicitRoot, target, lock }) {
   const environmentName = lock.localResolution?.environmentVariable ?? 'DSH_HARNESS_ROOT'
   const environmentRoot = process.env[environmentName]
+  const genericEnvironmentRoot = environmentName === 'DSH_HARNESS_ROOT'
+    ? undefined
+    : process.env.DSH_HARNESS_ROOT
   const lockedFallback = lock.localResolution?.fallbackRelativePath
   const candidates = explicitRoot
     ? [explicitRoot]
@@ -331,6 +380,7 @@ async function resolveHarnessRoot({ explicitRoot, target, lock }) {
       : [
           resolve(target, '..', 'deepseek-harness'),
           ...(lockedFallback ? [resolve(pluginRoot, lockedFallback)] : []),
+          ...(genericEnvironmentRoot ? [genericEnvironmentRoot] : []),
         ]
 
   for (const candidate of [...new Set(candidates.map(value => resolve(value)))]) {
@@ -353,7 +403,23 @@ function jsonContent(value) {
   return JSON.stringify(value).slice(1, -1)
 }
 
+function requireCatalogPackage(catalog, name) {
+  const entry = catalog.packages?.find(candidate => candidate.name === name)
+  if (!entry) {
+    fail('DSH_SCAFFOLD_HARNESS_MISMATCH', `baseline catalog is missing ${name}`)
+  }
+  return entry
+}
+
 function templateValues({ target, harnessRoot, lock, description, names }) {
+  const linkedPackages = lock.catalog?.capabilities?.tool?.linkedPackages
+  if (!linkedPackages) {
+    fail('DSH_SCAFFOLD_HARNESS_MISMATCH', 'baseline catalog has no Tool linked-package contract')
+  }
+  const toolchain = lock.catalog.toolchain?.dependencies ?? {}
+  const cordisVersion = requireCatalogPackage(lock.catalog, '@deepseek-ai/cordis').version
+  const toolsVersion = requireCatalogPackage(lock.catalog, '@deepseek-ai/dsh-tools').version
+  const schemasteryVersion = requireCatalogPackage(lock.catalog, '@deepseek-ai/schemastery').version
   const values = {
     PACKAGE_NAME: names.packageName,
     PLUGIN_NAME: names.pluginName,
@@ -361,15 +427,28 @@ function templateValues({ target, harnessRoot, lock, description, names }) {
     ROW_ID: names.pluginName,
     DESCRIPTION: description,
     DESCRIPTION_LITERAL: JSON.stringify(description),
+    BASELINE_CHANNEL: lock.channel,
     HARNESS_REPOSITORY: lock.upstream.repository,
+    HARNESS_TAG: lock.upstream.tag,
     HARNESS_VERSION: lock.upstream.version,
     NODE_ENGINE: lock.upstream.node,
+    PACKAGE_MANAGER: lock.upstream.packageManager,
     HARNESS_COMMIT: lock.upstream.commit,
     HARNESS_DOCS_DIGEST: lock.upstream.docsDigest,
+    HARNESS_CATALOG_DIGEST: lock.catalogDigest,
     HARNESS_VERIFIED_ON: lock.verifiedOn,
     HARNESS_FALLBACK: relativeProjectPath(target, harnessRoot),
+    CORDIS_PEER_VERSION: `^${cordisVersion}`,
+    DSH_TOOLS_VERSION: toolsVersion,
+    SCHEMASTERY_VERSION: schemasteryVersion,
+    TYPES_NODE_VERSION: toolchain['@types/node'],
+    TYPESCRIPT_VERSION: toolchain.typescript,
+    VITEST_VERSION: toolchain.vitest,
+    EXPECTED_LINKS_JSON: JSON.stringify(linkedPackages, null, 2),
   }
-  for (const [key, path] of Object.entries(LINKED_PACKAGE_LOCATIONS)) {
+  for (const [key, packageName] of Object.entries(LINKED_PACKAGE_NAMES)) {
+    const path = linkedPackages[packageName]
+    if (!path) fail('DSH_SCAFFOLD_HARNESS_MISMATCH', `Tool link contract is missing ${packageName}`)
     values[key] = `link:${relativeProjectPath(target, join(harnessRoot, path))}`
   }
   return values
@@ -427,7 +506,7 @@ export async function createProject(options = {}) {
 
   const names = deriveNames(target, options)
   await assertEmptyTarget(target)
-  const lock = await loadBaselineLock()
+  const lock = await loadBaselineLock(options.channel)
   const harnessRoot = await resolveHarnessRoot({
     explicitRoot: options.harnessRoot,
     target,
@@ -470,6 +549,7 @@ export async function createProject(options = {}) {
 
   return {
     kind,
+    channel: lock.channel,
     target,
     harnessRoot,
     ...names,
@@ -489,6 +569,7 @@ function usage() {
     '  --tool-name <name>         Snake_case model-facing tool name',
     '  --description <text>       Model-visible product operation (required)',
     '  --harness-root <path>      Audited DeepSeek Harness checkout',
+    '  --channel stable|edge      Audited baseline channel (default: stable)',
     '  --json                     Print the result as JSON',
     '  --help                     Show this help',
   ].join('\n')
@@ -504,6 +585,7 @@ export function parseArgs(argv) {
     ['--tool-name', 'toolName'],
     ['--description', 'description'],
     ['--harness-root', 'harnessRoot'],
+    ['--channel', 'channel'],
   ])
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -543,6 +625,7 @@ async function main() {
     console.log(`plugin: ${result.pluginName}`)
     console.log(`tool: ${result.toolName}`)
     console.log(`Harness: ${result.harnessRoot}`)
+    console.log(`channel: ${result.channel}`)
     console.log('next: pnpm install && pnpm verify')
   } catch (error) {
     if (error instanceof ScaffoldError) {
