@@ -4,21 +4,49 @@ import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promis
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import test from 'node:test'
+import { test } from 'vitest'
 
 import { createProject } from '../skills/dsh-plugin-dev/scripts/create-project.mjs'
 
+interface BaselineFileRecord {
+  catalog: { path: string }
+  registry: { status: string }
+  localResolution: { fallbackRelativePath: string }
+  upstream: {
+    tag: string
+    packageManager: string
+  }
+}
+
+interface RepositoryLockFile {
+  defaultChannel: string
+  channels: Record<string, BaselineFileRecord>
+}
+
+interface CatalogFile {
+  packages: Array<{ name: string; version: string }>
+}
+
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const repositoryLock = JSON.parse(await readFile(join(repositoryRoot, 'dsh-reference.lock.json'), 'utf8'))
+const repositoryLock = JSON.parse(
+  await readFile(join(repositoryRoot, 'dsh-reference.lock.json'), 'utf8'),
+) as RepositoryLockFile
 const baselineChannel = process.env.DSH_BASELINE_CHANNEL ?? repositoryLock.defaultChannel
-const selectedBaseline = repositoryLock.channels[baselineChannel]
-const selectedCatalog = JSON.parse(await readFile(join(repositoryRoot, selectedBaseline.catalog.path), 'utf8'))
+const selectedBaseline = repositoryLock.channels[baselineChannel]!
+const selectedCatalog = JSON.parse(
+  await readFile(join(repositoryRoot, selectedBaseline.catalog.path), 'utf8'),
+) as CatalogFile
 const harnessRoot = resolve(
   process.env.DSH_HARNESS_BASELINE_ROOT
-    ?? join(repositoryRoot, '..', 'deepseek-harness-baseline'),
+    ?? join(repositoryRoot, selectedBaseline.localResolution.fallbackRelativePath),
 )
 
-function run(command, args, cwd, extraEnvironment = {}) {
+function run(
+  command: string,
+  args: readonly string[],
+  cwd: string,
+  extraEnvironment: Readonly<Record<string, string>> = {},
+): string {
   const result = spawnSync(command, args, {
     cwd,
     encoding: 'utf8',
@@ -37,7 +65,7 @@ function run(command, args, cwd, extraEnvironment = {}) {
   return result.stdout
 }
 
-function packProject(projectRoot, destination) {
+function packProject(projectRoot: string, destination: string): string {
   const output = run(
     'pnpm',
     ['pack', '--json', '--pack-destination', destination],
@@ -46,13 +74,17 @@ function packProject(projectRoot, destination) {
   )
   const start = output.indexOf('{')
   const end = output.lastIndexOf('}')
-  const packed = JSON.parse(output.slice(start, end + 1))
+  const packed = JSON.parse(output.slice(start, end + 1)) as { filename?: unknown }
   assert.equal(typeof packed.filename, 'string')
-  return packed.filename
+  return packed.filename as string
 }
 
-async function bootAndStopProfile(cwd, profile, environment) {
-  await new Promise((resolvePromise, rejectPromise) => {
+async function bootAndStopProfile(
+  cwd: string,
+  profile: string,
+  environment: Readonly<Record<string, string>>,
+): Promise<void> {
+  await new Promise<void>((resolvePromise, rejectPromise) => {
     const child = spawn(process.execPath, [join(cwd, 'apps', 'cli', 'lib', 'bin.js'), '--profile', profile], {
       cwd,
       env: {
@@ -67,8 +99,8 @@ async function bootAndStopProfile(cwd, profile, environment) {
     let stderr = ''
     child.stdout.setEncoding('utf8')
     child.stderr.setEncoding('utf8')
-    child.stdout.on('data', chunk => { stdout += chunk })
-    child.stderr.on('data', chunk => { stderr += chunk })
+    child.stdout.on('data', (chunk: string) => { stdout += chunk })
+    child.stderr.on('data', (chunk: string) => { stderr += chunk })
 
     const stop = setTimeout(() => child.kill('SIGTERM'), 4_000)
     const timeout = setTimeout(() => {
@@ -154,7 +186,7 @@ test('an unrelated empty directory becomes a fully verified DSH Tool project', {
 
     const lockfile = await readFile(join(result.target, 'pnpm-lock.yaml'), 'utf8')
     const schemasteryVersion = selectedCatalog.packages
-      .find(entry => entry.name === '@deepseek-ai/schemastery').version
+      .find(entry => entry.name === '@deepseek-ai/schemastery')!.version
     assert.match(lockfile, new RegExp(`specifier: ${schemasteryVersion.replaceAll('.', '\\.')}`))
     assert.match(lockfile, /relocated-harness\/vendor\/cordis/)
 
@@ -195,8 +227,8 @@ test('an unrelated empty directory becomes a fully verified DSH Tool project', {
 
 test('a Registry-delivered Tool survives clean install, pack, import, and profile lifecycle', { timeout: 600_000 }, async () => {
   const root = await mkdtemp(join(tmpdir(), 'dsh-scaffold-registry-e2e-'))
-  const registryChannel = repositoryLock.channels.edge.registry.status === 'ready' ? 'edge' : 'stable'
-  const registryBaseline = repositoryLock.channels[registryChannel]
+  const registryChannel = repositoryLock.channels.edge!.registry.status === 'ready' ? 'edge' : 'stable'
+  const registryBaseline = repositoryLock.channels[registryChannel]!
   assert.equal(registryBaseline.registry.status, 'ready')
   try {
     const result = await createProject({

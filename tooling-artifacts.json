@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "compiler": "typescript@6.0.3",
+  "artifacts": [
+    {
+      "source": "src/scripts/baseline.mts",
+      "runtime": "scripts/baseline.mjs",
+      "declaration": "scripts/baseline.d.mts",
+      "sourceSha256": "07b45d3851f107e60f1809cfbcf2f71f8fd29fb074b64bdde98c1aa63d00abf7",
+      "runtimeSha256": "43d961f302c2061d48111c38dd5c0b85e7e4d2fea06b8cbc1088d924d4c30301",
+      "declarationSha256": "1e798ef1f2014bd4624a4a1aa62042395d6a39fee4666c114c59e0228b78e00e"
+    },
+    {
+      "source": "src/scripts/install-user-skill.mts",
+      "runtime": "scripts/install-user-skill.mjs",
+      "declaration": "scripts/install-user-skill.d.mts",
+      "sourceSha256": "aa8d75a6d5c52dcdb08c976f7902fbd4d4bf67ab09e81082741c58f48905c983",
+      "runtimeSha256": "05be8af0d72a2311557269824aba1e40971503c0ca67f85881de2ad25d6f4a35",
+      "declarationSha256": "4d940e6daf8178dc2a3132e04d40613b7f7f7acb7d462cf5aad67fb9d2bc769e"
+    },
+    {
+      "source": "src/scripts/verify-context.mts",
+      "runtime": "scripts/verify-context.mjs",
+      "declaration": "scripts/verify-context.d.mts",
+      "sourceSha256": "09202002bea3a68b227c4f1413932d62624925acf0f57df30f5b2860c825b5a8",
+      "runtimeSha256": "5cf49f0e3e75ee99357071026eecf6c8c461e99ef03cd3ea9e7e5c1b4b4384f5",
+      "declarationSha256": "43e818adf60173644896298637f47b01d5819b17eda46eaa32d0c7d64724d012"
+    },
+    {
+      "source": "skills/dsh-plugin-dev/src/create-project.mts",
+      "runtime": "skills/dsh-plugin-dev/scripts/create-project.mjs",
+      "declaration": "skills/dsh-plugin-dev/scripts/create-project.d.mts",
+      "sourceSha256": "5c6d782219698c5e6070f1e839f0f74d5aabb802d325c96e7707e66410c907b4",
+      "runtimeSha256": "2d406b32b08244e143a7c3fbadec3d47ed938e5f06937735ac948fcca90188aa",
+      "declarationSha256": "6b26c43d958aa841f4fa5ca31307382d012e847c3043edc58ae108c0086e16c6"
+    }
+  ]
+}

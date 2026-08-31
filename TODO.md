@@ -30,6 +30,16 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 - [x] Tighten the Tool template with stable Loader ids, Config default/invalid
   tests, exact parameter-schema tests, and package-map hygiene.
 
+## P0 — TypeScript-first tooling
+
+- [x] Move generator, baseline, context, and installer implementation into
+  strict TypeScript sources while preserving the public `.mjs` entry paths.
+- [x] Compile declarations and dependency-free runtime artifacts with a
+  source/output digest manifest and a non-mutating freshness check.
+- [x] Migrate repository unit and e2e suites to TypeScript and Vitest.
+- [x] Keep generated-project pre-install verifiers as dependency-free `.mjs`
+  templates while generated plugin runtime and tests remain TypeScript.
+
 ## P1 — Reposition as reusable development tooling
 
 - [x] Confirm the user-visible outcome: install once, start Codex in an unrelated directory, describe a DSH business capability, and receive a verified project scaffold.

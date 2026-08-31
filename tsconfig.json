@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.mts",
+    "skills/dsh-plugin-dev/src/**/*.mts",
+    "tests/**/*.ts",
+    "tooling/**/*.ts",
+    "vitest.config.ts"
+  ]
+}

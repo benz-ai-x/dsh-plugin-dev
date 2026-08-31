@@ -2,12 +2,12 @@
   "catalogSha256": "076ef3920a5654c33c8a0153096fffddcdf784656b104c8d48b21ebb623d336c",
   "channel": "edge",
   "command": "npx --yes pnpm@11.7.0 verify",
-  "projectDigest": "3da85dc7e70a58c524b168b980f6319a896b221f450235a6e74bccda50ad85a0",
+  "projectDigest": "40d395ee1e412f604f7174f0b906e849a16165cf489c8111d503c68a43e8ea2a",
   "schemaVersion": 1,
   "status": "passed",
   "upstream": {
     "commit": "0a53fb55bea101816fa226bb964ae2bed71c343b",
     "tag": "dsh-v0.1.2-alpha.2"
   },
-  "verifiedAt": "2026-08-31T03:40:06.243Z"
+  "verifiedAt": "2026-08-31T04:29:41.604Z"
 }

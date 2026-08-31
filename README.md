@@ -10,6 +10,8 @@
 
 本仓库是插件开发工具，不是 DSH 运行时插件。当前确定性生成器支持 Host 侧、面向模型的 Tool 插件；Service、Client、LLM Adapter、Bundle/Profile 和 Agent Team 需求仍可通过 Skill 中的专项指南开发，但尚无确定性模板。
 
+仓库自身采用 TypeScript-first 工具链。生成器、基线管理、上下文校验和安装器的权威源码位于 `.mts` 文件，严格类型检查后编译到现有 `.mjs` 公共入口；因此安装后的 Skill 仍可直接由 Node 执行，不要求用户额外安装 `tsx`。`tooling-artifacts.json` 将源码、JavaScript 和声明文件的摘要绑定在一起。
+
 ### 环境要求
 
 - Node.js `^22.19.0` 或 `>=24.0.0`（与锁定的 Harness 一致）
@@ -89,6 +91,8 @@ pnpm verify
 ### 验证本仓库
 
 ```sh
+pnpm build:check
+pnpm typecheck
 pnpm verify
 ```
 
@@ -103,6 +107,12 @@ pnpm verify
 `dsh-plugin-dev` is a shared DeepSeek Harness plugin-development Skill for Codex and Claude Code. Install it once, then describe a business requirement from any empty directory. The code agent classifies the DSH extension shape, generates a project scaffold, and continues through the real implementation and verification.
 
 This repository is development tooling, not a DSH runtime plugin. The deterministic generator currently supports Host-side, model-facing Tool plugins. The Skill also guides Service, Client, LLM Adapter, Bundle/Profile, and Agent Team work, but deterministic templates for those shapes are still on the roadmap.
+
+The repository itself is TypeScript-first. Authoritative generator, baseline,
+context, and installer sources use strict `.mts`; compilation preserves the
+existing dependency-free `.mjs` entry paths, so an installed Skill does not
+require `tsx`. `tooling-artifacts.json` binds source, JavaScript, and declaration
+digests.
 
 ### Requirements
 
@@ -183,6 +193,8 @@ pnpm verify
 ### Verify this repository
 
 ```sh
+pnpm build:check
+pnpm typecheck
 pnpm verify
 ```
 

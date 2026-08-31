@@ -3,7 +3,7 @@ import { spawnSync } from 'node:child_process'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import test from 'node:test'
+import { test } from 'vitest'
 
 import {
   BaselineError,
@@ -16,7 +16,10 @@ import {
   sha256,
 } from '../scripts/baseline.mjs'
 
-async function withTemporaryDirectory(prefix, operation) {
+async function withTemporaryDirectory<T>(
+  prefix: string,
+  operation: (root: string) => Promise<T>,
+): Promise<T> {
   const root = await mkdtemp(join(tmpdir(), prefix))
   try {
     return await operation(root)
@@ -25,17 +28,17 @@ async function withTemporaryDirectory(prefix, operation) {
   }
 }
 
-async function writeJson(path, value) {
+async function writeJson(path: string, value: unknown): Promise<void> {
   await mkdir(join(path, '..'), { recursive: true })
   await writeFile(path, `${JSON.stringify(value, null, 2)}\n`)
 }
 
-function runGit(root, args) {
+function runGit(root: string, args: readonly string[]): void {
   const result = spawnSync('git', ['-C', root, ...args], { encoding: 'utf8' })
   assert.equal(result.status, 0, result.stderr)
 }
 
-async function createHarnessFixture(root) {
+async function createHarnessFixture(root: string): Promise<void> {
   const version = '1.2.3-alpha.1'
   await writeJson(join(root, 'package.json'), {
     name: '@deepseek-ai/dsh-root',
@@ -49,7 +52,7 @@ async function createHarnessFixture(root) {
       vitest: '3.0.0',
     },
   })
-  const packages = [
+  const packages: Array<[string, string, Record<string, string>]> = [
     ['apps/cli', '@deepseek-ai/dsh', { '@deepseek-ai/cordis-plugin-loader': '^1.0.0' }],
     ['vendor/cordis', '@deepseek-ai/cordis', {}],
     ['vendor/include', '@deepseek-ai/cordis-plugin-include', { '@deepseek-ai/cordis': '^4.0.0' }],
@@ -74,7 +77,7 @@ async function createHarnessFixture(root) {
   }
   await mkdir(join(root, 'docs'), { recursive: true })
   await writeFile(join(root, 'docs', 'architecture.md'), '# Fixture\n')
-  const skills = [
+  const skills: Array<[string, string]> = [
     ['packages/preset/agent-presets/presets/cordis/skills/cordis-plugin-development/SKILL.md', 'cordis-plugin-development'],
     ['packages/preset/agent-presets/presets/cordis/skills/editing-cordis-compositions/SKILL.md', 'editing-cordis-compositions'],
     ['.agents/skills/dsh-review/SKILL.md', 'dsh-review'],
@@ -166,7 +169,7 @@ test('reports package, Skill, toolchain, and capability-closure changes', () => 
     changed: [],
   })
   assert.deepEqual(diff.toolClosure, { added: ['added'], removed: ['removed'] })
-  assert.equal(diff.upstream.packageManager.to, 'pnpm@10')
+  assert.equal(diff.upstream.packageManager!.to, 'pnpm@10')
 })
 
 test('Registry report blocks one missing exact upstream package and becomes ready when all resolve', async () => {
@@ -176,7 +179,7 @@ test('Registry report blocks one missing exact upstream package and becomes read
         name: '@deepseek-ai/dsh',
         version: '1.2.3',
         private: false,
-        releaseFamily: 'dsh',
+        releaseFamily: 'dsh' as const,
       },
     ],
     capabilities: {
@@ -194,7 +197,7 @@ test('Registry report blocks one missing exact upstream package and becomes read
     checkedAt: '2026-08-30T00:00:00.000Z',
   })
   assert.equal(blocked.status, 'blocked')
-  assert.equal(blocked.packages[0].available, false)
+  assert.equal(blocked.packages[0]!.available, false)
 
   const ready = await buildRegistryReport({
     channel: 'edge',
@@ -212,10 +215,11 @@ test('selects explicit channels and rejects unknown schema-v2 channels', () => {
     defaultChannel: 'stable',
     channels: { stable: { upstream: { version: '1' } }, edge: { upstream: { version: '2' } } },
   }
-  assert.equal(selectChannel(lock, 'stable').channel, 'stable')
-  assert.equal(selectChannel(lock, 'edge').baseline.upstream.version, '2')
+  const typedLock = lock as unknown as Parameters<typeof selectChannel>[0]
+  assert.equal(selectChannel(typedLock, 'stable').channel, 'stable')
+  assert.equal(selectChannel(typedLock, 'edge').baseline.upstream.version, '2')
   assert.throws(
-    () => selectChannel(lock, 'nightly'),
+    () => selectChannel(typedLock, 'nightly'),
     error => error instanceof BaselineError && error.code === 'DSH_BASELINE_CHANNEL_UNKNOWN',
   )
 })

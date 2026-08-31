@@ -7,7 +7,8 @@ Updated: 2026-08-31 (Asia/Shanghai)
 This repository is the reusable development environment for taking a DeepSeek
 Harness plugin from a business requirement through implementation, tests,
 packaging, profile integration, and release preparation. It is not a DSH
-runtime plugin.
+runtime plugin. Its own implementation is now TypeScript-first while its
+installed public commands remain dependency-free `.mjs` artifacts.
 
 The audited default baseline is DeepSeek Harness `0.1.2-alpha.2`, official tag
 `dsh-v0.1.2-alpha.2`, commit
@@ -21,9 +22,24 @@ clean detached official-tag worktree built with `pnpm@11.7.0`.
 3. [`dsh-plugin-dev`](../../skills/dsh-plugin-dev/SKILL.md)
 4. [`BASELINE_UPGRADE.md`](BASELINE_UPGRADE.md) for an upstream change
 
-Run `pnpm context:check` before planning/editing and
+Run `pnpm context:check` before planning/editing. Run `pnpm build:check` and
+`pnpm typecheck` when changing repository tooling, and
 `pnpm context:check:strict` before claiming compatibility with the selected
 source baseline.
+
+## TypeScript-first tooling
+
+Authoritative implementation lives in `src/scripts/*.mts` and
+`skills/dsh-plugin-dev/src/create-project.mts`; repository tests are `.ts` and
+run through Vitest. `pnpm build` compiles the four public commands into their
+stable `.mjs` paths plus `.d.mts` declarations. The installed Skill therefore
+does not need `tsx`, TypeScript, or Vitest at runtime.
+
+`tooling-artifacts.json` binds the compiler and SHA-256 for each
+source/runtime/declaration triple. `pnpm build:check` compiles into a temporary
+directory and refuses stale or hand-edited output. Do not edit generated
+`.mjs` or `.d.mts` files directly. See
+[`0006-typescript-first-tooling.md`](../decisions/0006-typescript-first-tooling.md).
 
 ## Baseline state
 
@@ -120,9 +136,10 @@ Decision: [`0005-registry-delivery.md`](../decisions/0005-registry-delivery.md).
 
 ## Verification evidence
 
-The alpha.2 ladder passes with:
+The alpha.2 and TypeScript-first ladder passes with:
 
-- strict context: 207 checks, 0 warnings;
+- compiled artifact freshness and strict TypeScript typecheck;
+- strict context: 272 checks, 0 warnings;
 - repository unit tests: 21/21;
 - generated-project e2e tests: 2/2;
 - source project: sync relocation, install, strict verification, 2 Vitest

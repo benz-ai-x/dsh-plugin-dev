@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src/scripts",
+    "outDir": "scripts"
+  },
+  "include": ["src/scripts/**/*.mts"]
+}

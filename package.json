@@ -11,16 +11,32 @@
   "files": [
     ".codex-plugin/plugin.json",
     "skills/dsh-plugin-dev/**",
+    "src/**",
+    "tooling/**",
+    "tooling-artifacts.json",
+    "pnpm-workspace.yaml",
+    "tsconfig.base.json",
+    "tsconfig.json",
+    "tsconfig.scripts.json",
+    "vitest.config.ts",
     "scripts/install-user-skill.mjs",
+    "scripts/install-user-skill.d.mts",
     "scripts/baseline.mjs",
+    "scripts/baseline.d.mts",
+    "scripts/verify-context.mjs",
+    "scripts/verify-context.d.mts",
     "baselines/**",
     "docs/agent/BASELINE_UPGRADE.md",
     "docs/decisions/0004-baseline-channels.md",
     "docs/decisions/0005-registry-delivery.md",
+    "docs/decisions/0006-typescript-first-tooling.md",
     "dsh-reference.lock.json",
     "README.md"
   ],
   "scripts": {
+    "build": "tsx tooling/build.ts",
+    "build:check": "tsx tooling/build.ts --check",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "context:check": "node scripts/verify-context.mjs",
     "context:check:strict": "node scripts/verify-context.mjs --require-source",
     "context:check:edge": "node scripts/verify-context.mjs --require-source --channel edge",
@@ -35,8 +51,14 @@
     "install:skill": "node scripts/install-user-skill.mjs",
     "install:codex": "node scripts/install-user-skill.mjs --agent codex",
     "install:claude": "node scripts/install-user-skill.mjs --agent claude",
-    "test": "node --test tests/*.unit.test.mjs",
-    "test:e2e": "node --test tests/*.e2e.test.mjs",
-    "verify": "pnpm context:check:strict && pnpm test && pnpm test:e2e"
+    "test": "vitest run tests/*.unit.test.ts",
+    "test:e2e": "vitest run tests/*.e2e.test.ts",
+    "verify": "pnpm build:check && pnpm context:check:strict && pnpm typecheck && pnpm test && pnpm test:e2e"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
   }
 }

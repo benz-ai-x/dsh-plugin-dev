@@ -13,11 +13,11 @@ This repository is development tooling for DSH plugins. It is not itself a DSH r
 | Always-active repository rules | `docs/agent/PROJECT_CONTRACT.md` |
 | DSH development and generation workflow | `skills/dsh-plugin-dev/SKILL.md` |
 | Specialized DSH guidance | `skills/dsh-plugin-dev/references/` |
-| Deterministic generation code and assets | `skills/dsh-plugin-dev/scripts/` and `assets/` |
+| Deterministic generation source and assets | `skills/dsh-plugin-dev/src/` and `assets/` |
 | Current work and progress | `TODO.md` |
 | Settled product and delivery decisions | `docs/decisions/` |
 | Audited upstream baselines | `dsh-reference.lock.json` and `baselines/` |
-| Mechanical repository validation | `scripts/verify-context.mjs` |
+| Mechanical repository validation | `src/scripts/verify-context.mts`, compiled as `scripts/verify-context.mjs` |
 
 Discovery adapters and plugin metadata point at these sources but do not duplicate their policy.
 
@@ -77,7 +77,12 @@ and real profile add/dump/boot/remove verification for the exact artifact.
 ## Change discipline
 
 - Prefer one verified generator vertical slice over speculative templates for every plugin type.
-- Keep reusable DSH facts in the canonical skill references; keep generator mechanics in scripts and output templates.
+- Keep reusable DSH facts in the canonical skill references; keep generator mechanics in TypeScript source and output templates.
+- Treat `src/**/*.mts`, `skills/dsh-plugin-dev/src/**/*.mts`, and TypeScript
+  tests as authoritative implementation. The public `.mjs`/`.d.mts` entries
+  are generated, dependency-free distribution artifacts; never edit them by
+  hand. Run `pnpm build`, and require `pnpm build:check` plus the
+  digest-bound `tooling-artifacts.json` before acceptance.
 - Do not encode a local absolute Harness path as a universal default. Source projects record a relocatable fallback plus `DSH_HARNESS_ROOT` and use `context:sync` after a move. Registry projects have no source root or sync command and migrate only through reviewed catalog/evidence changes.
 - Add an abstraction only for a current provider/consumer, Host/Client, or deterministic-generation boundary.
 - Update tests, TODO, installation documentation, and a decision record with the behavior they govern.

@@ -41,6 +41,23 @@ The authoring repository and each generated DSH project have different responsib
 8. The schema-v2 reference lock, channel catalogs, and validator tie guidance
    and generated output to content-addressed stable or edge DSH snapshots.
 
+## TypeScript authoring and distribution boundary
+
+The authoritative tooling implementation is strict TypeScript:
+`src/scripts/*.mts` owns baseline management, installation, and context
+validation, while `skills/dsh-plugin-dev/src/create-project.mts` owns the
+generator. Repository tests and build orchestration are TypeScript and run
+through Vitest/tsx.
+
+The existing `.mjs` command paths remain the distribution ABI. `pnpm build`
+compiles `.mts` into those paths plus `.d.mts` declarations, without adding a
+runtime dependency to an installed Skill. `tooling-artifacts.json` records the
+compiler and SHA-256 of every source/runtime/declaration triple;
+`pnpm build:check` compiles into a temporary directory and compares bytes and
+the manifest without rewriting tracked artifacts. Generated-project context,
+build, and pack verifiers intentionally remain dependency-free `.mjs`
+templates because they must run before a generated project installs packages.
+
 ## Generation boundary
 
 Natural-language interpretation remains with the agent. The agent turns the business request into a small project specification: package name, plugin name, DSH kind, model-facing tool name, product description, baseline channel, and delivery mode. The generator validates that specification and creates a collision-free baseline. The agent then replaces baseline behavior with the requested domain implementation and proves it through the generated test ladder.

@@ -3,7 +3,7 @@ import { lstat, mkdir, mkdtemp, realpath, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import test from 'node:test'
+import { test } from 'vitest'
 
 import {
   SkillInstallError,
@@ -14,7 +14,10 @@ import {
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const source = join(repositoryRoot, 'skills', 'dsh-plugin-dev')
 
-async function withTemporaryDirectory(prefix, operation) {
+async function withTemporaryDirectory<T>(
+  prefix: string,
+  operation: (root: string) => Promise<T>,
+): Promise<T> {
   const root = await mkdtemp(join(tmpdir(), prefix))
   try {
     return await operation(root)
@@ -23,12 +26,16 @@ async function withTemporaryDirectory(prefix, operation) {
   }
 }
 
-function hasCode(code) {
-  return error => {
+function hasCode(code: string): (error: unknown) => boolean {
+  return (error: unknown) => {
     assert.ok(error instanceof SkillInstallError)
     assert.equal(error.code, code)
     return true
   }
+}
+
+function hasErrno(code: string): (error: unknown) => boolean {
+  return (error: unknown) => error instanceof Error && 'code' in error && error.code === code
 }
 
 test('installs one user Skill symlink and is idempotent', async () => {
@@ -81,7 +88,7 @@ test('preflights both agent targets before creating either link', async () => {
       installUserSkills({ source, homeDirectory }),
       hasCode('DSH_SKILL_INSTALL_CONFLICT'),
     )
-    await assert.rejects(lstat(codexTarget), error => error?.code === 'ENOENT')
+    await assert.rejects(lstat(codexTarget), hasErrno('ENOENT'))
   })
 })
 
@@ -89,11 +96,11 @@ test('can install only one selected code agent', async () => {
   await withTemporaryDirectory('dsh-selected-agent-skill-', async homeDirectory => {
     const [result] = await installUserSkills({ source, homeDirectory, agents: ['claude'] })
 
-    assert.equal(result.agent, 'claude')
-    assert.equal(result.target, join(homeDirectory, '.claude', 'skills', 'dsh-plugin-dev'))
+    assert.equal(result!.agent, 'claude')
+    assert.equal(result!.target, join(homeDirectory, '.claude', 'skills', 'dsh-plugin-dev'))
     await assert.rejects(
       lstat(join(homeDirectory, '.agents', 'skills', 'dsh-plugin-dev')),
-      error => error?.code === 'ENOENT',
+      hasErrno('ENOENT'),
     )
   })
 })
@@ -104,7 +111,7 @@ test('dry-run does not create the target', async () => {
     const result = await installUserSkill({ source, targetRoot, dryRun: true })
 
     assert.equal(result.status, 'would-install')
-    await assert.rejects(lstat(result.target), error => error?.code === 'ENOENT')
+    await assert.rejects(lstat(result.target), hasErrno('ENOENT'))
   })
 })
 

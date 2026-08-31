@@ -10,10 +10,16 @@
 - Unit tests cover generator validation, reserved `run_code` rejection,
   collision refusal, deterministic output, source and Registry delivery,
   dual-Agent templates, and unsupported plugin kinds/delivery modes.
+- Generator, baseline, context, installer, and repository tests typecheck under
+  the strict TypeScript configuration. Every distributed `.mjs` entry and
+  `.d.mts` declaration byte-matches a fresh compile, and its source/output
+  SHA-256 matches `tooling-artifacts.json`.
 
 Run:
 
 ```sh
+pnpm build:check
+pnpm typecheck
 pnpm context:check
 pnpm context:check:strict
 pnpm test
@@ -83,6 +89,12 @@ test verification, packed once, installed/imported that archive in a second
 clean consumer, then passed official CLI profile add, effective dump, real
 boot, graceful SIGTERM shutdown, remove, and post-remove absence. Its audited
 Tool closure report recorded 24 available requirements and zero blocked.
+
+TypeScript-first tooling evidence (2026-08-31): all four public command
+implementations compile under the strict project configuration, their `.mjs`
+and `.d.mts` outputs byte-match a clean temporary compile and the
+source/output digest manifest, 272 context checks pass, and the same 21 unit
+plus two source/Registry e2e tests pass through TypeScript/Vitest.
 
 ## Baseline evolution acceptance
 

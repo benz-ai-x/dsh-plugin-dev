@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, readFile, realpath, rm, symlink, utimes, writeFile } fr
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import test from 'node:test'
+import { test } from 'vitest'
 
 import {
   ScaffoldError,
@@ -15,14 +15,46 @@ import {
   validateHarnessArtifacts,
 } from '../skills/dsh-plugin-dev/scripts/create-project.mjs'
 
+interface BaselineFileRecord {
+  catalog: { path: string }
+  registry: { status: string }
+  localResolution: { fallbackRelativePath: string }
+}
+
+interface RepositoryLockFile {
+  defaultChannel: string
+  channels: Record<string, BaselineFileRecord>
+}
+
+interface CatalogFile {
+  packages: Array<{ name: string; version: string }>
+}
+
+interface GeneratedManifest {
+  description: string
+  private: boolean
+  packageManager: string
+  engines: { node: string }
+  dependencies: Record<string, string>
+  devDependencies: Record<string, string>
+  scripts: Record<string, string | undefined>
+  exports: Record<string, string>
+  files: string[]
+  publishConfig?: { access: string } | undefined
+}
+
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const repositoryLock = JSON.parse(await readFile(join(repositoryRoot, 'dsh-reference.lock.json'), 'utf8'))
+const repositoryLock = JSON.parse(
+  await readFile(join(repositoryRoot, 'dsh-reference.lock.json'), 'utf8'),
+) as RepositoryLockFile
 const baselineChannel = process.env.DSH_BASELINE_CHANNEL ?? repositoryLock.defaultChannel
-const selectedBaseline = repositoryLock.channels[baselineChannel]
-const selectedCatalog = JSON.parse(await readFile(join(repositoryRoot, selectedBaseline.catalog.path), 'utf8'))
+const selectedBaseline = repositoryLock.channels[baselineChannel]!
+const selectedCatalog = JSON.parse(
+  await readFile(join(repositoryRoot, selectedBaseline.catalog.path), 'utf8'),
+) as CatalogFile
 const harnessRoot = resolve(
   process.env.DSH_HARNESS_BASELINE_ROOT
-    ?? join(repositoryRoot, '..', 'deepseek-harness-baseline'),
+    ?? join(repositoryRoot, selectedBaseline.localResolution.fallbackRelativePath),
 )
 const linkedPackageLocations = [
   'vendor/cordis',
@@ -33,7 +65,10 @@ const linkedPackageLocations = [
   'packages/core/tools',
 ]
 
-async function withTemporaryDirectory(prefix, operation) {
+async function withTemporaryDirectory<T>(
+  prefix: string,
+  operation: (root: string) => Promise<T>,
+): Promise<T> {
   const root = await mkdtemp(join(tmpdir(), prefix))
   try {
     return await operation(root)
@@ -42,15 +77,15 @@ async function withTemporaryDirectory(prefix, operation) {
   }
 }
 
-function hasCode(code) {
-  return error => {
+function hasCode(code: string): (error: unknown) => boolean {
+  return (error: unknown) => {
     assert.ok(error instanceof ScaffoldError)
     assert.equal(error.code, code)
     return true
   }
 }
 
-async function createLinkedArtifactFixture(root) {
+async function createLinkedArtifactFixture(root: string): Promise<void> {
   for (const [index, location] of linkedPackageLocations.entries()) {
     const packageRoot = join(root, location)
     await mkdir(join(packageRoot, 'src'), { recursive: true })
@@ -86,14 +121,16 @@ test('creates a deterministic source-linked Tool project without overwriting it'
     assert.ok(result.files.includes('src/index.ts'))
     assert.ok(result.files.includes('tests/loader.spec.ts'))
 
-    const manifest = JSON.parse(await readFile(join(result.target, 'package.json'), 'utf8'))
+    const manifest = JSON.parse(
+      await readFile(join(result.target, 'package.json'), 'utf8'),
+    ) as GeneratedManifest
     assert.equal(manifest.description, 'Inspect a repository and return an audit summary.')
     assert.equal(manifest.private, true)
     assert.equal(manifest.packageManager, 'pnpm@11.7.0')
     assert.equal(manifest.engines.node, '^22.19.0 || >=24.0.0')
     assert.equal(
       manifest.dependencies['@deepseek-ai/schemastery'],
-      selectedCatalog.packages.find(entry => entry.name === '@deepseek-ai/schemastery').version,
+      selectedCatalog.packages.find(entry => entry.name === '@deepseek-ai/schemastery')!.version,
     )
     assert.equal(manifest.devDependencies.typescript, '^6.0.3')
     assert.equal(
@@ -105,6 +142,7 @@ test('creates a deterministic source-linked Tool project without overwriting it'
     assert.equal(await readFile(join(result.target, 'dsh-registry.lock.json'), 'utf8').catch(() => undefined), undefined)
 
     const toolsLink = manifest.devDependencies['@deepseek-ai/dsh-tools']
+    assert.ok(toolsLink !== undefined)
     assert.match(toolsLink, /^link:/)
     assert.equal(
       await realpath(resolve(result.target, toolsLink.slice('link:'.length))),
@@ -129,9 +167,11 @@ test('creates a deterministic source-linked Tool project without overwriting it'
 
 test('creates a publishable Registry-delivered Tool project from ready evidence', async () => {
   await withTemporaryDirectory('dsh-generator-registry-', async root => {
-    const edge = repositoryLock.channels.edge
+    const edge = repositoryLock.channels.edge!
     assert.equal(edge.registry.status, 'ready')
-    const edgeCatalog = JSON.parse(await readFile(join(repositoryRoot, edge.catalog.path), 'utf8'))
+    const edgeCatalog = JSON.parse(
+      await readFile(join(repositoryRoot, edge.catalog.path), 'utf8'),
+    ) as CatalogFile
     const target = join(root, 'registry-audit')
     const result = await createProject({
       target,
@@ -143,9 +183,11 @@ test('creates a publishable Registry-delivered Tool project from ready evidence'
 
     assert.equal(result.delivery, 'registry')
     assert.equal(result.harnessRoot, undefined)
-    const manifest = JSON.parse(await readFile(join(target, 'package.json'), 'utf8'))
+    const manifest = JSON.parse(
+      await readFile(join(target, 'package.json'), 'utf8'),
+    ) as GeneratedManifest
     assert.equal(manifest.private, false)
-    assert.equal(manifest.publishConfig.access, 'public')
+    assert.equal(manifest.publishConfig!.access, 'public')
     assert.equal(manifest.scripts['context:sync'], undefined)
     assert.equal(
       manifest.scripts['context:check:strict'],
@@ -159,7 +201,7 @@ test('creates a publishable Registry-delivered Tool project from ready evidence'
       prompt: '@deepseek-ai/dsh-system-prompt',
       tools: '@deepseek-ai/dsh-tools',
     })) {
-      const expected = edgeCatalog.packages.find(entry => entry.name === packageName).version
+      const expected = edgeCatalog.packages.find(entry => entry.name === packageName)!.version
       assert.equal(manifest.devDependencies[packageName], expected)
     }
     assert.doesNotMatch(JSON.stringify(manifest), /(?:link:|workspace:)/)
@@ -265,7 +307,7 @@ test('rejects missing and stale linked Harness build entries', async () => {
     await createLinkedArtifactFixture(root)
     await validateHarnessArtifacts(root)
 
-    const missingTypes = join(root, linkedPackageLocations[0], 'lib', 'types', 'index.d.ts')
+    const missingTypes = join(root, linkedPackageLocations[0]!, 'lib', 'types', 'index.d.ts')
     await rm(missingTypes)
     await assert.rejects(
       validateHarnessArtifacts(root),
@@ -273,7 +315,7 @@ test('rejects missing and stale linked Harness build entries', async () => {
     )
 
     await writeFile(missingTypes, 'export declare const built: true\n')
-    const newerSource = join(root, linkedPackageLocations[1], 'src', 'index.ts')
+    const newerSource = join(root, linkedPackageLocations[1]!, 'src', 'index.ts')
     const future = new Date(Date.now() + 60_000)
     await utimes(newerSource, future, future)
     await assert.rejects(
