@@ -71,16 +71,19 @@ Append complete lossless-JSON facts and treat the returned snapshot as the
 committed in-memory value. Only `user/message`, `assistant/message`, and
 `tool/result` are surface events.
 
-The pinned persistence runtime accepts only its generated
-`KNOWN_SESSION_EVENT_TYPES`. It has no runtime registration surface for
-out-of-repo declarations, so an ordinary external plugin must not append a new
-custom Session event on the stock build: declaration merging and Loader
-composition do not make recovery accept it. Use an existing event only when
-its semantics genuinely match, a Cordis live event for process coordination,
-or plugin-owned versioned persistence. Custom durable Session vocabulary
-requires in-tree integration or a maintained Harness source overlay,
-regeneration of the persistence catalog, and delivery of the matching rebuilt
-Harness plus a format/migration plan. Such a custom type remains log-only
+The pinned persistence runtime compares recovered types with its generated
+`KNOWN_SESSION_EVENT_TYPES` and has no runtime registration surface for
+out-of-repo declarations. It does retain an unknown record whose stored
+envelope explicitly carries `ignorable: true`; absent means required and cold
+load refuses the Session. Use that marker only for information whose loss
+cannot change reconstruction. Declaration merging and Loader composition do
+not set it, and this pinned `Session.append()` surface exposes no log-only
+`ignorable` option, so an ordinary custom append is still not portable across
+stock recovery. Use an existing event only when its semantics genuinely match,
+a Cordis live event for process coordination, or plugin-owned versioned
+persistence. A required custom vocabulary needs in-tree integration or a
+maintained Harness source overlay, a regenerated persistence catalog, the
+matching rebuilt Harness, and a format/migration plan. It remains log-only
 unless that matching build also changes the closed surface contract.
 
 `Session.append()` is the in-memory acceptance/publication boundary, not proof

@@ -14,7 +14,7 @@
 
 - Node.js `^22.19.0` 或 `>=24.0.0`（与锁定的 Harness 一致）
 - pnpm 11
-- 本地 DeepSeek Harness 源码检出，且版本与 `dsh-reference.lock.json` 一致；tracked/non-ignored 源码需 clean，根目录不得有会被 CLI 加载的 `.env`，并先执行 `pnpm install && pnpm run build`
+- 验证本仓库或使用 `source` 交付时，需要与 `dsh-reference.lock.json` 一致的本地 DeepSeek Harness；tracked/non-ignored 源码需 clean，根目录不得有会被 CLI 加载的 `.env`，并先执行 `pnpm install && pnpm run build`。使用已审计为 `ready` 的 `registry` 生成模式时，生成项目本身不需要本地 Harness。
 - Codex、Claude Code，或两者都安装
 
 如果 Harness 不在默认相对位置，请先设置：
@@ -83,8 +83,8 @@ pnpm verify
 
 - 如果空目录出现 `ERR_PNPM_NO_IMPORTER_MANIFEST_FOUND`，说明在生成 `package.json` 前执行了 pnpm。先启动 Codex 或 Claude Code 并调用本 Skill，生成脚手架后再运行 pnpm。
 - 生成项目绑定 `dsh-reference.lock.json` 中审计过的 Harness 版本；源码锁不匹配时会停止，而不会静默套用错误契约。
-- Harness checkout 移动后，在生成项目内运行 `DSH_HARNESS_ROOT=/new/path pnpm context:sync`；该命令会改写六个 `link:` 依赖并刷新 lockfile，仅设置环境变量不会改写它们。
-- 当前 DSH 依赖闭包尚不能全部从普通 npm Registry 获取，因此生成项目使用本地 Harness 源码链接并保持 `private: true`。本地验证通过不等于已经具备独立 npm 发布条件。
+- 生成器默认使用 `source`；Harness checkout 移动后，在生成项目内运行 `DSH_HARNESS_ROOT=/new/path pnpm context:sync`。该命令会改写六个 `link:` 依赖并刷新 lockfile。
+- `--delivery registry` 仅接受 Registry 闭包为 `ready` 的基线，生成普通精确版本依赖、`dsh-registry.lock.json` 和可发布 manifest，不需要 Harness 路径。最终发布仍须用同一个 `.tgz` 通过干净安装/导入和真实 profile add/dump/boot/remove。
 
 ### 验证本仓库
 
@@ -108,7 +108,7 @@ This repository is development tooling, not a DSH runtime plugin. The determinis
 
 - Node.js `^22.19.0` or `>=24.0.0`, matching the pinned Harness
 - pnpm 11
-- A local DeepSeek Harness checkout matching `dsh-reference.lock.json`, with clean tracked/non-ignored source inputs, no root `.env` that the CLI could load, and prepared with `pnpm install && pnpm run build`
+- Verifying this repository or using `source` delivery requires a local DeepSeek Harness checkout matching `dsh-reference.lock.json`, with clean tracked/non-ignored source inputs, no root `.env` that the CLI could load, and prepared with `pnpm install && pnpm run build`. A generated project using an audited `ready` Registry delivery does not require a local Harness checkout.
 - Codex, Claude Code, or both
 
 If Harness is not at the default relative location, set:
@@ -177,8 +177,8 @@ pnpm verify
 
 - `ERR_PNPM_NO_IMPORTER_MANIFEST_FOUND` in an empty directory means pnpm ran before the scaffold created `package.json`. Start Codex or Claude Code and invoke this Skill first; run pnpm after generation.
 - Generated projects are locked to the audited Harness revision in `dsh-reference.lock.json`. A source mismatch stops generation instead of silently applying the wrong contract.
-- After moving the Harness checkout, run `DSH_HARNESS_ROOT=/new/path pnpm context:sync` inside the generated project. It rewrites the six `link:` dependencies and refreshes the lockfile; setting the variable alone does not rewrite them.
-- The complete pinned DSH dependency closure is not yet available from an ordinary npm registry. Generated projects therefore use local Harness source links and remain `private: true`. Passing local verification does not prove independent npm publication readiness.
+- Generation defaults to `source`. After moving the Harness checkout, run `DSH_HARNESS_ROOT=/new/path pnpm context:sync`; it rewrites the six `link:` dependencies and refreshes the lockfile.
+- `--delivery registry` is accepted only for a baseline with a `ready` Registry closure. It emits exact ordinary versions, `dsh-registry.lock.json`, and a publishable manifest without a Harness path. Final publication still requires clean install/import and real profile add/dump/boot/remove using the same `.tgz`.
 
 ### Verify this repository
 

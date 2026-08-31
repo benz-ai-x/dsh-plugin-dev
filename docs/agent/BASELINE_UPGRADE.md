@@ -60,7 +60,7 @@ and compatibility documentation before verification.
 
 ```sh
 DSH_HARNESS_BASELINE_ROOT=/path/to/clean-worktree \
-  pnpm upstream:check -- --channel edge
+  pnpm upstream:check --channel edge
 
 DSH_HARNESS_BASELINE_ROOT=/path/to/clean-worktree \
   pnpm baseline:verify
@@ -70,7 +70,9 @@ DSH_HARNESS_BASELINE_ROOT=/path/to/clean-worktree \
 snapshots, then runs this repository's full `pnpm verify` under the exact pnpm
 version recorded by Harness. The generated Tool e2e includes strict source,
 unit/HMR, Loader, build, archive inspection, and isolated profile
-add/dump/remove coverage.
+add/dump/boot/remove coverage. When the Registry report is ready, it also
+generates an ordinary-dependency project, installs its exact archive into a
+clean consumer, and exercises the same profile lifecycle without source links.
 
 The deterministic acceptance matrix currently covers only Tool projects.
 Service, Host/Client, LLM, Agent Team, and library/bundle-only kinds cannot be
@@ -80,7 +82,7 @@ tests exist.
 ## Check Registry closure
 
 ```sh
-pnpm registry:check -- --channel edge
+pnpm registry:check --channel edge
 ```
 
 The check queries every exact first-party package in the Tool publication
@@ -105,9 +107,9 @@ and digest checks for the default stable channel.
 
 After promotion, bump and release `dsh-plugin-dev`, record the compatibility
 mapping, and migrate existing generated projects explicitly. Regenerate their
-lock and link specifications in a reviewable change; do not silently edit
-their business implementation. Retain the prior project release and stable
-lock in Git for rollback.
+lock and source-link or Registry specifications in a reviewable change; do not
+silently edit their delivery mode or business implementation. Retain the prior
+project release and stable lock in Git for rollback.
 
 The committed lock stores only a relocatable fallback. Another machine should
 set `DSH_HARNESS_BASELINE_ROOT` or prepare the equivalent sibling worktree.

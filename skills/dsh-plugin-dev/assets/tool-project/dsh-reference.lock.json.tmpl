@@ -1,6 +1,7 @@
 {
   "schemaVersion": 2,
   "channel": "__BASELINE_CHANNEL__",
+  "delivery": __DELIVERY_JSON_RAW__,
   "upstream": {
     "repository": "__HARNESS_REPOSITORY__",
     "tag": "__HARNESS_TAG__",
@@ -11,9 +12,6 @@
     "docsDigest": "__HARNESS_DOCS_DIGEST__",
     "catalogDigest": "__HARNESS_CATALOG_DIGEST__"
   },
-  "localResolution": {
-    "environmentVariable": "DSH_HARNESS_ROOT",
-    "fallbackRelativePath": "__HARNESS_FALLBACK__"
-  },
+  "localResolution": __LOCAL_RESOLUTION_JSON_RAW__,
   "verifiedOn": "__HARNESS_VERIFIED_ON__"
 }

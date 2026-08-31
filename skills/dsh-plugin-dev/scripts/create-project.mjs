@@ -24,6 +24,7 @@ const PLUGIN_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const TOOL_NAME = /^[a-z][a-z0-9_]*$/
 const ALLOWED_EMPTY_ENTRIES = new Set(['.DS_Store', '.git'])
 const RESERVED_TOOL_NAMES = new Set(['run_code'])
+const DELIVERY_MODES = new Set(['source', 'registry'])
 const LINKED_PACKAGE_NAMES = Object.freeze({
   CORDIS_LINK: '@deepseek-ai/cordis',
   LOADER_LINK: '@deepseek-ai/cordis-plugin-loader',
@@ -310,6 +311,53 @@ async function loadBaselineLock(requestedChannel) {
   }
 }
 
+async function loadRegistryReport(lock) {
+  const summary = lock.registry
+  if (summary?.status !== 'ready') {
+    fail(
+      'DSH_SCAFFOLD_REGISTRY_UNREADY',
+      `baseline channel ${lock.channel} Registry closure is ${summary?.status ?? 'missing'}; run the baseline Registry check before selecting registry delivery`,
+    )
+  }
+
+  const reportPath = resolve(pluginRoot, summary.path ?? '')
+  if (reportPath === pluginRoot || !reportPath.startsWith(`${pluginRoot}${sep}`)) {
+    fail('DSH_SCAFFOLD_HARNESS_MISMATCH', `baseline Registry report escapes the Plugin root: ${reportPath}`)
+  }
+
+  let content
+  let report
+  try {
+    content = await readFile(reportPath, 'utf8')
+    report = JSON.parse(content)
+  } catch (error) {
+    fail(
+      'DSH_SCAFFOLD_HARNESS_MISMATCH',
+      `cannot read baseline Registry report ${reportPath}: ${error instanceof Error ? error.message : String(error)}`,
+    )
+  }
+
+  const digest = createHash('sha256').update(content).digest('hex')
+  const invalid = (
+    digest !== summary.sha256
+    || report.schemaVersion !== 1
+    || report.channel !== lock.channel
+    || report.capability !== 'tool'
+    || report.catalogSha256 !== lock.catalogDigest
+    || report.status !== 'ready'
+    || report.checkedAt !== summary.checkedAt
+    || ![...(report.packages ?? []), ...(report.externalRequirements ?? [])]
+      .every(entry => entry.available === true)
+  )
+  if (invalid) {
+    fail(
+      'DSH_SCAFFOLD_REGISTRY_UNREADY',
+      `baseline channel ${lock.channel} Registry report is stale, incomplete, or inconsistent with its lock`,
+    )
+  }
+  return { content, digest, report }
+}
+
 async function validateHarnessRoot(sourceRoot, lock) {
   let manifest
   try {
@@ -411,7 +459,7 @@ function requireCatalogPackage(catalog, name) {
   return entry
 }
 
-function templateValues({ target, harnessRoot, lock, description, names }) {
+function templateValues({ target, harnessRoot, lock, registryEvidence, delivery, description, names }) {
   const linkedPackages = lock.catalog?.capabilities?.tool?.linkedPackages
   if (!linkedPackages) {
     fail('DSH_SCAFFOLD_HARNESS_MISMATCH', 'baseline catalog has no Tool linked-package contract')
@@ -420,6 +468,31 @@ function templateValues({ target, harnessRoot, lock, description, names }) {
   const cordisVersion = requireCatalogPackage(lock.catalog, '@deepseek-ai/cordis').version
   const toolsVersion = requireCatalogPackage(lock.catalog, '@deepseek-ai/dsh-tools').version
   const schemasteryVersion = requireCatalogPackage(lock.catalog, '@deepseek-ai/schemastery').version
+  const developmentDependencies = {}
+  for (const packageName of Object.values(LINKED_PACKAGE_NAMES)) {
+    const path = linkedPackages[packageName]
+    if (!path) fail('DSH_SCAFFOLD_HARNESS_MISMATCH', `Tool link contract is missing ${packageName}`)
+    developmentDependencies[packageName] = delivery === 'source'
+      ? `link:${relativeProjectPath(target, join(harnessRoot, path))}`
+      : requireCatalogPackage(lock.catalog, packageName).version
+  }
+  const deliveryLock = delivery === 'source'
+    ? { mode: 'source' }
+    : {
+        mode: 'registry',
+        status: registryEvidence.report.status,
+        checkedAt: registryEvidence.report.checkedAt,
+        reportPath: 'dsh-registry.lock.json',
+        reportSha256: registryEvidence.digest,
+        registry: registryEvidence.report.registry,
+      }
+  const localResolution = delivery === 'source'
+    ? {
+        environmentVariable: 'DSH_HARNESS_ROOT',
+        fallbackRelativePath: relativeProjectPath(target, harnessRoot),
+      }
+    : null
+  const sourceDelivery = delivery === 'source'
   const values = {
     PACKAGE_NAME: names.packageName,
     PLUGIN_NAME: names.pluginName,
@@ -427,6 +500,7 @@ function templateValues({ target, harnessRoot, lock, description, names }) {
     ROW_ID: names.pluginName,
     DESCRIPTION: description,
     DESCRIPTION_LITERAL: JSON.stringify(description),
+    DELIVERY_MODE: delivery,
     BASELINE_CHANNEL: lock.channel,
     HARNESS_REPOSITORY: lock.upstream.repository,
     HARNESS_TAG: lock.upstream.tag,
@@ -437,7 +511,6 @@ function templateValues({ target, harnessRoot, lock, description, names }) {
     HARNESS_DOCS_DIGEST: lock.upstream.docsDigest,
     HARNESS_CATALOG_DIGEST: lock.catalogDigest,
     HARNESS_VERIFIED_ON: lock.verifiedOn,
-    HARNESS_FALLBACK: relativeProjectPath(target, harnessRoot),
     CORDIS_PEER_VERSION: `^${cordisVersion}`,
     DSH_TOOLS_VERSION: toolsVersion,
     SCHEMASTERY_VERSION: schemasteryVersion,
@@ -445,11 +518,61 @@ function templateValues({ target, harnessRoot, lock, description, names }) {
     TYPESCRIPT_VERSION: toolchain.typescript,
     VITEST_VERSION: toolchain.vitest,
     EXPECTED_LINKS_JSON: JSON.stringify(linkedPackages, null, 2),
+    EXPECTED_DEVELOPMENT_DEPENDENCIES_JSON: JSON.stringify(developmentDependencies, null, 2),
+    DELIVERY_JSON: JSON.stringify(deliveryLock, null, 2),
+    LOCAL_RESOLUTION_JSON: JSON.stringify(localResolution, null, 2),
+    REGISTRY_REPORT_JSON: registryEvidence?.content.trimEnd() ?? '',
+    PACKAGE_DELIVERY_FIELDS: delivery === 'source'
+      ? '"private": true,'
+      : '"private": false,\n  "publishConfig": {\n    "access": "public"\n  },',
+    CONTEXT_STRICT_COMMAND: delivery === 'source'
+      ? 'node scripts/verify-dsh-context.mjs --require-source'
+      : 'node scripts/verify-dsh-context.mjs --require-registry',
+    CONTEXT_SYNC_SCRIPT_ENTRY: delivery === 'source'
+      ? '    "context:sync": "node scripts/verify-dsh-context.mjs --sync-links --require-source && pnpm install --no-frozen-lockfile",\n'
+      : '',
+    PROJECT_INTRO: sourceDelivery
+      ? `This project is a source-linked DeepSeek Harness Tool plugin scaffold generated by \`dsh-plugin-dev\`. The baseline registers \`${names.toolName}\`, validates one string input, and returns a canonical \`{ value }\` result. Replace that normalization body and its tests with the requested business operation before treating the plugin as complete.`
+      : `This project is a Registry-delivered DeepSeek Harness Tool plugin scaffold generated by \`dsh-plugin-dev\`. The baseline registers \`${names.toolName}\`, validates one string input, and returns a canonical \`{ value }\` result. Replace that normalization body and its tests with the requested business operation before treating the plugin as complete.`,
+    DEVELOPMENT_CONTEXT: sourceDelivery
+      ? `The project targets DeepSeek Harness \`${lock.upstream.version}\` at commit \`${lock.upstream.commit}\` and requires Node \`${lock.upstream.node}\`. Its tracked/non-ignored source inputs must be clean, its root must not contain a CLI-loaded \`.env\`, and it must be built (\`pnpm install && pnpm run build\`) because source-linked packages expose their generated \`lib/\` entries.`
+      : `The project targets DeepSeek Harness \`${lock.upstream.version}\` at commit \`${lock.upstream.commit}\` and requires Node \`${lock.upstream.node}\`. Its exact ordinary dependency versions come from the audited \`${lock.channel}\` catalog, and \`dsh-registry.lock.json\` records the ready Registry closure checked at \`${registryEvidence.report.checkedAt}\`. No local Harness checkout is required for installation or verification.`,
+    CONTEXT_SYNC_SECTION: sourceDelivery
+      ? `If the Harness checkout moves, point at the new location and synchronize the\nsix development links plus the package-manager lock:\n\n\`\`\`sh\nDSH_HARNESS_ROOT=/new/path/to/deepseek-harness pnpm context:sync\n\`\`\``
+      : 'Registry delivery has no `context:sync` command. Upgrade dependency versions only through a reviewed DSH baseline migration with fresh Registry evidence.',
+    VERIFY_CONTEXT_DESCRIPTION: sourceDelivery
+      ? 'checks the pinned clean source and linked build entries'
+      : 'checks the pinned Registry evidence and exact ordinary dependency specifications',
+    DELIVERY_STATUS_TEXT: sourceDelivery
+      ? 'This source-delivered project uses development links to the local pinned Harness checkout and remains `private: true`. Passing local tests proves compatibility with that source snapshot, not independent npm publication readiness. Regenerate with `--delivery registry` only against a baseline whose Registry closure is recorded as `ready`.'
+      : `The audited Tool dependency closure was Registry-ready at \`${registryEvidence.report.checkedAt}\`. This package uses ordinary exact development dependencies, contains no \`link:\` or \`workspace:\` specifier, and is configured with \`private: false\` plus public access. That evidence enables publication work; publish only after the real business behavior, clean packed-artifact install, and DSH profile add/dump/boot/remove smoke all pass.`,
+    AGENT_CONTEXT_POLICY: sourceDelivery
+      ? 'Before dependencies are installed, run `node scripts/verify-dsh-context.mjs` before planning and add `--require-source` before implementation. After `pnpm install`, use `pnpm context:check` and `pnpm context:check:strict` normally. Stop and report a lock mismatch instead of developing against another Harness contract.\n\nAfter moving the pinned Harness checkout or changing `DSH_HARNESS_ROOT`, run\n`pnpm context:sync`; it rewrites the links and refreshes the dependency lock.\nThe environment variable alone does not rewrite package-manager links.'
+      : 'Before dependencies are installed, run `node scripts/verify-dsh-context.mjs --require-registry`. After `pnpm install`, use `pnpm context:check` and `pnpm context:check:strict` normally. Stop and report a lock or Registry-evidence mismatch instead of changing versions ad hoc. Registry delivery has no local Harness root and no `context:sync` command.',
+    DELIVERY_BOUNDARY: sourceDelivery
+      ? 'the source-linked publication boundary'
+      : 'the audited Registry-delivery and publication boundary',
+    CONTRACT_DELIVERY_BULLETS: sourceDelivery
+      ? '- Development route: local source overlay against the audited Harness lock.\n- Publication status: blocked for this generated package while its dependencies remain source-linked.'
+      : `- Development route: exact ordinary Registry dependencies backed by \`dsh-registry.lock.json\`.\n- Publication status: enabled for release preparation by Registry evidence checked at \`${registryEvidence.report.checkedAt}\`; final publication still requires the project-specific release ladder.`,
+    CONTRACT_CONTEXT_STEP: sourceDelivery
+      ? '5. Run `node scripts/verify-dsh-context.mjs --require-source` before changing\n   runtime behavior; after `pnpm install`, the equivalent command is\n   `pnpm context:check:strict`.'
+      : '5. Run `node scripts/verify-dsh-context.mjs --require-registry` before changing runtime behavior; after `pnpm install`, use `pnpm context:check:strict`.',
+    CONTRACT_DELIVERY_INVARIANTS: sourceDelivery
+      ? '- Do not replace source-linked dependencies with guessed Registry versions or claim publication readiness without a clean external closure.\n- When the Harness checkout moves, run `pnpm context:sync` to rewrite the\n  development links and dependency lock; changing `DSH_HARNESS_ROOT` alone\n  does neither.'
+      : '- Keep ordinary dependency versions aligned with the audited catalog and `dsh-registry.lock.json`; do not introduce `link:` or `workspace:` specifications.\n- Refresh Registry evidence and repeat clean packed-artifact/profile verification before publishing after any DSH baseline change.',
+    TODO_BASELINE_BINDING: sourceDelivery
+      ? '- [x] Bind development dependencies to the audited local Harness source.'
+      : '- [x] Bind ordinary development dependencies to the audited Registry-ready DSH closure.',
+    TODO_DELIVERY_ITEMS: sourceDelivery
+      ? '- [ ] Update this README with the exact Model Experience, configuration, authority, limits, and operational setup.\n- [ ] Recheck every DSH dependency for public availability.\n- [ ] Keep `private: true` until an ordinary clean-directory install and packed-artifact profile smoke pass without source links.'
+      : '- [ ] Update this README with the exact Model Experience, configuration, authority, limits, and operational setup.\n- [ ] Run a clean-directory install of the final ordinary dependency graph.\n- [ ] Pack the final artifact and pass DSH profile add, effective dump, real boot, behavior, remove, and post-remove absence checks.\n- [ ] Publish the exact verified archive through the intended Registry/account workflow.',
+    TODO_DEFINITION: sourceDelivery
+      ? 'The generated baseline is not the finished business capability. Completion requires the real operation, all applicable tests, `pnpm verify`, an external-world assertion, honest source-linked delivery status, and an updated TODO.'
+      : 'The generated baseline is not the finished business capability. Completion requires the real operation, all applicable tests, `pnpm verify`, an external-world assertion, clean packed-artifact/profile verification, an updated TODO, and publication of the exact verified archive when release is requested.',
   }
   for (const [key, packageName] of Object.entries(LINKED_PACKAGE_NAMES)) {
-    const path = linkedPackages[packageName]
-    if (!path) fail('DSH_SCAFFOLD_HARNESS_MISMATCH', `Tool link contract is missing ${packageName}`)
-    values[key] = `link:${relativeProjectPath(target, join(harnessRoot, path))}`
+    values[key] = developmentDependencies[packageName]
   }
   return values
 }
@@ -496,6 +619,20 @@ export async function createProject(options = {}) {
     )
   }
 
+  const delivery = options.delivery ?? 'source'
+  if (!DELIVERY_MODES.has(delivery)) {
+    fail(
+      'DSH_SCAFFOLD_UNSUPPORTED_DELIVERY',
+      `delivery must be source or registry: ${delivery}`,
+    )
+  }
+  if (delivery === 'registry' && options.harnessRoot) {
+    fail(
+      'DSH_SCAFFOLD_USAGE',
+      '--harness-root is only valid with source delivery',
+    )
+  }
+
   const description = normalizeDescription(options.description ?? '')
   if (description.length === 0 || description.length > 300) {
     fail(
@@ -507,12 +644,29 @@ export async function createProject(options = {}) {
   const names = deriveNames(target, options)
   await assertEmptyTarget(target)
   const lock = await loadBaselineLock(options.channel)
-  const harnessRoot = await resolveHarnessRoot({
-    explicitRoot: options.harnessRoot,
+  if (!nodeSatisfies(lock.upstream.node)) {
+    fail(
+      'DSH_SCAFFOLD_NODE_UNSUPPORTED',
+      `Node ${process.version} does not satisfy the pinned Harness engine ${lock.upstream.node}`,
+    )
+  }
+  const registryEvidence = delivery === 'registry' ? await loadRegistryReport(lock) : undefined
+  const harnessRoot = delivery === 'source'
+    ? await resolveHarnessRoot({
+        explicitRoot: options.harnessRoot,
+        target,
+        lock,
+      })
+    : undefined
+  const values = templateValues({
     target,
+    harnessRoot,
     lock,
+    registryEvidence,
+    delivery,
+    description,
+    names,
   })
-  const values = templateValues({ target, harnessRoot, lock, description, names })
 
   const templates = await listFiles(templateRoot)
   const outputs = []
@@ -520,6 +674,7 @@ export async function createProject(options = {}) {
     const templateRelative = relative(templateRoot, template).split(sep).join('/')
     if (!templateRelative.endsWith('.tmpl')) continue
     const outputRelative = templateRelative.slice(0, -'.tmpl'.length)
+    if (outputRelative === 'dsh-registry.lock.json' && delivery !== 'registry') continue
     const outputPath = join(target, ...outputRelative.split('/'))
     if (await exists(outputPath)) {
       fail('DSH_SCAFFOLD_TARGET_COLLISION', `refusing to overwrite ${outputPath}`)
@@ -550,6 +705,7 @@ export async function createProject(options = {}) {
   return {
     kind,
     channel: lock.channel,
+    delivery,
     target,
     harnessRoot,
     ...names,
@@ -570,6 +726,7 @@ function usage() {
     '  --description <text>       Model-visible product operation (required)',
     '  --harness-root <path>      Audited DeepSeek Harness checkout',
     '  --channel stable|edge      Audited baseline channel (default: stable)',
+    '  --delivery source|registry Development source overlay or publishable Registry closure (default: source)',
     '  --json                     Print the result as JSON',
     '  --help                     Show this help',
   ].join('\n')
@@ -586,6 +743,7 @@ export function parseArgs(argv) {
     ['--description', 'description'],
     ['--harness-root', 'harnessRoot'],
     ['--channel', 'channel'],
+    ['--delivery', 'delivery'],
   ])
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -624,7 +782,8 @@ async function main() {
     console.log(`package: ${result.packageName}`)
     console.log(`plugin: ${result.pluginName}`)
     console.log(`tool: ${result.toolName}`)
-    console.log(`Harness: ${result.harnessRoot}`)
+    console.log(`delivery: ${result.delivery}`)
+    if (result.harnessRoot) console.log(`Harness: ${result.harnessRoot}`)
     console.log(`channel: ${result.channel}`)
     console.log('next: pnpm install && pnpm verify')
   } catch (error) {

@@ -146,6 +146,14 @@ manifest/source inputs. This timestamp guard catches missing and obviously
 stale builds; it is not a content-addressed proof, so publication still
 requires a clean ordinary-resolution packed install.
 
+For Registry delivery, retain the digest-bound closure report with the
+generated project. Exact ordinary dependency specifications and a successful
+install prove what was resolved at that time; the report is not a promise that
+the Registry will remain available forever. Reject `link:` and `workspace:`
+specifiers, install the final graph in a clean directory, pack once, and use
+that exact archive for import and profile acceptance. Do not rebuild a
+different artifact between verification and publication.
+
 ## Test ladder
 
 Use the lowest useful test, but do not stop below the surface that ships:
@@ -189,4 +197,6 @@ Before publication verify:
 - `exports`, declarations, Client assets, patch file, and prepare/build scripts
   match the advertised install form;
 - add, dump, boot, HMR/restart as applicable, and remove all work;
+- post-remove config no longer contains the bundle, and the boot process
+  handles its ordinary supervisor shutdown signal cleanly;
 - README commands use the public CLI rather than a test-only driver.

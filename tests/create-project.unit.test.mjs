@@ -16,6 +16,10 @@ import {
 } from '../skills/dsh-plugin-dev/scripts/create-project.mjs'
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const repositoryLock = JSON.parse(await readFile(join(repositoryRoot, 'dsh-reference.lock.json'), 'utf8'))
+const baselineChannel = process.env.DSH_BASELINE_CHANNEL ?? repositoryLock.defaultChannel
+const selectedBaseline = repositoryLock.channels[baselineChannel]
+const selectedCatalog = JSON.parse(await readFile(join(repositoryRoot, selectedBaseline.catalog.path), 'utf8'))
 const harnessRoot = resolve(
   process.env.DSH_HARNESS_BASELINE_ROOT
     ?? join(repositoryRoot, '..', 'deepseek-harness-baseline'),
@@ -72,7 +76,8 @@ test('creates a deterministic source-linked Tool project without overwriting it'
     })
 
     assert.equal(result.kind, 'tool')
-    assert.equal(result.channel, process.env.DSH_BASELINE_CHANNEL ?? 'stable')
+    assert.equal(result.channel, baselineChannel)
+    assert.equal(result.delivery, 'source')
     assert.equal(result.packageName, 'dsh-repository-audit')
     assert.equal(result.pluginName, 'repository-audit')
     assert.equal(result.toolName, 'repository_audit')
@@ -86,7 +91,10 @@ test('creates a deterministic source-linked Tool project without overwriting it'
     assert.equal(manifest.private, true)
     assert.equal(manifest.packageManager, 'pnpm@11.7.0')
     assert.equal(manifest.engines.node, '^22.19.0 || >=24.0.0')
-    assert.equal(manifest.dependencies['@deepseek-ai/schemastery'], '3.18.1')
+    assert.equal(
+      manifest.dependencies['@deepseek-ai/schemastery'],
+      selectedCatalog.packages.find(entry => entry.name === '@deepseek-ai/schemastery').version,
+    )
     assert.equal(manifest.devDependencies.typescript, '^6.0.3')
     assert.equal(
       manifest.scripts['context:sync'],
@@ -94,6 +102,7 @@ test('creates a deterministic source-linked Tool project without overwriting it'
     )
     assert.equal(manifest.exports['./cordis.patch.yml'], './cordis.patch.yml')
     assert.equal(manifest.files.some(path => path.endsWith('.map')), false)
+    assert.equal(await readFile(join(result.target, 'dsh-registry.lock.json'), 'utf8').catch(() => undefined), undefined)
 
     const toolsLink = manifest.devDependencies['@deepseek-ai/dsh-tools']
     assert.match(toolsLink, /^link:/)
@@ -118,11 +127,79 @@ test('creates a deterministic source-linked Tool project without overwriting it'
   })
 })
 
+test('creates a publishable Registry-delivered Tool project from ready evidence', async () => {
+  await withTemporaryDirectory('dsh-generator-registry-', async root => {
+    const edge = repositoryLock.channels.edge
+    assert.equal(edge.registry.status, 'ready')
+    const edgeCatalog = JSON.parse(await readFile(join(repositoryRoot, edge.catalog.path), 'utf8'))
+    const target = join(root, 'registry-audit')
+    const result = await createProject({
+      target,
+      channel: 'edge',
+      delivery: 'registry',
+      name: '@example/dsh-registry-audit',
+      description: 'Verify a Registry-delivered plugin project.',
+    })
+
+    assert.equal(result.delivery, 'registry')
+    assert.equal(result.harnessRoot, undefined)
+    const manifest = JSON.parse(await readFile(join(target, 'package.json'), 'utf8'))
+    assert.equal(manifest.private, false)
+    assert.equal(manifest.publishConfig.access, 'public')
+    assert.equal(manifest.scripts['context:sync'], undefined)
+    assert.equal(
+      manifest.scripts['context:check:strict'],
+      'node scripts/verify-dsh-context.mjs --require-registry',
+    )
+    for (const packageName of Object.values({
+      cordis: '@deepseek-ai/cordis',
+      include: '@deepseek-ai/cordis-plugin-include',
+      loader: '@deepseek-ai/cordis-plugin-loader',
+      llm: '@deepseek-ai/dsh-llm',
+      prompt: '@deepseek-ai/dsh-system-prompt',
+      tools: '@deepseek-ai/dsh-tools',
+    })) {
+      const expected = edgeCatalog.packages.find(entry => entry.name === packageName).version
+      assert.equal(manifest.devDependencies[packageName], expected)
+    }
+    assert.doesNotMatch(JSON.stringify(manifest), /(?:link:|workspace:)/)
+
+    const generatedLock = JSON.parse(await readFile(join(target, 'dsh-reference.lock.json'), 'utf8'))
+    const registryReport = JSON.parse(await readFile(join(target, 'dsh-registry.lock.json'), 'utf8'))
+    assert.equal(generatedLock.delivery.mode, 'registry')
+    assert.equal(generatedLock.delivery.status, 'ready')
+    assert.equal(generatedLock.localResolution, null)
+    assert.equal(registryReport.status, 'ready')
+    assert.equal(registryReport.catalogSha256, generatedLock.upstream.catalogDigest)
+
+    const verified = spawnSync(
+      process.execPath,
+      [join(target, 'scripts', 'verify-dsh-context.mjs'), '--require-registry'],
+      { cwd: target, encoding: 'utf8' },
+    )
+    assert.equal(verified.status, 0, verified.stderr)
+    assert.match(verified.stdout, /validated Registry evidence/)
+  })
+})
+
 test('validates project intent before touching the target', async () => {
   await withTemporaryDirectory('dsh-generator-errors-', async root => {
     await assert.rejects(
       createProject({ target: join(root, 'service'), kind: 'service', description: 'Provide a service.' }),
       hasCode('DSH_SCAFFOLD_UNSUPPORTED_KIND'),
+    )
+    await assert.rejects(
+      createProject({ target: join(root, 'delivery'), delivery: 'archive', description: 'Use an unsupported delivery.' }),
+      hasCode('DSH_SCAFFOLD_UNSUPPORTED_DELIVERY'),
+    )
+    await assert.rejects(
+      createProject({
+        target: join(root, 'registry-source'),
+        delivery: 'registry',
+        harnessRoot,
+        description: 'Reject a source root in Registry delivery.',
+      }),
+      hasCode('DSH_SCAFFOLD_USAGE'),
     )
     await assert.rejects(
       createProject({ target: join(root, 'blank'), description: '   ' }),
@@ -250,6 +327,7 @@ test('parses the public generator CLI contract', () => {
       '--description', 'Audit a repository.',
       '--harness-root', '/tmp/harness',
       '--channel', 'edge',
+      '--delivery', 'registry',
       '--json',
     ]),
     {
@@ -261,6 +339,7 @@ test('parses the public generator CLI contract', () => {
       description: 'Audit a repository.',
       harnessRoot: '/tmp/harness',
       channel: 'edge',
+      delivery: 'registry',
       json: true,
     },
   )

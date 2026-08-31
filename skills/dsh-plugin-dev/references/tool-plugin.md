@@ -141,11 +141,14 @@ If a tool writes a durable event:
 
 Do not mutate an object after append. Do not add coordination events to the
 conversation surface unless the model must actually receive them as history.
-On the stock pinned Harness, an external tool package may append only an
-existing event whose semantics genuinely match; it must not invent a
-downstream Session event through declaration merging. Custom durable facts
-need plugin-owned versioned storage or a matching rebuilt Harness as described
-in `core-contracts.md`.
+On the stock pinned Harness, declaration merging alone does not make a custom
+event known to persistence. An unknown stored record survives cold recovery
+only with an explicit `ignorable: true` envelope and may then be purely
+informational; absent means required and recovery refuses it. The pinned
+`Session.append()` API does not expose that marker for log-only events, so a
+normal custom append is not a portable persistence route. Required custom
+facts need plugin-owned versioned storage or a matching rebuilt Harness as
+described in `core-contracts.md`.
 
 ## Programmatic tool calling
 

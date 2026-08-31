@@ -1,7 +1,7 @@
 {
   "name": "__PACKAGE_NAME__",
   "version": "0.1.0",
-  "private": true,
+  __PACKAGE_DELIVERY_FIELDS_RAW__
   "description": "__DESCRIPTION__",
   "type": "module",
   "main": "./lib/index.js",
@@ -31,8 +31,8 @@
   },
   "scripts": {
     "context:check": "node scripts/verify-dsh-context.mjs",
-    "context:check:strict": "node scripts/verify-dsh-context.mjs --require-source",
-    "context:sync": "node scripts/verify-dsh-context.mjs --sync-links --require-source && pnpm install --no-frozen-lockfile",
+    "context:check:strict": "__CONTEXT_STRICT_COMMAND__",
+__CONTEXT_SYNC_SCRIPT_ENTRY_RAW__
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:loader": "vitest run tests/loader.spec.ts",

@@ -71,7 +71,8 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 - [ ] Define repository release packaging and a version/cachebuster workflow.
 - [x] Recheck npm availability for the complete minimal Tool runtime and peer
   closure, and persist the blocked/ready evidence per baseline channel.
-- [ ] Add an independently publishable generator mode only after a clean ordinary-Node dependency closure and packed-artifact profile smoke pass.
+- [x] Add an independently publishable generator mode only after a clean ordinary-Node dependency closure and packed-artifact profile smoke pass.
+- [x] Upgrade the audited baseline to DSH `0.1.2-alpha.2`, review package/Skill/API changes, and prove source plus Registry delivery against the official tagged worktree.
 - [x] Define schema-v2 stable/edge baseline catalogs, official product-Skill
   snapshots, audited upgrade/promotion gates, and generated-project migration
   guidance.
@@ -80,4 +81,4 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 
 P1 and P2 are complete when `pnpm verify` passes and a fresh generated Tool project proves strict source lock, typecheck, unit behavior, HMR removal, real Loader configuration, build output, bundle contents, and overwrite refusal from an unrelated empty directory.
 
-Current status: met for the deterministic Tool vertical slice in both Codex and Claude Code. Audited baseline evolution now uses content-addressed stable/edge channels; the current Registry report remains blocked by unpublished DSH alpha packages. P3's packaged-marketplace smoke remains follow-up work, as do the additional project kinds in P4 and independently publishable generation in P5.
+Current status: met for the deterministic Tool vertical slice in both Codex and Claude Code. Audited baseline evolution uses content-addressed stable/edge channels, and alpha.2 enables the explicit Registry-delivered Tool mode after a clean archive/profile smoke. P3's packaged-marketplace smoke remains follow-up work, as do the additional project kinds in P4.

@@ -35,7 +35,7 @@ Discovery adapters and plugin metadata point at these sources but do not duplica
 - One default user-level installation makes the canonical skill discoverable from an unrelated empty directory in both Codex (`$HOME/.agents/skills`) and Claude Code (`$HOME/.claude/skills`); repository-local discovery is not sufficient acceptance.
 - The skill begins from the requested user-visible or model-visible outcome, classifies the required DSH plugin shape, and loads only the applicable guidance.
 - A deterministic generator may create a safe baseline, but the agent must adapt it to the stated business behavior and tests before claiming the request is complete.
-- Generators validate names, resolve the pinned Harness source, refuse collisions, and never overwrite an existing project file implicitly.
+- Generators validate names, resolve the selected audited source or Registry delivery contract, refuse collisions, and never overwrite an existing project file implicitly.
 - Generated projects carry their own DSH reference lock, thin `AGENTS.md` and
   `CLAUDE.md` discovery adapters, shared startup contract, TODO, runtime
   configuration schema, lifecycle test, Loader composition test, and bundle
@@ -48,9 +48,18 @@ Discovery adapters and plugin metadata point at these sources but do not duplica
 
 ## Delivery constraint
 
-The audited `@deepseek-ai/dsh-*` runtime package closure is not currently available from the configured npm registry. The supported first delivery route is a local source overlay against the exact Harness checkout in `dsh-reference.lock.json`. Compatibility checks cover both planes: tracked and non-ignored Harness inputs must remain clean at the pinned commit, the ignored root `.env` that the source CLI would load is forbidden, and every directly linked package's declared JavaScript/type entry must exist and pass the documented freshness guard. Ignored dependency/build output remains allowed.
+The Tool generator supports two explicit delivery modes. `source` remains the
+default local audit/development route: it links the exact Harness checkout in
+`dsh-reference.lock.json`, keeps the generated package private, requires clean
+tracked/non-ignored source with no root `.env`, and validates present/fresh
+JavaScript and type entries. Ignored dependency/build output remains allowed.
 
-Generated packages remain private and use source-linked development dependencies. Publication mode must stay blocked until every runtime and peer dependency resolves outside the Harness monorepo and a clean packed-artifact smoke passes.
+`registry` is permitted only when the selected channel's digest-bound Tool
+closure report is `ready`. It emits exact ordinary dependency versions, no
+`link:`/`workspace:` specifications, a non-private public package baseline, and
+a copied `dsh-registry.lock.json`. Publication readiness additionally requires
+the project-specific business implementation plus clean archive install/import
+and real profile add/dump/boot/remove verification for the exact artifact.
 
 ## DSH invariants
 
@@ -60,6 +69,7 @@ Generated packages remain private and use source-linked development dependencies
 - Every configurable field has a TypeScript contract and runtime Schemastery schema. Defaults belong in the schema; unsupported deployment choices remain required.
 - Every registration, listener, timer, worker, request, and external resource has lifecycle-owned cleanup. Disposal stops admission and awaits quiescence.
 - Durable Session events are facts. Projections are pure, synchronous, whole JSON values derived from those facts; UI state is not a second authority.
+- Unknown persisted Session events are accepted only when their stored envelope explicitly says `ignorable: true`; absence is required-on-read, and the surface event set remains closed.
 - Tools declare parameter and canonical output schemas, preserve call identity, honor `AbortSignal`, and separate domain outcomes from infrastructure errors.
 - Browser extensions use `exports["./client"]`, `dsh.client`, generated Remote contracts where needed, and Slots. React components do not receive Cordis Context or import another feature's runtime component.
 - A product-visible change requires a real Loader/profile test in addition to unit and HMR tests. Publication requires a packed-artifact ordinary-Node smoke test.
@@ -68,7 +78,7 @@ Generated packages remain private and use source-linked development dependencies
 
 - Prefer one verified generator vertical slice over speculative templates for every plugin type.
 - Keep reusable DSH facts in the canonical skill references; keep generator mechanics in scripts and output templates.
-- Do not encode a local absolute Harness path as a universal default. Resolve it per generated project and record a relocatable fallback plus `DSH_HARNESS_ROOT` override. After a checkout moves, the generated `context:sync` command rewrites static `link:` specs; setting the environment variable alone does not mutate them.
+- Do not encode a local absolute Harness path as a universal default. Source projects record a relocatable fallback plus `DSH_HARNESS_ROOT` and use `context:sync` after a move. Registry projects have no source root or sync command and migrate only through reviewed catalog/evidence changes.
 - Add an abstraction only for a current provider/consumer, Host/Client, or deterministic-generation boundary.
 - Update tests, TODO, installation documentation, and a decision record with the behavior they govern.
 - Update an audited Harness baseline only through the clean tagged-worktree
@@ -76,4 +86,4 @@ Generated packages remain private and use source-linked development dependencies
 
 ## Completion reporting
 
-Report the observable developer experience first, then validation performed, supported scaffold types, remaining TODO, and any version-lock or unpublished-dependency blocker. Never claim DSH compatibility after strict source validation fails, and never claim publication readiness from source-linked tests.
+Report the observable developer experience first, then validation performed, supported scaffold types, remaining TODO, and any version-lock or delivery blocker. Never claim DSH compatibility after the applicable strict source/Registry validation fails, and never claim publication readiness from source-linked tests or a Registry lookup without exact archive/profile evidence.

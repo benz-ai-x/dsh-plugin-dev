@@ -18,7 +18,7 @@ either code agent started in an unrelated directory
                  |
 business requirement -> classified DSH shape
                  |
-generated project -> pinned source + built entries -> Loader/profile verification
+generated project -> audited source or Registry closure -> Loader/profile verification
 ```
 
 The authoring repository and each generated DSH project have different responsibilities. This repository owns reusable knowledge, generator behavior, installation, and forward tests. A generated project owns its business contract, runtime implementation, configuration, tests, profile layer, and delivery decisions.
@@ -35,7 +35,7 @@ The authoring repository and each generated DSH project have different responsib
 2. `PROJECT_CONTRACT.md` contains always-relevant product and DSH invariants.
 3. `SKILL.md` selects development versus generation and routes by plugin type.
 4. References contain substantial mode-specific contracts and upstream evidence.
-5. Generator scripts enforce deterministic naming, collision, and source-lock behavior.
+5. Generator scripts enforce deterministic naming, collision, source-lock, and Registry-evidence behavior.
 6. Assets are output templates; agents do not load them as general instructions.
 7. `TODO.md` carries mutable implementation state, while decision records own durable choices.
 8. The schema-v2 reference lock, channel catalogs, and validator tie guidance
@@ -43,23 +43,30 @@ The authoring repository and each generated DSH project have different responsib
 
 ## Generation boundary
 
-Natural-language interpretation remains with the agent. The agent turns the business request into a small project specification: package name, plugin name, DSH kind, model-facing tool name, product description, and Harness source. The generator validates that specification and creates a collision-free baseline. The agent then replaces baseline behavior with the requested domain implementation and proves it through the generated test ladder.
+Natural-language interpretation remains with the agent. The agent turns the business request into a small project specification: package name, plugin name, DSH kind, model-facing tool name, product description, baseline channel, and delivery mode. The generator validates that specification and creates a collision-free baseline. The agent then replaces baseline behavior with the requested domain implementation and proves it through the generated test ladder.
 
 The first generator implements the `tool` kind. Unsupported kinds fail explicitly rather than emitting a misleading generic package. Their reference-guided workflows remain available while equivalent deterministic templates are developed.
 
-## Source-linked development
+## Source and Registry delivery
 
 Generated projects use semver peer contracts for their eventual runtime package shape, but their development dependencies link to the audited local Harness checkout. Static `link:` specs point at each directly consumed package's declared build output, so strict validation covers two distinct planes: clean tracked/non-ignored inputs at the pinned commit with no ignored root `.env` for the source CLI to load, and present, timestamp-fresh `main`/`types` entries. Ignored dependency/build output remains allowed. This includes the source-launched CLI used by profile acceptance as well as package/build inputs. It gives typecheck, real Cordis services, Loader tests, lifecycle tests, and built public-import smokes access to the audited baseline even while the DSH runtime packages are unpublished.
 
 The timestamp check detects absent and visibly older artifacts; it is not a content digest. If the Harness checkout moves, generated projects run `context:sync` with the selected new root so package links, the fallback lock, and the package-manager lock move together. An environment override by itself cannot rewrite an already generated manifest.
 
-Source-linked success is not publication evidence. A later registry delivery mode must replace those links with ordinary installable versions and pass a clean packed-artifact install/profile smoke outside the monorepo.
+Source-linked success is not publication evidence. Registry delivery is a
+separate generated contract enabled only by a `ready` closure report. It uses
+exact ordinary versions, retains the report as `dsh-registry.lock.json`, and
+contains no local-resolution path or sync command. Its acceptance installs the
+generated project, installs the exact `.tgz` into a second clean consumer,
+imports its public entry, and exercises profile add/dump/boot/remove through
+the pinned official CLI. Registry evidence is time-bound; a release still uses
+the exact verified archive and repeats project-specific checks.
 
 ## Updating the upstream baseline
 
 Changing `dsh-reference.lock.json` is an audit task. The updater scans a clean
-official tagged worktree into edge, including all 264 workspace packages, the
-250-package DSH/vendor release families, all upstream Skills, two materialized
+official tagged worktree into edge, including the complete workspace package
+and DSH/vendor release-family catalogs, all upstream Skills, two materialized
 product-Skill snapshots, and the Tool publication closure. Stable-to-edge diff
 drives revisions to affected references and templates. Full strict/generator
 verification and exact Registry closure are bound to the catalog digest; only

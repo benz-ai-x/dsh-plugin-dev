@@ -4,7 +4,7 @@ Read this reference when the user wants to create a DSH plugin project in an emp
 
 ## Split interpretation from materialization
 
-The agent owns natural-language interpretation and implementation judgment. Convert the request into a small scaffold specification, then use the deterministic generator to validate names, bind the audited Harness source, and create the baseline. The generator does not implement the user's domain behavior for you.
+The agent owns natural-language interpretation and implementation judgment. Convert the request into a small scaffold specification, then use the deterministic generator to validate names, bind an audited source or Registry delivery contract, and create the baseline. The generator does not implement the user's domain behavior for you.
 
 Record before generation:
 
@@ -39,12 +39,22 @@ node <skill-directory>/scripts/create-project.mjs \
   --tool-name example \
   --description "Describe the model-visible operation precisely." \
   --channel stable \
-  --harness-root <audited-deepseek-harness-checkout>
+  --delivery registry
 ```
 
-`--target` defaults to the current directory. `--name`, `--plugin-name`, and `--tool-name` derive from the target directory when omitted. `--channel` defaults to the repository lock's `stable` channel; use `edge` only for an explicit candidate migration. `--harness-root` resolves from the explicit option, the selected baseline environment, the target's sibling `deepseek-harness`, the selected channel's locked fallback, then a generic `DSH_HARNESS_ROOT` compatibility override.
+`--target` defaults to the current directory. `--name`, `--plugin-name`, and `--tool-name` derive from the target directory when omitted. `--channel` defaults to the repository lock's `stable` channel; use `edge` only for an explicit candidate migration.
 
-The generator accepts lowercase npm package names, kebab-case Cordis plugin names, and snake_case tool names except the registry-reserved `run_code`. It refuses unsupported kinds, a mismatched or dirty Harness worktree, missing/stale linked build entries, a non-empty target, and every output collision. It also pins the Harness Node engine and rejects a generator process outside it. It never has a force or overwrite mode.
+`--delivery` defaults to `source` for backward-compatible local development.
+Source delivery requires the exact clean built Harness and accepts
+`--harness-root`; resolution then tries the explicit option, selected baseline
+environment, target sibling, locked fallback, and generic `DSH_HARNESS_ROOT`.
+Registry delivery rejects `--harness-root`, requires the selected channel's
+Tool closure report to be digest-valid and `ready`, emits exact ordinary
+development dependencies with no `link:`/`workspace:` specifications, copies
+that evidence into `dsh-registry.lock.json`, and creates a public, non-private
+package baseline.
+
+The generator accepts lowercase npm package names, kebab-case Cordis plugin names, and snake_case tool names except the registry-reserved `run_code`. It refuses unsupported kinds or delivery modes, unready/stale Registry evidence, a mismatched or dirty source worktree, missing/stale linked build entries, a non-empty target, and every output collision. It also pins the Harness Node engine and rejects a generator process outside it. It never has a force or overwrite mode.
 
 Stable generator failures:
 
@@ -55,6 +65,8 @@ Stable generator failures:
 | `DSH_SCAFFOLD_RESERVED_NAME` | The requested/derived tool name is reserved by DSH (`run_code`). |
 | `DSH_SCAFFOLD_INVALID_DESCRIPTION` | The product description is empty or too large for a stable scaffold boundary. |
 | `DSH_SCAFFOLD_UNSUPPORTED_KIND` | No deterministic template exists for the requested plugin kind. |
+| `DSH_SCAFFOLD_UNSUPPORTED_DELIVERY` | Delivery is neither `source` nor `registry`. |
+| `DSH_SCAFFOLD_REGISTRY_UNREADY` | Registry delivery was requested without a current digest-bound `ready` closure report. |
 | `DSH_SCAFFOLD_TARGET_NOT_EMPTY` | The target contains project material; generation did not start. |
 | `DSH_SCAFFOLD_TARGET_COLLISION` | A generated path appeared before its exclusive write; no overwrite occurred. |
 | `DSH_SCAFFOLD_HARNESS_NOT_FOUND` | No usable local Harness checkout resolved. |
@@ -67,23 +79,29 @@ Stable generator failures:
 ## After generation
 
 1. Read the generated `docs/agent/PROJECT_CONTRACT.md`, `TODO.md`, and reference lock.
-2. Before dependencies exist, run
-   `node scripts/verify-dsh-context.mjs --require-source`; invoking a package
-   script may cause pnpm to attempt dependency installation first.
-3. Run `pnpm install` to materialize the local source-linked development
-   closure. After that, use `pnpm context:check:strict` normally.
-4. If the Harness checkout moves, set `DSH_HARNESS_ROOT` (or pass
-   `--harness-root`) and run `pnpm context:sync`. That command rewrites the
-   links and refreshes the package-manager lock with a non-frozen install. The
-   environment variable selects the source; it does not rewrite existing
-   `link:` specs by itself.
+2. Before dependencies exist, run `node scripts/verify-dsh-context.mjs
+   --require-source` for source delivery or `--require-registry` for Registry
+   delivery; invoking a package script may cause pnpm to install first.
+3. Run `pnpm install`, then use `pnpm context:check:strict` normally. Registry
+   mode's clean ordinary resolution is delivery evidence; source mode
+   materializes the local links.
+4. In source mode only, if the Harness checkout moves, set `DSH_HARNESS_ROOT`
+   (or pass `--harness-root`) and run `pnpm context:sync`. It rewrites links and
+   refreshes the package-manager lock. Registry mode deliberately has no
+   `context:sync`; migrate its audited versions instead.
 5. Replace the normalization baseline with the user's actual domain contract and add a failing test first when the request asks for test-driven work.
 6. Preserve named namespace exports, runtime Config validation, cancellation propagation, canonical JSON results, and lifecycle cleanup.
 7. Run `pnpm verify`, then exercise the real `dsh plugin add`, config dump, boot, and remove path when the local CLI/profile is in scope.
-8. Report that source-linked verification proves compatibility with the pinned checkout, not npm publication readiness.
+8. Report the selected delivery honestly: source verification proves pinned
+   checkout compatibility only; Registry readiness permits publication work
+   but does not replace final project-specific archive/profile verification.
 9. To adopt a newer Harness baseline, regenerate the selected schema-v2 lock
    and dependency/toolchain specifications as an explicit reviewable migration,
-   run `context:sync`, and repeat the full verification ladder. Never change a
-   generated project's channel or links implicitly.
+   repeat the applicable source synchronization or Registry evidence refresh
+   and the full verification ladder. Never change a generated project's
+   channel, delivery mode, or dependency specifications implicitly.
 
-Generated projects remain `private: true` until all DSH runtime and peer dependencies are available outside the source monorepo and a clean packed-artifact/profile smoke proves the install form.
+Source projects remain `private: true`. Registry projects are generated as
+public/non-private only from a `ready` closure, but publication still waits for
+the implemented business contract, a clean packed-artifact install/import,
+and real DSH profile add/dump/boot/remove evidence for the exact archive.

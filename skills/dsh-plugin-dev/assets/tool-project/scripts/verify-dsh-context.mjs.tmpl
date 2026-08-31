@@ -8,13 +8,16 @@ import { fileURLToPath } from 'node:url'
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const requireSource = process.argv.includes('--require-source')
+const requireRegistry = process.argv.includes('--require-registry')
 const syncLinks = process.argv.includes('--sync-links')
 const harnessRootIndex = process.argv.indexOf('--harness-root')
 const explicitHarnessRoot = harnessRootIndex >= 0 ? process.argv[harnessRootIndex + 1] : undefined
 const failures = []
 const warnings = []
 const passes = []
+const expectedDelivery = '__DELIVERY_MODE__'
 const expectedLinks = Object.freeze(__EXPECTED_LINKS_JSON_RAW__)
+const expectedDevelopmentDependencies = Object.freeze(__EXPECTED_DEVELOPMENT_DEPENDENCIES_JSON_RAW__)
 
 function check(condition, message) {
   if (condition) passes.push(message)
@@ -148,6 +151,7 @@ const requiredFiles = [
   'tests/loader.spec.ts',
   'tests/fixtures/cordis.yml',
   'scripts/verify-built.mjs',
+  ...(expectedDelivery === 'registry' ? ['dsh-registry.lock.json'] : []),
 ]
 for (const path of requiredFiles) {
   check(existsSync(join(projectRoot, path)), `${path} exists`)
@@ -168,27 +172,43 @@ try {
 
 if (manifest) {
   check(manifest.name === '__PACKAGE_NAME__', 'package name matches the generated contract')
-  check(manifest.private === true, 'source-linked package remains private')
   check(manifest.type === 'module', 'package uses ESM')
   check(manifest.engines?.node === '__NODE_ENGINE__', 'package Node engine matches the pinned Harness')
   check(manifest.packageManager === '__PACKAGE_MANAGER__', 'package manager matches the pinned Harness')
   check(manifest.dsh?.bundle?.patch === './cordis.patch.yml', 'package declares its DSH bundle patch')
   check(manifest.exports?.['./cordis.patch.yml'] === './cordis.patch.yml', 'package exports its bundle patch')
-  check(
-    manifest.scripts?.['context:check:strict'] === 'node scripts/verify-dsh-context.mjs --require-source',
-    'strict context script requires the source baseline',
-  )
-  check(
-    manifest.scripts?.['context:sync'] === 'node scripts/verify-dsh-context.mjs --sync-links --require-source && pnpm install --no-frozen-lockfile',
-    'context sync script rewrites links and refreshes the package-manager lock',
-  )
   const serialized = JSON.stringify(manifest)
   check(!serialized.includes('workspace:'), 'external package contains no workspace protocol dependency')
+  if (expectedDelivery === 'source') {
+    check(manifest.private === true, 'source-linked package remains private')
+    check(manifest.publishConfig === undefined, 'source-linked package has no publication configuration')
+    check(
+      manifest.scripts?.['context:check:strict'] === 'node scripts/verify-dsh-context.mjs --require-source',
+      'strict context script requires the source baseline',
+    )
+    check(
+      manifest.scripts?.['context:sync'] === 'node scripts/verify-dsh-context.mjs --sync-links --require-source && pnpm install --no-frozen-lockfile',
+      'context sync script rewrites links and refreshes the package-manager lock',
+    )
+  } else {
+    check(manifest.private === false, 'Registry-delivered package is publishable')
+    check(manifest.publishConfig?.access === 'public', 'Registry-delivered package requests public npm access')
+    check(
+      manifest.scripts?.['context:check:strict'] === 'node scripts/verify-dsh-context.mjs --require-registry',
+      'strict context script requires Registry evidence',
+    )
+    check(manifest.scripts?.['context:sync'] === undefined, 'Registry delivery exposes no source-link synchronization command')
+    check(!serialized.includes('link:'), 'Registry delivery contains no source link dependency')
+    for (const [packageName, version] of Object.entries(expectedDevelopmentDependencies)) {
+      check(manifest.devDependencies?.[packageName] === version, `${packageName} uses audited Registry version ${version}`)
+    }
+  }
 }
 
 if (lock) {
   check(lock.schemaVersion === 2, 'reference lock schema v2 is supported')
   check(lock.channel === '__BASELINE_CHANNEL__', 'reference lock records the selected baseline channel')
+  check(lock.delivery?.mode === expectedDelivery, `reference lock records ${expectedDelivery} delivery`)
   check(/^[0-9a-f]{40}$/.test(lock.upstream?.commit ?? ''), 'reference lock has a full Git commit')
   check(/^[0-9a-f]{64}$/.test(lock.upstream?.docsDigest ?? ''), 'reference lock has a docs SHA-256')
   check(/^[0-9a-f]{64}$/.test(lock.upstream?.catalogDigest ?? ''), 'reference lock has a catalog SHA-256')
@@ -197,55 +217,95 @@ if (lock) {
   check(lock.upstream?.packageManager === '__PACKAGE_MANAGER__', 'reference lock records the pinned package manager')
   check(nodeSatisfies(lock.upstream?.node), `Node ${process.version} satisfies ${lock.upstream?.node}`)
 
-  const environmentName = lock.localResolution?.environmentVariable ?? 'DSH_HARNESS_ROOT'
-  const configuredRoot = explicitHarnessRoot || process.env[environmentName]
-  const fallback = lock.localResolution?.fallbackRelativePath
-  const sourceRoot = resolve(configuredRoot || join(projectRoot, fallback || ''))
+  if (requireSource && expectedDelivery !== 'source') {
+    failures.push('source validation was requested for a Registry-delivered project')
+  }
+  if (requireRegistry && expectedDelivery !== 'registry') {
+    failures.push('Registry validation was requested for a source-delivered project')
+  }
+  if (syncLinks && expectedDelivery !== 'source') {
+    failures.push('source-link synchronization is unavailable for Registry delivery')
+  }
 
-  if (!existsSync(sourceRoot)) {
-    const message = `pinned DSH source not found at ${sourceRoot}`
-    if (requireSource) failures.push(message)
-    else warnings.push(`${message}; set ${environmentName} for strict validation`)
-  } else {
-    try {
-      const sourceManifest = JSON.parse(readFileSync(join(sourceRoot, 'package.json'), 'utf8'))
-      check(sourceManifest.version === lock.upstream.version, `DSH version matches ${lock.upstream.version}`)
-      check(sourceManifest.engines?.node === lock.upstream.node, `DSH Node engine matches ${lock.upstream.node}`)
-      check(sourceManifest.packageManager === lock.upstream.packageManager, `DSH package manager matches ${lock.upstream.packageManager}`)
-      check(gitHead(sourceRoot) === lock.upstream.commit, `DSH commit matches ${lock.upstream.commit}`)
-      check(digestDocs(sourceRoot) === lock.upstream.docsDigest, 'DSH docs digest matches the audited baseline')
-      const dirty = harnessWorktreeChanges(sourceRoot)
-      check(dirty.length === 0, dirty.length === 0
-        ? 'DSH Harness attested source inputs are clean'
-        : `DSH Harness attested source inputs have changes:\n${dirty}`)
-      validateLinkedArtifacts(sourceRoot)
+  if (expectedDelivery === 'source') {
+    const environmentName = lock.localResolution?.environmentVariable ?? 'DSH_HARNESS_ROOT'
+    const configuredRoot = explicitHarnessRoot || process.env[environmentName]
+    const fallback = lock.localResolution?.fallbackRelativePath
+    const sourceRoot = resolve(configuredRoot || join(projectRoot, fallback || ''))
 
-      if (syncLinks && failures.length === 0) {
-        for (const [packageName, sourcePath] of Object.entries(expectedLinks)) {
-          manifest.devDependencies[packageName] = `link:${relativeProjectPath(join(sourceRoot, sourcePath))}`
+    if (!existsSync(sourceRoot)) {
+      const message = `pinned DSH source not found at ${sourceRoot}`
+      if (requireSource) failures.push(message)
+      else warnings.push(`${message}; set ${environmentName} for strict validation`)
+    } else {
+      try {
+        const sourceManifest = JSON.parse(readFileSync(join(sourceRoot, 'package.json'), 'utf8'))
+        check(sourceManifest.version === lock.upstream.version, `DSH version matches ${lock.upstream.version}`)
+        check(sourceManifest.engines?.node === lock.upstream.node, `DSH Node engine matches ${lock.upstream.node}`)
+        check(sourceManifest.packageManager === lock.upstream.packageManager, `DSH package manager matches ${lock.upstream.packageManager}`)
+        check(gitHead(sourceRoot) === lock.upstream.commit, `DSH commit matches ${lock.upstream.commit}`)
+        check(digestDocs(sourceRoot) === lock.upstream.docsDigest, 'DSH docs digest matches the audited baseline')
+        const dirty = harnessWorktreeChanges(sourceRoot)
+        check(dirty.length === 0, dirty.length === 0
+          ? 'DSH Harness attested source inputs are clean'
+          : `DSH Harness attested source inputs have changes:\n${dirty}`)
+        validateLinkedArtifacts(sourceRoot)
+
+        if (syncLinks && failures.length === 0) {
+          for (const [packageName, sourcePath] of Object.entries(expectedLinks)) {
+            manifest.devDependencies[packageName] = `link:${relativeProjectPath(join(sourceRoot, sourcePath))}`
+          }
+          lock.localResolution.fallbackRelativePath = relativeProjectPath(sourceRoot)
+          writeJsonAtomically(join(projectRoot, 'package.json'), manifest)
+          writeJsonAtomically(join(projectRoot, 'dsh-reference.lock.json'), lock)
+          passes.push(`synchronized Harness links to ${sourceRoot}`)
         }
-        lock.localResolution.fallbackRelativePath = relativeProjectPath(sourceRoot)
-        writeJsonAtomically(join(projectRoot, 'package.json'), manifest)
-        writeJsonAtomically(join(projectRoot, 'dsh-reference.lock.json'), lock)
-        passes.push(`synchronized Harness links to ${sourceRoot}`)
-      }
 
-      for (const [packageName, sourcePath] of Object.entries(expectedLinks)) {
-        const specifier = manifest?.devDependencies?.[packageName]
-        const linkedPath = typeof specifier === 'string' && specifier.startsWith('link:')
-          ? resolve(projectRoot, specifier.slice('link:'.length))
-          : undefined
-        const expectedPath = join(sourceRoot, sourcePath)
-        check(
-          linkedPath !== undefined
-            && existsSync(linkedPath)
-            && realpathSync(linkedPath) === realpathSync(expectedPath),
-          `${packageName} development dependency links to the audited source`,
-        )
+        for (const [packageName, sourcePath] of Object.entries(expectedLinks)) {
+          const specifier = manifest?.devDependencies?.[packageName]
+          const linkedPath = typeof specifier === 'string' && specifier.startsWith('link:')
+            ? resolve(projectRoot, specifier.slice('link:'.length))
+            : undefined
+          const expectedPath = join(sourceRoot, sourcePath)
+          check(
+            linkedPath !== undefined
+              && existsSync(linkedPath)
+              && realpathSync(linkedPath) === realpathSync(expectedPath),
+            `${packageName} development dependency links to the audited source`,
+          )
+        }
+        passes.push(`validated DSH source at ${sourceRoot}`)
+      } catch (error) {
+        failures.push(`cannot validate DSH source at ${sourceRoot}: ${error instanceof Error ? error.message : String(error)}`)
       }
-      passes.push(`validated DSH source at ${sourceRoot}`)
+    }
+  } else {
+    check(lock.localResolution === null, 'Registry delivery has no local source resolution')
+    const reportRelative = lock.delivery?.reportPath
+    const reportPath = typeof reportRelative === 'string' ? resolve(projectRoot, reportRelative) : projectRoot
+    check(
+      reportPath !== projectRoot && reportPath.startsWith(`${projectRoot}${sep}`),
+      'Registry report path stays inside the project',
+    )
+    try {
+      const reportText = readFileSync(reportPath, 'utf8')
+      const reportDigest = createHash('sha256').update(reportText).digest('hex')
+      const report = JSON.parse(reportText)
+      check(reportDigest === lock.delivery?.reportSha256, 'Registry report digest matches the reference lock')
+      check(report.schemaVersion === 1, 'Registry report schema v1 is supported')
+      check(report.channel === lock.channel, 'Registry report records the selected baseline channel')
+      check(report.capability === 'tool', 'Registry report covers the Tool capability')
+      check(report.catalogSha256 === lock.upstream.catalogDigest, 'Registry report targets the audited catalog')
+      check(report.status === 'ready' && lock.delivery?.status === 'ready', 'Registry closure is ready')
+      check(report.checkedAt === lock.delivery?.checkedAt, 'Registry check timestamp matches the reference lock')
+      check(report.registry === lock.delivery?.registry, 'Registry endpoint matches the reference lock')
+      check(
+        [...(report.packages ?? []), ...(report.externalRequirements ?? [])].every(entry => entry.available === true),
+        'every Registry requirement is available',
+      )
+      passes.push(`validated Registry evidence at ${reportRelative}`)
     } catch (error) {
-      failures.push(`cannot validate DSH source at ${sourceRoot}: ${error instanceof Error ? error.message : String(error)}`)
+      failures.push(`cannot validate Registry evidence at ${reportPath}: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
 }

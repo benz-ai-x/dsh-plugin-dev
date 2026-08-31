@@ -16,6 +16,7 @@
     "baselines/**",
     "docs/agent/BASELINE_UPGRADE.md",
     "docs/decisions/0004-baseline-channels.md",
+    "docs/decisions/0005-registry-delivery.md",
     "dsh-reference.lock.json",
     "README.md"
   ],

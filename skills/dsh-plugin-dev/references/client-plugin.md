@@ -99,6 +99,13 @@ Use Host-computed Session projections for durable session-derived state. A
 projection publishes a complete value with an `asOfSeq`/version fence; the
 Client replaces its mirror rather than applying a second domain fold.
 
+A Host reader that directly accesses `ctx.sessionProjections` must declare
+`sessionProjections` in its required `inject` metadata and fail composition
+explicitly when the provider is absent. A contributor whose feature is
+genuinely optional may scope registration through `ctx.inject` so it appears
+and disappears with the optional provider. Do not use an undeclared direct
+property read as accidental optionality.
+
 Choose the two similarly named extension points by output shape:
 
 - A Host Session projection (`ProjectionDefinition` plus
@@ -144,9 +151,19 @@ only after the named Remote service becomes available. If UI mounting fails,
 dispose the partial UI and the Remote contribution. On unload, dispose both in
 the reverse ownership order.
 
-Separate transport and domain results. A successful RPC may contain a typed
-domain rejection such as a stale revision; a disconnected transport is a
-different outer failure.
+The alpha.2 Remote contract uses one shared `RemoteError` class and a
+declaration-mergeable `RemoteErrorDetailsMap`. Owners declare stable
+`<domain>/<reason>` codes beside their browser-safe detail types and throw
+`RemoteError` at the failure point. Discriminate by `error.code`, not
+`instanceof`, because the structural marker survives bundle/realm copies.
+
+Every generated unary method resolves to `RemoteResult<T>`. Both Host/domain
+Remote failures and carrier failures such as disconnect/cancellation occupy
+its `{ ok: false, error: RemoteError }` branch; only local assembly faults such
+as an unmounted method, invalid generated arity, or missing Context adapter
+reject the Promise. A successful value may still carry a domain outcome union
+when that outcome is part of normal business data, but callers must not wrap
+every unary invocation in `try/catch` to recover transport failure.
 
 For the pinned source, Typert descriptors and the Gateway implementation also
 support `@Remote({ mode: 'stream' })`/`mode: 'stream'`. The older unary-only
@@ -155,12 +172,15 @@ boundary prose in `docs/api-gateway.md` is stale relative to
 authoritative.
 
 Keep the two stream layers distinct. A generated stream method opens one
-logical stream and returns its `AsyncIterable`; carrier failure ends that
-iterator. The decorator layer does not reconnect or infer replay. When a
-domain needs continuity across physical carrier generations, supervise a new
-opening per generation with `ctx.remote.$stream()`. The domain must validate
-and accept each opening value, own the resume cursor or replacement baseline,
-and classify whether normal completion is terminal or reconnectable.
+logical stream and returns its `AsyncIterable`; a terminal Host or transport
+failure escapes as the shared `RemoteError`. Physical carrier failures used by
+the reconnect supervisor remain internal and are only reported through its
+carrier-failure callback. The decorator layer does not reconnect or infer
+replay. When a domain needs continuity across physical carrier generations,
+supervise a new opening per generation with `ctx.remote.$stream()`. The domain
+must validate and accept each opening value, own the resume cursor or
+replacement baseline, and classify whether normal completion is terminal or
+reconnectable.
 `RemoteSnapshotStream` supplies the snapshot-then-deltas pattern;
 `RemoteJournalStream` supplies follow-before-page, catch-up, duplicate removal,
 and gap repair for domain-defined journal ranges. Test only the layer the
@@ -203,7 +223,10 @@ Remote contributor tests:
 - Host-first Typert generation produces packed `./typert` and `./remote`
   exports;
 - contribution mount, partial-failure rollback, and unmount work;
-- unary domain rejection and transport failure remain distinct.
+- unary success and the `RemoteResult` error branch are handled without
+  treating carrier outcomes as Promise rejection;
+- declared domain codes narrow their matching `details`, while unknown/newer
+  codes remain readable as Remote failures.
 
 Add the applicable feature-specific tests:
 

@@ -8,8 +8,8 @@
 - The pinned Harness checkout resolves through `DSH_HARNESS_ROOT` or the recorded fallback; version, commit, docs digest, and Node engine match the lock; tracked/non-ignored inputs are clean; the ignored root `.env` loaded by the source CLI is absent; and every directly linked package has present, fresh declared build entries. Ignored dependency/build output is allowed.
 - The user-skill installer preflights and creates both Codex and Claude Code personal links, is idempotent for the same source, supports either agent independently, and refuses partial installation when either target conflicts.
 - Unit tests cover generator validation, reserved `run_code` rejection,
-  collision refusal, deterministic output, dual-Agent templates, and
-  unsupported plugin kinds.
+  collision refusal, deterministic output, source and Registry delivery,
+  dual-Agent templates, and unsupported plugin kinds/delivery modes.
 
 Run:
 
@@ -42,6 +42,13 @@ From a temporary empty directory, the supported Tool vertical slice must:
 9. remain marked private while its DSH dependency closure is source-linked and
    omit accidental source/declaration maps from the package.
 
+Registry delivery acceptance additionally requires generation without a local
+Harness path, a digest-valid copied `ready` report, exact ordinary dependency
+specifications with no `link:`/`workspace:` value, `private: false` plus public
+access, clean install and verification, exact `.tgz` install/import from a
+second clean directory, and pinned-CLI profile add/dump/real boot/graceful
+shutdown/remove/post-remove absence.
+
 ## Fresh-agent semantic smoke
 
 After `pnpm install:skill`, start new Codex and Claude Code sessions from unrelated empty directories. Use:
@@ -62,11 +69,20 @@ Explain the selected plugin shape, generate the project here, and report the
 verification you can actually run. Do not claim npm publication readiness.
 ```
 
-Acceptance requires both agents to identify the Tool shape, use the deterministic generator, retain the pinned source route, and continue beyond the generic baseline into request-specific code and tests.
+Acceptance requires both agents to identify the Tool shape, use the deterministic generator, select and explain an audited delivery route, and continue beyond the generic baseline into request-specific code and tests.
 
 Latest recorded evidence (2026-08-29): a fresh ephemeral Codex process started in an unrelated empty directory, discovered the installed user Skill, selected the Tool shape, generated `dsh-count-typescript-files`, and replaced the baseline with real recursive filesystem behavior. The resulting project passed 30 strict source checks, 10 Tool/Loader/HMR/cancellation tests, typecheck, build, an 11-file packed-artifact check, and an isolated DSH profile add/dump/boot/remove lifecycle. It also reported the source-linked publication boundary instead of claiming registry readiness.
 
 Claude Code evidence (2026-08-29): Claude Code `2.1.251`, authenticated through its configured account, started in an unrelated empty directory and resolved the personal `/dsh-plugin-dev` Skill through the installed symlink. It used the deterministic generator to create `dsh-count-markdown-files`, replaced the generic baseline with canonical recursive filesystem behavior, corrected a TypeScript `Dirent` error through its own verification loop, and documented the source-linked boundary. Independent reruns passed 30 strict source checks, typecheck, 17 Tool/Loader/HMR/cancellation and external-filesystem tests, build, and a 7-file packed-artifact check. An outer isolated profile smoke additionally passed add, effective dump, real headless boot, remove, and post-remove absence using the pinned Harness CLI.
+
+Registry delivery evidence (2026-08-31): against official
+`dsh-v0.1.2-alpha.2`, the repository passed 207 strict checks, 21 unit tests,
+and two generated-project e2e paths. The Registry path generated without a
+Harness root, installed ordinary exact dependencies, passed its own 2-file/9-
+test verification, packed once, installed/imported that archive in a second
+clean consumer, then passed official CLI profile add, effective dump, real
+boot, graceful SIGTERM shutdown, remove, and post-remove absence. Its audited
+Tool closure report recorded 24 available requirements and zero blocked.
 
 ## Baseline evolution acceptance
 

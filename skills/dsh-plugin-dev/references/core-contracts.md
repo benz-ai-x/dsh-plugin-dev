@@ -183,9 +183,13 @@ or appear consistently in queries and clients.
 
 Session event values must be lossless JSON. Treat appended values as detached
 and immutable. `SessionEventMap` is declaration-merge extensible at compile
-time, but the pinned persistence runtime does not offer an out-of-repo event
-registration surface. Its accepted vocabulary is a generated, build-time
-closed set.
+time, while the pinned persistence runtime has no out-of-repo registration
+surface and compares recovered types with a generated, build-time vocabulary.
+An unknown stored event is accepted only when its own envelope explicitly
+carries `ignorable: true`. Absence means required and recovery refuses the
+whole Session. Mark only a purely informational record whose omission cannot
+change reconstruction or plugin-owned authority; a reader never infers this
+property from the event being external.
 
 `SurfaceEventType` is the closed core set `user/message`,
 `assistant/message`, and `tool/result`. An event type added to a matching
@@ -195,23 +199,26 @@ fact must affect the model, let an owner-controlled surface producer or
 prompt/context contribution derive a core model-visible value deliberately.
 Never inject a record into model history merely because it is persisted.
 
-On the stock pinned Harness, an external plugin must not append a new custom
-Session event type. Merely declaration-merging `SessionEventMap` and keeping
-the owning plugin composed does not add the type to
-`KNOWN_SESSION_EVENT_TYPES`; persistence will reject the whole Session on
-recovery. Use a semantically correct existing Session event, a Cordis live
-event for process-only coordination, or plugin-owned versioned storage.
+Declaration merging alone does not add an external type to
+`KNOWN_SESSION_EVENT_TYPES`. In this pinned API, ordinary `Session.append()`
+also exposes no `ignorable` option for log-only events, so a custom event
+written through that path is required-on-read and is not portable to a stock
+recovery build. An external writer/seed path may retain a custom informational
+event only when it deliberately persists `ignorable: true` and tests cold
+recovery without the plugin. Otherwise use a semantically correct existing
+Session event, a Cordis live event for process-only coordination, or
+plugin-owned versioned storage.
 
-If custom durable Session vocabulary is essential, integrate it into the
-Harness source tree or a deliberately maintained source overlay, regenerate
-the persistence catalog/known-event module, rebuild and distribute that
-matching Harness runtime, and own its format/version migration. In that
-matching Harness delivery line, every runtime build that may recover those
-logs must contain the generated catalog entry. Compose the event's
-validation/invariants and the relevant projection, query, migration, or UI
-readers on the paths that actually interpret the fact. Readers should retain a
-default branch, and persisted types must not be removed or renamed without a
-format/version and migration decision.
+If a custom event is required for reconstruction, affects model history, or
+cannot truthfully be skipped, integrate it into the Harness source tree or a
+deliberately maintained source overlay, regenerate the persistence
+catalog/known-event module, rebuild and distribute that matching Harness
+runtime, and own its format/version migration. Every runtime build that may
+recover those logs must contain the generated catalog entry. Compose the
+event's validation/invariants and the relevant projection, query, migration,
+or UI readers on the paths that actually interpret the fact. Readers should
+retain a default branch, and persisted types must not be removed or renamed
+without a format/version and migration decision.
 
 Projections are pure, synchronous folds producing complete JSON values. Return
 the same reference when an unrelated event leaves state unchanged. A client

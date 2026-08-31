@@ -198,6 +198,7 @@ const requiredTemplates = [
   'TODO.md.tmpl',
   'cordis.patch.yml.tmpl',
   'docs/agent/PROJECT_CONTRACT.md.tmpl',
+  'dsh-registry.lock.json.tmpl',
   'dsh-reference.lock.json.tmpl',
   'package.json.tmpl',
   'pnpm-workspace.yaml.tmpl',
@@ -235,6 +236,7 @@ const requiredFiles = [
   'scripts/baseline.mjs',
   'docs/agent/BASELINE_UPGRADE.md',
   'docs/decisions/0004-baseline-channels.md',
+  'docs/decisions/0005-registry-delivery.md',
   ...requiredTemplates.map(path => `skills/dsh-plugin-dev/assets/tool-project/${path}`),
 ]
 
@@ -332,7 +334,7 @@ const pluginManifest = parseJson('.codex-plugin/plugin.json')
 if (manifest) {
   check(manifest.name === 'dsh-plugin-dev', 'package name is dsh-plugin-dev')
   check(manifest.version === '0.1.0', 'package has the initial reusable-tooling version')
-  check(manifest.private === true, 'repository package remains private while dependencies are source-linked')
+  check(manifest.private === true, 'development-tooling repository package remains private')
   check(manifest.type === 'module', 'project uses ESM')
   check(manifest.engines?.node === '^22.19.0 || >=24.0.0', 'project Node engine matches the pinned Harness')
   check(manifest.packageManager === 'pnpm@11.7.0', 'project package manager matches the pinned Harness')
@@ -359,6 +361,7 @@ if (manifest) {
   check(manifest.files?.includes('scripts/install-user-skill.mjs'), 'package includes the dual-agent installer')
   check(manifest.files?.includes('scripts/baseline.mjs'), 'package includes baseline automation')
   check(manifest.files?.includes('baselines/**'), 'package includes pinned baseline catalogs and Skill snapshots')
+  check(manifest.files?.includes('docs/decisions/0005-registry-delivery.md'), 'package includes the Registry delivery decision')
 }
 if (pluginManifest) {
   check(pluginManifest.name === 'dsh-plugin-dev', 'Codex Plugin name is dsh-plugin-dev')
@@ -374,9 +377,11 @@ if (pluginManifest) {
 const generator = readProjectFile('skills/dsh-plugin-dev/scripts/create-project.mjs')
 const installer = readProjectFile('scripts/install-user-skill.mjs')
 check(generator.includes("kind !== 'tool'"), 'generator rejects unsupported deterministic project kinds')
+check(generator.includes("DELIVERY_MODES = new Set(['source', 'registry'])"), 'generator exposes explicit source and Registry delivery modes')
 check(generator.includes("RESERVED_TOOL_NAMES = new Set(['run_code'])"), 'generator rejects the reserved run_code Tool name')
 check(generator.includes("flag: 'wx'"), 'generator creates files without overwrite permission')
 check(generator.includes('DSH_SCAFFOLD_HARNESS_MISMATCH'), 'generator exposes a stable Harness mismatch error')
+check(generator.includes('DSH_SCAFFOLD_REGISTRY_UNREADY'), 'generator fails closed on unready Registry evidence')
 check(installer.includes('DSH_SKILL_INSTALL_CONFLICT'), 'installer exposes a stable conflict error')
 check(installer.includes("codex: ['.agents', 'skills']"), 'installer targets Codex personal Skills')
 check(installer.includes("claude: ['.claude', 'skills']"), 'installer targets Claude Code personal Skills')
@@ -413,7 +418,13 @@ if (lock && loadedBaseline) {
   check(catalog?.summary?.packageCount === baseline.catalog?.packageCount, 'catalog package count matches the lock')
   check(catalog?.summary?.skillCount === baseline.catalog?.skillCount, 'catalog Skill count matches the lock')
   check(catalog?.summary?.productSkillCount === 2, 'catalog identifies the two product Cordis Skills')
-  check(catalog?.summary?.releasePackageCount === 250, 'catalog covers the official DSH and vendor release families')
+  const releasePackageCount = catalog?.packages?.filter(
+    entry => ['dsh', 'vendor'].includes(entry.releaseFamily) && entry.private !== true,
+  ).length
+  check(
+    catalog?.summary?.releasePackageCount === releasePackageCount,
+    'catalog covers the complete public DSH and vendor release families',
+  )
 
   for (const kind of ['registry', 'verification']) {
     const report = baseline[kind]
