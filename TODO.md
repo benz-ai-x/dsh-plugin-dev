@@ -83,6 +83,11 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
   closure, and persist the blocked/ready evidence per baseline channel.
 - [x] Add an independently publishable generator mode only after a clean ordinary-Node dependency closure and packed-artifact profile smoke pass.
 - [x] Upgrade the audited baseline to DSH `0.1.2-alpha.2`, review package/Skill/API changes, and prove source plus Registry delivery against the official tagged worktree.
+- [x] Upgrade the audited baseline to DSH `0.1.2-alpha.3`: review the
+  SQLite-persistence and example-package removals plus the
+  `session-turn-outline` addition, document the projection view-identity
+  change-feed gate, and re-prove source plus Registry delivery against the
+  official tagged worktree.
 - [x] Define schema-v2 stable/edge baseline catalogs, official product-Skill
   snapshots, audited upgrade/promotion gates, and generated-project migration
   guidance.
@@ -91,4 +96,4 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 
 P1 and P2 are complete when `pnpm verify` passes and a fresh generated Tool project proves strict source lock, typecheck, unit behavior, HMR removal, real Loader configuration, build output, bundle contents, and overwrite refusal from an unrelated empty directory.
 
-Current status: met for the deterministic Tool vertical slice in both Codex and Claude Code. Audited baseline evolution uses content-addressed stable/edge channels, and alpha.2 enables the explicit Registry-delivered Tool mode after a clean archive/profile smoke. P3's packaged-marketplace smoke remains follow-up work, as do the additional project kinds in P4.
+Current status: met for the deterministic Tool vertical slice in both Codex and Claude Code. Audited baseline evolution uses content-addressed stable/edge channels; the audited baseline is `0.1.2-alpha.3`, and the Registry-delivered Tool mode introduced at alpha.2 is re-proved after a clean archive/profile smoke. P3's packaged-marketplace smoke remains follow-up work, as do the additional project kinds in P4.

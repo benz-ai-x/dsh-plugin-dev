@@ -221,8 +221,11 @@ retain a default branch, and persisted types must not be removed or renamed
 without a format/version and migration decision.
 
 Projections are pure, synchronous folds producing complete JSON values. Return
-the same reference when an unrelated event leaves state unchanged. A client
-consumes projection snapshots; it does not reimplement the domain fold.
+the same state reference when an unrelated event leaves state unchanged, and
+reuse an object-valued `view` reference across internal-only state changes: the
+pinned change feed republishes a unit only when its raw `view` result changes
+by `Object.is`. A client consumes projection snapshots; it does not
+reimplement the domain fold.
 
 Canonical reading:
 

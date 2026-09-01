@@ -487,14 +487,14 @@
           "access": "public"
         },
         "type": "module",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "ae935eebc9ddb04fffd9e859dcf0d3d7a254e207bba70ff53b6544911c8d511e",
+      "manifestDigest": "e912f710c17cda25bd40aea7121f1b601e65938339ee0d5e7ea5db56a47c0eb0",
       "name": "@deepseek-ai/dsh",
       "path": "apps/cli",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -540,14 +540,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "132a2efaec6ba3433903d5c9767d5063fce1b517c288fdab0cd2e5b2374bea16",
+      "manifestDigest": "642055a034745a3cd805645796f1c19ae28f7cf4a07649871e33fd98bd6b1c81",
       "name": "@deepseek-ai/dsh-acp",
       "path": "packages/acp/acp",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -592,14 +592,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4274c4fa98c3bfae57b2d30696b1959bcef2e1bd7938edcdf628432d25d5c407",
+      "manifestDigest": "07f8724ac2018d09fd6f7785b6424b97db9b4883da94c652461c916fa4f7d734",
       "name": "@deepseek-ai/dsh-acp-app",
       "path": "packages/bundle/acp-app",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -644,14 +644,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "04c66ad5b9bb9b9351ad000509bd3f9ce0751fb7d82cd1a74399c2f2877014c6",
+      "manifestDigest": "a3f80496f8fe34872a29a4a0e57013db9742a532fd0d0909778fa7006b0d084e",
       "name": "@deepseek-ai/dsh-agent",
       "path": "packages/core/agent",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -690,14 +690,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "b722f1d7336cb634ed12d3734568a9ae60ebf50c581d0ee10a33f1619c342446",
+      "manifestDigest": "d4c898adbcdfaf3a166dbbb1d9994f1875c744b94310375d903fdcbdebe18574",
       "name": "@deepseek-ai/dsh-agent-default-model",
       "path": "packages/core/agent-default-model",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -741,14 +741,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "fa78c04552cd07edf55c64049eb60cc5ddf8402d4dcc8f56d07f37af0c0ae783",
+      "manifestDigest": "7a97e3678240fc4ee0e29e823ff77e076d89b814abc8dc6ce0fac7f3bb608d58",
       "name": "@deepseek-ai/dsh-agent-instructions",
       "path": "packages/context/agent-instructions",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -795,14 +795,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "6d3f938b296e7384aac2c766cd0baf248f61c7b60c18e81bf92ce649b7e2d61e",
+      "manifestDigest": "3952740c5bf6a0ae5d8bd28e483eb0ca2e68915d42d4c260559a3e45f508bdbb",
       "name": "@deepseek-ai/dsh-agent-loop",
       "path": "packages/core/agent-loop",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -841,14 +841,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f87d3f40864ccd69c7d21a63b4f125f7d3cd4bf4a0efcc188c353f1f5e020c3b",
+      "manifestDigest": "d9244f3647f749ef301ca44fa03d6e1771afa61f7a6e22cbed03a643c07772ab",
       "name": "@deepseek-ai/dsh-agent-loop-testkit",
       "path": "packages/test-support/agent-loop-testkit",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -920,79 +920,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f0d6b4c5360b14d791e4ebcbef9313a71ee269f3d827e9c78e6bfb6944588463",
+      "manifestDigest": "7b398c600ff06826cfa097bec106c909376fb6319b71cfea7c68172ac3e6be59",
       "name": "@deepseek-ai/dsh-agent-presets",
       "path": "packages/preset/agent-presets",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
-    },
-    {
-      "manifest": {
-        "dependencies": {
-          "@deepseek-ai/schemastery": "workspace:^"
-        },
-        "exports": {
-          ".": {
-            "default": "./lib/index.js",
-            "types": "./lib/types/index.d.ts"
-          },
-          "./invariant": {
-            "default": "./lib/invariant.js",
-            "types": "./lib/types/invariant.d.ts"
-          },
-          "./package.json": "./package.json",
-          "./src/*": "./src/*"
-        },
-        "files": [
-          "lib/index.js",
-          "lib/invariant.js",
-          "lib/types/**/*.d.ts"
-        ],
-        "main": "lib/index.js",
-        "name": "@deepseek-ai/dsh-agent-spine-demo",
-        "optionalDependencies": {},
-        "peerDependencies": {
-          "@deepseek-ai/cordis": "workspace:^",
-          "@deepseek-ai/cordis-plugin-timer": "workspace:^",
-          "@deepseek-ai/dsh-agent": "workspace:^",
-          "@deepseek-ai/dsh-agent-instructions": "workspace:^",
-          "@deepseek-ai/dsh-agent-loop": "workspace:^",
-          "@deepseek-ai/dsh-goal": "workspace:^",
-          "@deepseek-ai/dsh-goal-round-driver": "workspace:^",
-          "@deepseek-ai/dsh-home-paths": "workspace:^",
-          "@deepseek-ai/dsh-invariants": "workspace:^",
-          "@deepseek-ai/dsh-jobs-local": "workspace:^",
-          "@deepseek-ai/dsh-llm": "workspace:^",
-          "@deepseek-ai/dsh-llm-retry": "workspace:^",
-          "@deepseek-ai/dsh-scope": "workspace:^",
-          "@deepseek-ai/dsh-session": "workspace:^",
-          "@deepseek-ai/dsh-session-title": "workspace:^",
-          "@deepseek-ai/dsh-shell-env": "workspace:^",
-          "@deepseek-ai/dsh-skill": "workspace:^",
-          "@deepseek-ai/dsh-skill-filesystem": "workspace:^",
-          "@deepseek-ai/dsh-system-prompt": "workspace:^",
-          "@deepseek-ai/dsh-tool-bash": "workspace:^",
-          "@deepseek-ai/dsh-tool-goal": "workspace:^",
-          "@deepseek-ai/dsh-tool-jobs": "workspace:^",
-          "@deepseek-ai/dsh-tool-skill": "workspace:^",
-          "@deepseek-ai/dsh-tools": "workspace:^"
-        },
-        "publishConfig": {
-          "access": "public"
-        },
-        "type": "module",
-        "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
-      },
-      "manifestDigest": "0fd6c74c68faf63e2b6248737f46a5541d98005c75ee6a7e588a7a0f8f9e083a",
-      "name": "@deepseek-ai/dsh-agent-spine-demo",
-      "path": "packages/examples/agent-spine-demo",
-      "private": false,
-      "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1029,14 +964,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "3c1d96afcd06ef666b2b7177a6eed051b3cab9c96e0378fce4a5fa7c5c8b3706",
+      "manifestDigest": "97c888c8326afe924dbb6e48bcbc0ba5816ce0fa36d631c8d2e7b21ac5aec236",
       "name": "@deepseek-ai/dsh-agent-tool-presentation",
       "path": "packages/core/agent-tool-presentation",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1072,14 +1007,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "72db6d237b601257261438ac9c5dce6497274b7123fea06e3a9eb289e4dbee49",
+      "manifestDigest": "33ab9f0069d7ac2a67fc09e97b5d4c4b11b9d10df529da28096e8199ddfcd23e",
       "name": "@deepseek-ai/dsh-anonymous-user-id",
       "path": "packages/identity/anonymous-user-id",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1138,14 +1073,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1c019d451b28f1b9beb7c08dc740a95f94177a58d261d71e1cb99e6171ec3fd3",
+      "manifestDigest": "fe578ca0fdb47672b9b267f6e5934c9f5306eca0856bdc1af37e599bcab84f3e",
       "name": "@deepseek-ai/dsh-api-gateway",
       "path": "packages/api/gateway",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1202,14 +1137,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "872555e27a4623d17da2c3f23a4e67fb4d962b924dd3932e9b835bbed5b6c646",
+      "manifestDigest": "75b9a0d557b531290fb17951132d427f84c546f907ca478173ed5b46236691b7",
       "name": "@deepseek-ai/dsh-api-remotes",
       "path": "packages/api/remotes",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1309,14 +1244,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "eee5f72d1c4b92a9dabeab62ca7318b790bf5c21179b90c94df92eb6d466e028",
+      "manifestDigest": "91a006c50f2f2be53b9e86e26669c96715195a54efcb962fb39276dd176f55b3",
       "name": "@deepseek-ai/dsh-api-session-controller",
       "path": "packages/api/session-controller",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1376,14 +1311,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "da3873bff5a9adeb0ee6b14a22f942f700d86c32c4a7c64f46c5a4bdb9b832eb",
+      "manifestDigest": "050b463d8b6a63bbb1fd0912574ae93facbbb7380598f2f55a8968951d122e97",
       "name": "@deepseek-ai/dsh-api-settings-controller",
       "path": "packages/api/settings-controller",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1461,14 +1396,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e71fb2183d51a97fae95e18f6381af1b17fa8492c511257d7a2d460a5b4545bf",
+      "manifestDigest": "b4f6128ac68e16d5dcf0c4057ed2cc149ab23804d466f9cb1f2111933d723c42",
       "name": "@deepseek-ai/dsh-api-workspace-controller",
       "path": "packages/api/workspace-controller",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1513,14 +1448,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e5a2d461b5c775c971d44c96dadcc9ee306268090e009a712df829caee66c919",
+      "manifestDigest": "ce3752e5c3057c6636e7264e8afa19d84c7d8d8661028186efd0a959cc258e32",
       "name": "@deepseek-ai/dsh-app-boot",
       "path": "packages/boot/app-boot",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1554,14 +1489,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c87ebbf064fac0f55c57b4045bae8aa566b9dba5645bca79d2f8d10bf7f898bb",
+      "manifestDigest": "8ddd70504a45807e880f106c21895eca01f1df19bf4d19283cc3cab9af5e2186",
       "name": "@deepseek-ai/dsh-atomic-write",
       "path": "packages/util/atomic-write",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1601,14 +1536,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f767ea4cae08961399e660b7f9e43eb64ad23c189d60b5d63323264bfaf8c007",
+      "manifestDigest": "1260b6cfd5d02dcca72b9477d5de1d90dd89d816fd68f4c505e284ce986d5191",
       "name": "@deepseek-ai/dsh-attachment",
       "path": "packages/attachment/attachment",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1647,14 +1582,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "baba57f4d8efdff548be6b1dd5ed6056b63a8293be19df14bd6645a9fa2e9ed8",
+      "manifestDigest": "1f874757afbbdc68de5ecdd08b964d0dfcd5022d356521b52f1db56978c1f67d",
       "name": "@deepseek-ai/dsh-attachment-local",
       "path": "packages/attachment/attachment-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1695,14 +1630,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "61d0a8c93052f108697c1ba75d8c39bfa64e1f495ec45a38d48748d486a8ab9b",
+      "manifestDigest": "a577750c7ef4c6bd8ac5d84bfa96724a623ee62ee43e4ad470bf51a94045b013",
       "name": "@deepseek-ai/dsh-authorization",
       "path": "packages/credentials/authorization",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1829,14 +1764,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d16eea8266c14f9ab32cd42653f88bfdee039096aff3ed70fead19fb2cb2f9bb",
+      "manifestDigest": "68747cc86bf2b4024d329e6dd5e8f66dee62a0eb56ad0cc539c88dd215659eb1",
       "name": "@deepseek-ai/dsh-base",
       "path": "packages/bundle/base",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1876,14 +1811,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c1bf67e30828a6b7d9b308ed80f25dc88f53495e961e597114d1359aea5bc0f4",
+      "manifestDigest": "8e1d5f91a244f4406aec8baa759e055c0e8a65beac768df805fb2d2057e0216d",
       "name": "@deepseek-ai/dsh-bash-local",
       "path": "packages/shell/bash-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1921,14 +1856,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "5e0b258e1ae3c69a04fbbf5d04762fa55e0a51c78f5e95015d4910aa4341f96b",
+      "manifestDigest": "a6f7509a88a56a9c282815bf07dc615c396265a5e7aecea989ff1e41308abebb",
       "name": "@deepseek-ai/dsh-bash-sandbox",
       "path": "packages/shell/bash-sandbox",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -1962,14 +1897,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f5926908d24eb937a49b03906a27c6833b78d8d8b78a50ef021734f98c1a4bfb",
+      "manifestDigest": "36a7dd8606e54acfb3955a4039de93125e8cfc24bf1b4da49e996395681147ab",
       "name": "@deepseek-ai/dsh-brand",
       "path": "packages/util/brand",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2018,14 +1953,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4bbe7bcfe0c87342e71863eda1bc81bd541853d48a424ee3ce427d13af7900d5",
+      "manifestDigest": "06ebc0ea94cb3ccd0219a4324a6d79211d32530b395e958b9c4c901f6197fae8",
       "name": "@deepseek-ai/dsh-client-connection",
       "path": "packages/client/connection",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2072,14 +2007,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c8236c0f89f4fe3d01561e62decedc37e34b046482d2446cd3cbb5122282f446",
+      "manifestDigest": "7e682958533bb99f4dccece7a660ac5500c84d06d10df984177652821a8cb193",
       "name": "@deepseek-ai/dsh-client-hmr",
       "path": "packages/client/hmr",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2131,14 +2066,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "b9c762d1cf2db5c25df7cd60ceab10b21b1eb50bc8c31bf90520ad5411d46d78",
+      "manifestDigest": "8c55fedb967bbd440476f23420e4df9456bfbc1e8ac19edc83d497d478c6694e",
       "name": "@deepseek-ai/dsh-client-locale",
       "path": "packages/client/locale",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2183,14 +2118,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "92d79853a18cae92f1c0957ba6489b9dd4f28089eba1dd553bde6452eacde8ad",
+      "manifestDigest": "0d0ae2b3ec95436f03c3fa8fdd1dfa01089018a0769989e0ea5f370429787411",
       "name": "@deepseek-ai/dsh-client-modules",
       "path": "packages/client/modules",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2226,14 +2161,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "aa186a9bf61535096efb59ea44f4c70faf82815c92e63e17f77423372969d257",
+      "manifestDigest": "2917d9b067ffa59e625072362f37d2b8ba2de09875307bf5d3acc02970cce51a",
       "name": "@deepseek-ai/dsh-client-store",
       "path": "packages/client/store",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2287,14 +2222,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "38aa579c5fe572ce818bf08c6fe93adf6315a3033c7a4e948aab026eab827e66",
+      "manifestDigest": "603651faf278413bca6208d7fa213df184c48b28c83103f8245fb726be11fb5b",
       "name": "@deepseek-ai/dsh-client-test-runtime",
       "path": "packages/test-support/client-runtime",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2347,14 +2282,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d5f9becd30ce1a3a6b25d3565736b488fe670257c78004f4df045aaf0006bc0a",
+      "manifestDigest": "bb2e3b10e7ea7bb35eda6421301fd5e9aa71ac3bdc226a7a0597ca99d0fcc61c",
       "name": "@deepseek-ai/dsh-client-ui-agent-preset",
       "path": "packages/client/ui-agent-preset",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2405,14 +2340,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "483657aed2a1bee742b2edca757d956eb19b061bb0c551f0625e4d76c8754d8c",
+      "manifestDigest": "5e5c8b65cb42edcc138412fc5f174a183502207415ce5a30c7f7eabbabdcbcc2",
       "name": "@deepseek-ai/dsh-client-ui-approval",
       "path": "packages/client/ui-approval",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2463,14 +2398,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "a73e30a463f9db039733fb863bfc6a1d3c564bbb590dc984b17ec1801cd9d409",
+      "manifestDigest": "bcca0d721b472193a896c9b7e9749ac29c652687e1e2a92fc387bf00eddec540",
       "name": "@deepseek-ai/dsh-client-ui-attachment",
       "path": "packages/client/ui-attachment",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2517,14 +2452,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d64f93e648ebe53de95bdd52f069f1e883b846baeaddb96ccb65e9e7eaa30584",
+      "manifestDigest": "182f2a061b516485027dfe2e00f191666122d51f0ab4d399b52ac6aacc04db15",
       "name": "@deepseek-ai/dsh-client-ui-brand-official",
       "path": "packages/client/ui-brand-official",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2580,14 +2515,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "188185873f42871f3f78ed86666ca1f1526218087111aa9c8a2f1b29d34317bc",
+      "manifestDigest": "124cefa3b3ac87d8f191c2127e25ef10007f93ecabf625df2562a1140786a4c5",
       "name": "@deepseek-ai/dsh-client-ui-chat",
       "path": "packages/client/ui-chat",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2638,14 +2573,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "8be45148101023e0f85952b1f3ffd77c15fbfa84dc6beff0f39f012c7e448123",
+      "manifestDigest": "59c7d233ee83600666f08abaaefe8efdf5a81911bf2a198e00bb5de002fb978b",
       "name": "@deepseek-ai/dsh-client-ui-commands",
       "path": "packages/client/ui-commands",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2705,14 +2640,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "6033b1aaf9bd58b7225f1e8c2ec4a146181fc05750de86570ae6d892bb45d303",
+      "manifestDigest": "9ce9056cfcb21d32180be2f4d0a62a62c56971a1d6e25ffbc8e67a6b6d93e8ec",
       "name": "@deepseek-ai/dsh-client-ui-conversation",
       "path": "packages/client/ui-conversation",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2766,14 +2701,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "646e593f7e929fb5260c21afb024e2a53a9f95ee862a561faa8ad572b0a8cfe0",
+      "manifestDigest": "b4ffa6466a0f4df63c900d12a6acc7a7cde89dacb56bb2240973932949d7eb9c",
       "name": "@deepseek-ai/dsh-client-ui-cordis",
       "path": "packages/extensions/ui-cordis",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2824,14 +2759,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "20b8051eac5a93aba0cd31d1b0930c428614e600a1ddc0f4591cc068e1e11cda",
+      "manifestDigest": "397de2233d8f04a9ef45bf0d477219253e2429d2f7473c581bcd658e32c99de1",
       "name": "@deepseek-ai/dsh-client-ui-deliverables",
       "path": "packages/client/ui-deliverables",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2882,14 +2817,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7524441a2960ef162e92657c4202e5a319a0e20422d99547c0518bc240d063b7",
+      "manifestDigest": "56e3998d52576fe46d8ea35db90ae8875228b4d59266f8b945807de133368516",
       "name": "@deepseek-ai/dsh-client-ui-directory-picker-browse",
       "path": "packages/client/ui-directory-picker-browse",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2936,14 +2871,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d4fe85aecd5a72fcacc2351691ed94c205780bad01b4d4d67ea3837acd873810",
+      "manifestDigest": "f1b719176dde179ea84b32ca74d772931c0a9c3a883289a32b6f780937c635f4",
       "name": "@deepseek-ai/dsh-client-ui-directory-picker-native",
       "path": "packages/client/ui-directory-picker-native",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -2995,14 +2930,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "ee3e855514981d16eadf7815fc88d0cda89a778b631a0080c7ece4acb909f318",
+      "manifestDigest": "2acd3b873d50632d13063a434f5a303c27657c8b66d7484b9b82a65da89cb861",
       "name": "@deepseek-ai/dsh-client-ui-goal",
       "path": "packages/client/ui-goal",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3053,14 +2988,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "941c747b55013de33541a52efee7cb34a3e8a1566004047052a1a5ca0885b4ce",
+      "manifestDigest": "8aab9ea8440e8e7f19b6d35584adc22ee258a5d8ba7e60b163b181d6f0112ddc",
       "name": "@deepseek-ai/dsh-client-ui-input-trigger",
       "path": "packages/client/ui-input-trigger",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3108,14 +3043,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "656ac1fec95fe7f685dcfaa9086f81e160ad672cbe8b991a1812eeffc4a8c475",
+      "manifestDigest": "79f3b0a14bddf58e52b6cd46cdbeade8d7429f9a91f63f98c0a41917afa1c50a",
       "name": "@deepseek-ai/dsh-client-ui-jobs",
       "path": "packages/client/ui-jobs",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3164,14 +3099,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c5642bf0b16fa0a2fbe59fe00189f7d38b73403e0c6f54fe134b81460209cdba",
+      "manifestDigest": "3fa6458d959e90d168f5f6c1f9eea9d687a85a1c33fe22cc12d6be3dca3956aa",
       "name": "@deepseek-ai/dsh-client-ui-layout",
       "path": "packages/client/ui-layout",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3220,14 +3155,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "a5a7c45e72f9b6bb82bd11f2b972337ea53d601f0573a4aeeacd5ae22464b5d1",
+      "manifestDigest": "3623a6c0678b0d9b00aa7bb08fc90eadd24652c5e2a4cc55b471ef6a5a2b9a38",
       "name": "@deepseek-ai/dsh-client-ui-message-feedback",
       "path": "packages/client/ui-message-feedback",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3278,14 +3213,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "59319abc28f1736448bc13abd75531f6d06a1d68d55e0c3835e5bb4ff2a12229",
+      "manifestDigest": "3b57e0f38c4b3655ebff6fce93520d82087fa8037594801c42d2c64da8bb9e96",
       "name": "@deepseek-ai/dsh-client-ui-model-selection",
       "path": "packages/client/ui-model-selection",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3335,14 +3270,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "55de9c9097e78f981d36c4df4b231621e7c8b2938554ec6f147f4ca77f7a45d3",
+      "manifestDigest": "2c223cab5c68d9222a1f4df0c700e4f6fd44487d985385a6d0e16d9344f1dc6d",
       "name": "@deepseek-ai/dsh-client-ui-permission-presets",
       "path": "packages/client/ui-permission-presets",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3390,14 +3325,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "2aa398e5f8fc3081fbd8551cf66c2cae156f300898d844a0e55b2e6643e137db",
+      "manifestDigest": "0038886c3b5c1f7cd60f1e213445002c92f69fed1e1443bbc18cd557412fbc09",
       "name": "@deepseek-ai/dsh-client-ui-plan",
       "path": "packages/client/ui-plan",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3452,14 +3387,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "792d5f981b4a7d8302ecb5ed3d01c6125b8367b35888dfdf9812b26224f9e364",
+      "manifestDigest": "e5e5b2f84cee6589f134930f4bb60cffa4d38931fe1ec773a5db667c8ef1eea9",
       "name": "@deepseek-ai/dsh-client-ui-primitives",
       "path": "packages/client/ui-primitives",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3509,14 +3444,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "5195d5ad6faec7befd089ea9f4b8b09dbbbf034f043f0e310254002bbdd2d7a1",
+      "manifestDigest": "959c767df59026302bbed1fe33b9370c1faceae1d805a9c3951d69deefeab114",
       "name": "@deepseek-ai/dsh-client-ui-reference",
       "path": "packages/client/ui-reference",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3562,14 +3497,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "5be8fe977f18d0d478c9a604f58ff155b80fe86d7db5d6cefe55477af1e87938",
+      "manifestDigest": "47e886be01f3d96eb3ad80d0925b53fd5d2281ed6643ced1bbe587c8eae745f0",
       "name": "@deepseek-ai/dsh-client-ui-renderer",
       "path": "packages/client/ui-renderer",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3617,14 +3552,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "75e7473b81aebbb89f26adf9bfc46afaa32f20b21e8313e2efacdf6e80150a37",
+      "manifestDigest": "f41c8dcb410cc04a3b121c4d7960ad22e5b5b7c32868e745e70188ce59f3aebf",
       "name": "@deepseek-ai/dsh-client-ui-schedule",
       "path": "packages/client/ui-schedule",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3671,14 +3606,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "47b74b74ceb4663aa363a9e5c899dd5fa681e6c8a42347d49934602fcc8eae1e",
+      "manifestDigest": "39428f09504b900f5a88802e776e6bb95d3933e76148bc7c9bb1247d32cc047a",
       "name": "@deepseek-ai/dsh-client-ui-session",
       "path": "packages/client/ui-session",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3724,14 +3659,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d7d95140c6f8ffe59414734b780e7129a33f2c07280723ae1bd1542312c9e720",
+      "manifestDigest": "487e8cd87d2e20ce5c500504a5cdd8d599c4b8ddb56fa754aa784d7a775e2c43",
       "name": "@deepseek-ai/dsh-client-ui-settings",
       "path": "packages/client/ui-settings",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3784,14 +3719,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "9f7c7d34ba70105292a7db002de020f36cd791eff0743313cf3efc8c372137ff",
+      "manifestDigest": "6611b6d6e61416cf1f0467945d68ed3f004bd42bf58ff862ff8f8221022e6c4b",
       "name": "@deepseek-ai/dsh-client-ui-settings-general",
       "path": "packages/client/ui-settings-general",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3839,14 +3774,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "a55f87a9bce7e55d9710bbdb3b62dd6cbe989a190bc51a06eface934d7e8a180",
+      "manifestDigest": "27e1fbac2cdb06558b3edf2da6a0214733b0116b5b8f9b7ca09eb2bfdd395b9e",
       "name": "@deepseek-ai/dsh-client-ui-settings-models",
       "path": "packages/client/ui-settings-models",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3895,14 +3830,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "5a021c4fc398714545c25fc3d9f575bae0db325139c0f9e5de20a0f8143b8d4a",
+      "manifestDigest": "418d63cb7326b7f38d6fac311029e857f269c33ff223334842f5dba3f1ab57a8",
       "name": "@deepseek-ai/dsh-client-ui-settings-plugin-inventory",
       "path": "packages/client/ui-settings-plugin-inventory",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -3952,14 +3887,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "8449efd26d053d8d61a5d0d7408c7adb7ccc3dc8e58acb961254872eb7c179f0",
+      "manifestDigest": "ef92e5f622204ab6ca35e809c18feb47ff103a9e86500191191c3a488493845a",
       "name": "@deepseek-ai/dsh-client-ui-settings-plugins",
       "path": "packages/client/ui-settings-plugins",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4012,14 +3947,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d4d4dce25d9224ef759c56ff46b67377e041b2d724cae2d083bd8a03669075f9",
+      "manifestDigest": "7f973fa785df626fba4237ab334cb1f504c77154c140e749958c1aebcf80aaaf",
       "name": "@deepseek-ai/dsh-client-ui-sidebar",
       "path": "packages/client/ui-sidebar",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4070,14 +4005,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "63b860e9ef561683682d76398c2c8d167645d6d3d97e43802c3ed2ef99a14b56",
+      "manifestDigest": "85eec62fe65937d538c720673cd785c22ffd88c6c736d517d295e01d126041e4",
       "name": "@deepseek-ai/dsh-client-ui-skill",
       "path": "packages/client/ui-skill",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4110,14 +4045,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "dee2ebfe2816c110bbb106a2aa00be034599914ba5d3588fa0f5645943151358",
+      "manifestDigest": "5f3a6b67331cb690170ff22fbbf972a55798e0f42db5accb2fd4311c2d4125a0",
       "name": "@deepseek-ai/dsh-client-ui-slots",
       "path": "packages/client/ui-slots",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4167,14 +4102,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4f57909eb355f20cc9883803f87a2ea7f24280e0aae605b76ce70936004afde0",
+      "manifestDigest": "0d582615f0e1dcf672ad940a677f62c85c2e0a4dd23a4d4d4413f54f80eb0f38",
       "name": "@deepseek-ai/dsh-client-ui-subagent",
       "path": "packages/client/ui-subagent",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4229,14 +4164,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "b32f87e853b0373fc54e8a74901fab5b64e9dde2ed04f15da33a51789578c578",
+      "manifestDigest": "f1fe6db6264274dae1b68a4a01396df98c11b5193b994ce7dbf072c443f38ca5",
       "name": "@deepseek-ai/dsh-client-ui-theme",
       "path": "packages/client/ui-theme",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4287,14 +4222,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f3c00d8951486a2b59a4ec1687cba4f22d435c94b960ee411c72fc131916401b",
+      "manifestDigest": "169934d8dc507b79844355a57f956c317a1b44f5843aa950a650ed5373e98577",
       "name": "@deepseek-ai/dsh-client-ui-tool",
       "path": "packages/client/ui-tool",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4347,14 +4282,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "64885369af7b5c5c77d83180bbd70ce2a639b4582b188869289e7088c751c8e7",
+      "manifestDigest": "9d767b49821953a1453c5188a36642e9985617ac48caeaf45e0f17dec7a3190d",
       "name": "@deepseek-ai/dsh-client-ui-trajectory",
       "path": "packages/client/ui-trajectory",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4407,14 +4342,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "601d7ce260e4fb83e1571ed1b7a0383ab0ef6f8de7e5339ac33a1e15ecc6a260",
+      "manifestDigest": "709bba9c2b1c0f3bdfb8c1e26a2d35c62dc9ec3c0108a26a984d9e85b04804c1",
       "name": "@deepseek-ai/dsh-client-ui-user-questions",
       "path": "packages/client/ui-user-questions",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4465,14 +4400,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "47bc8d24af9e4be7881d26af0f4fe4ac54ccdae07c4f9324f7b350c98addc065",
+      "manifestDigest": "6f1473597d45da4f01beb47d32aa24f481a8862a3043e1a05d165f62198413a0",
       "name": "@deepseek-ai/dsh-client-ui-workflow-run",
       "path": "packages/client/ui-workflow-run",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4528,14 +4463,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "806021bed49f437a281eb004d60fa9bfe4faff92e0e7782eb61616f138d88432",
+      "manifestDigest": "460441085c8dbf747eac1d92b8031251a2692709bdfd1cb40d3b4a4de0bceadc",
       "name": "@deepseek-ai/dsh-client-ui-workspace",
       "path": "packages/client/ui-workspace",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4569,14 +4504,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "90f960bd0fe5ae4a20d8d490154ebd81518c635085c5947c2cc13e96c9ba5d77",
+      "manifestDigest": "52fb2af7832b380f7f27d51674764566fa97dddf7eaa2f916b25c19e2462e694",
       "name": "@deepseek-ai/dsh-client-web",
       "path": "packages/client/web",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4611,14 +4546,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "9ac9b301065f50fa10b20bd4de14e642c54675edfc91896312af958e47ae4b6d",
+      "manifestDigest": "df7cb59cea5c38a465e9c018ea4185586e522d6437b902fc3f70926c2a6677e1",
       "name": "@deepseek-ai/dsh-cmdline",
       "path": "packages/boot/cmdline",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4652,14 +4587,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d0d03ef97704e7fdd56de7d496d2f64181fb819a031f5e0d0f935587f9796ff5",
+      "manifestDigest": "3ca7f60992aedf3d449025e2dc9bc308e8ce6f794cf7c6197d3ed1b7374fe93e",
       "name": "@deepseek-ai/dsh-code-runtime",
       "path": "packages/code-runtime/code-runtime",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4693,14 +4628,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "3be3547484c0b5b1ec0ffcec288e7a2dacc7f59c05f3f292bebdb218d36d6b30",
+      "manifestDigest": "b7850993a744f61f42b434cd1c51d375d92e89b46c2c9d167103f5b2a87c8088",
       "name": "@deepseek-ai/dsh-code-runtime-python",
       "path": "packages/code-runtime/code-runtime-python",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4744,14 +4679,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "17b9376fcd665bc83e3be9b6c7818229a6394f5d283b7705afdde94dd74f0cee",
+      "manifestDigest": "2ddd73cbaead417de71191ddd61a5c18bb04d7b487ce79f14575dd92c9ff921a",
       "name": "@deepseek-ai/dsh-code-runtime-worker-thread",
       "path": "packages/code-runtime/code-runtime-worker-thread",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4787,14 +4722,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "ead527ce15c50d511870676fa21c5b4554615eea197721515d064ab0b8d10db3",
+      "manifestDigest": "8e2eee265340e5fd2f6d07407832f6611200aa2bfaa2f9f5239c7e7e96155bad",
       "name": "@deepseek-ai/dsh-command-compact",
       "path": "packages/compaction/command-compact",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4832,14 +4767,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "ed9fda2d64a1fcbd3e95addbf3a5a91fe33c7f67b4b246fcc40c88fb2d246d74",
+      "manifestDigest": "a23a540c82a8dc4bff8df7eda0fc44bb5d39eceed6e18109a6a4c4f4c7f495a5",
       "name": "@deepseek-ai/dsh-command-feedback",
       "path": "packages/feedback/command-feedback",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4876,14 +4811,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e010a238d97c20a7745cb9cdd6a9c75155c32728a1e2ed4f7441ca67bdda173d",
+      "manifestDigest": "4f2c8ee3ce15b7a17627d0e554b8acb4e4fcf22e2866c9e62bd3cc2709d23c7f",
       "name": "@deepseek-ai/dsh-command-goal",
       "path": "packages/goal/command-goal",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -4948,14 +4883,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "bfaa274ce6b448400cb351ec5f97fd1304f6f1501db755d93b3a31fcda1eaa53",
+      "manifestDigest": "b40ff87a8bcd4ee9decd024690d719afc2057d13faac8fe5603e7ba84ba292b9",
       "name": "@deepseek-ai/dsh-commands",
       "path": "packages/interaction/commands",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5002,14 +4937,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "04f14529987a25c99a1b5edbb2317927e8cb8c5804d8d2179cf348dedf2bff58",
+      "manifestDigest": "2a53f58f966c033d7960cae2f059b506572760b3da7260505ff79b9e30894c73",
       "name": "@deepseek-ai/dsh-compaction",
       "path": "packages/compaction/compaction",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5053,14 +4988,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "0f550325732998f3ff8f3076114ce5143a9405de52a31aa8f81f4814c9d719c7",
+      "manifestDigest": "f4a97570f8ece92ccd0ba030b2c2d667fe27e9d30e26b51db0994f0555ecc903",
       "name": "@deepseek-ai/dsh-compaction-basic",
       "path": "packages/compaction/compaction-basic",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5101,14 +5036,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "07a56061eb0219f763baaaa25e68faf07d043f83e826c2047575ebd06f27df56",
+      "manifestDigest": "2fac9fc1c04967edc1b50e03f454311677c709636e34bdca4cc4c660318b6fe6",
       "name": "@deepseek-ai/dsh-compaction-tool-result-pruner",
       "path": "packages/compaction/compaction-tool-result-pruner",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5157,14 +5092,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "9bc7b67c27ef8a2947d6ad61c0837540d0837e3b8a84f2ed987743b63bc99e77",
+      "manifestDigest": "2500b5e067c5323cb4c939f595fe1b009b9824584f629d6d7846637c2cbeafdc",
       "name": "@deepseek-ai/dsh-cordis-client-runner",
       "path": "packages/extensions/cordis-client-runner",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5226,14 +5161,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "91b61f6acc462c1a8c012282d043ad2dc3e3d02fc9787a024ccdf6fec8ee2e8e",
+      "manifestDigest": "94efdaf99d6f7f53713ee5605ca2296de17e008eadba2047882cba4d91d4fbdc",
       "name": "@deepseek-ai/dsh-cordis-host-runner",
       "path": "packages/extensions/cordis-host-runner",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5274,14 +5209,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "83bf70d6b6bdc39aac8d1ca4c92ac1b1a2864d7f1edc37e3fd57ac3baebb0375",
+      "manifestDigest": "fffdf74e75c8cd4e627af58fcce2f9fadfaec5870b9f6c86d78a54ffce10c418",
       "name": "@deepseek-ai/dsh-credentials",
       "path": "packages/credentials/credentials",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5323,14 +5258,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "0e3c84e36d395b4978dbb83607aea6f0adf20406339e19ae5d7cdf6d9c0525d8",
+      "manifestDigest": "23494aea318c37937c13b1c618cc311a81214bf5434f257af8095bef2a64cbb2",
       "name": "@deepseek-ai/dsh-credentials-local",
       "path": "packages/credentials/credentials-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5369,14 +5304,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "460060a0e2fbea30091433bdef46f58042d0ac9386de212239c93db00763233b",
+      "manifestDigest": "dd4ff30197013b0091e298aa30a46db1b1ac918ce11441743b685712a6b94986",
       "name": "@deepseek-ai/dsh-deepseek-llm-api-extensions",
       "path": "packages/llm/deepseek-llm-api-extensions",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5410,14 +5345,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "73f0d9f3f94286a565133c1f653e060a49d11e4c9da474102c130c0cbee8153b",
+      "manifestDigest": "b9fc5a9aa90a76ab34e9a2bbcb1619d8b8b76b9d14193c17ae1211f548b4e787",
       "name": "@deepseek-ai/dsh-deque",
       "path": "packages/util/deque",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5454,14 +5389,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7aeb1f5b41d8eb1ee6bd53641fca5aa6d4bab27a7246fde00eb2a921d8f97438",
+      "manifestDigest": "07bdf24f78c99a76a007f36a35dc2faaf503b73521e5adf911c10491902ee7ed",
       "name": "@deepseek-ai/dsh-e2b",
       "path": "packages/e2b/e2b",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5525,14 +5460,14 @@
         "private": true,
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "2cfed84f5bc2694c8f933d9ec6b991cc837e83a83298457ec9b5f2711f31a249",
+      "manifestDigest": "af5f61346dd453a4126ddcda5882329f403ff546b6ae1a93efd967dca8a47599",
       "name": "@deepseek-ai/dsh-experimental-agent-team",
       "path": "packages/experimental/agent-team",
       "private": true,
       "releaseFamily": "experimental",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5574,14 +5509,14 @@
         "private": true,
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "205f8a4c33ffcf552ff8d21d51b9a57f09b19b391cb6e93fb55403512e7ce404",
+      "manifestDigest": "5afb9e5c42518a5e0398d152645048c9914cc27857290926000c3ac0a9d0b540",
       "name": "@deepseek-ai/dsh-experimental-agent-team-profile",
       "path": "packages/experimental/agent-team-profile",
       "private": true,
       "releaseFamily": "experimental",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5622,14 +5557,14 @@
         "private": true,
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c7fb8b7bcd5199ffe76cc7cdefc1e0ccdab0996a8eae96839fb1d2561f14c8b4",
+      "manifestDigest": "43fac54d15efdab640fff555b63591662ad2ef4e20d13158ab83a560fa55ae53",
       "name": "@deepseek-ai/dsh-experimental-agent-team-web-profile",
       "path": "packages/experimental/agent-team-web-profile",
       "private": true,
       "releaseFamily": "experimental",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5691,14 +5626,14 @@
         "private": true,
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c12ef0bbd30b00343a2ef4b7813b14599222f90e61813576457312f81b128cd7",
+      "manifestDigest": "2baa84ebbaa891a0de4a377ab27a4901c5795385d940780608197786625aa245",
       "name": "@deepseek-ai/dsh-experimental-client-ui-agent-team",
       "path": "packages/experimental/client-ui-agent-team",
       "private": true,
       "releaseFamily": "experimental",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5750,14 +5685,14 @@
         "private": true,
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "bb2f7faeb98175147c85ced4e2d6cc04b67835dd04d66893b42ec5c9062cea61",
+      "manifestDigest": "d527f62cff22f01e478999f73aa96bbbe7d2e0dd75d9de2de74acd923afb4c5d",
       "name": "@deepseek-ai/dsh-experimental-inspector",
       "path": "packages/experimental/inspector",
       "private": true,
       "releaseFamily": "experimental",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5796,14 +5731,14 @@
         "private": true,
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "56ba3fc12b27f6e7312968715b72724c71c5d840d7c04a41dbde48bd5b2ccf88",
+      "manifestDigest": "aa8cb01ca8e0d8f7f1a77d63ad1d5a4dbc87b35b93bfd0eea086c6d4ed6a0390",
       "name": "@deepseek-ai/dsh-experimental-tool-agent-team",
       "path": "packages/experimental/tool-agent-team",
       "private": true,
       "releaseFamily": "experimental",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5847,14 +5782,14 @@
         "private": true,
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7445447a957e0bc119d401738473d433ed4d4a8f92ae2657e611b9f1ab886bd1",
+      "manifestDigest": "34603b5c5790c9045ee3b53eb23e6bdc3b8181b47db575d0e0e9119c3e270a19",
       "name": "@deepseek-ai/dsh-experimental-webworker-packer",
       "path": "packages/experimental/webworker-packer",
       "private": true,
       "releaseFamily": "experimental",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5905,14 +5840,14 @@
         "private": true,
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "156770f77dccb29dd49e6de7a1b893519a8749d09465d7e682460c589c00b84c",
+      "manifestDigest": "89be0898888e0902d0778090129d461bbe270858d09355d72c9c5b6a98bc729f",
       "name": "@deepseek-ai/dsh-experimental-webworker-runtime",
       "path": "packages/experimental/webworker-runtime",
       "private": true,
       "releaseFamily": "experimental",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -5956,14 +5891,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c38c259d6eadd96fd9cf9d420e9cb8f9f3b6b5ae353b95c6d41e26c2dbc36404",
+      "manifestDigest": "b16da1b04a6f0d734a2d15524ce2ebf735df80f6d994d3dada590f9dc6c740da",
       "name": "@deepseek-ai/dsh-file-reference",
       "path": "packages/context/file-reference",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6008,14 +5943,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "8cf9f55b32357f8afab9048c89dc5b026f9a94769277b97737d66da625b6ab71",
+      "manifestDigest": "57c34582f8b4cd7af72dd2de687d11e1babfa0c3fc000eb45d705a4e306f9a7b",
       "name": "@deepseek-ai/dsh-file-reference-local",
       "path": "packages/context/file-reference-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6052,14 +5987,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "3db4c31e694c8796e4efac463edefeb422c6c0016b675adbc2f27d01ba1d5bf2",
+      "manifestDigest": "527bae18e360070dc27bdfb909bdf3f1589c9c76bbbe143e7183cfa7f2c11354",
       "name": "@deepseek-ai/dsh-fs",
       "path": "packages/fs/fs",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6095,14 +6030,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "00a3921bd1c05b81cbf2e8ffd1173ed5cd6425435e1143060f59117a55a125b9",
+      "manifestDigest": "184c050ce6fdd698f7d23a1a6ae548e4a7af3517c217b1e417a492686545cecd",
       "name": "@deepseek-ai/dsh-fs-e2b",
       "path": "packages/e2b/fs-e2b",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6140,14 +6075,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "36f4dee5b254015c0eefd7846d5b964d4ffbcc6bc4e02dd23973150d6bef38cf",
+      "manifestDigest": "7222ee2bacbc5af58687ae40a66f187e3afdb5688073af89446a5ec58e8ce8cb",
       "name": "@deepseek-ai/dsh-fs-local",
       "path": "packages/fs/fs-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6182,14 +6117,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "db1ccc7c343227fd6c29d0b62d8fe0c51809fdddd0f95ebfbadb5a4b77cbc7af",
+      "manifestDigest": "86c40765e96caea532e3a9341b102e4f4c704f7ef02b0c9c719c24f5e239fe22",
       "name": "@deepseek-ai/dsh-fs-observation-policy",
       "path": "packages/fs/fs-observation-policy",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6227,14 +6162,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "6528fdce3ecc86b5dab9b4f32b390f7a3f83b225f8f5bf10e1d108c79273fc77",
+      "manifestDigest": "6d0a1cd550cc033ebbc4ba392194c4f2e5116c2e35c2c702afe5e02f262a6d8c",
       "name": "@deepseek-ai/dsh-fs-sandbox",
       "path": "packages/fs/fs-sandbox",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6299,14 +6234,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "93baeceaf58e8e8e3875443c45f73d5526fdcb769dfd343c6daee8c21a06febf",
+      "manifestDigest": "04f13d36a253c217103425f70020e8428a86eea5b60b41dd2155a1c32ed219fb",
       "name": "@deepseek-ai/dsh-goal",
       "path": "packages/goal/goal",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6344,14 +6279,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f98ac5c11e4ad33f3b24318742b77084bf341bfa1eb4509ba256c261ff12946c",
+      "manifestDigest": "e840c28715f97b483bd23313c4db2a19f3c0665eb8035c4e317cc6e02454c320",
       "name": "@deepseek-ai/dsh-goal-round-driver",
       "path": "packages/goal/goal-round-driver",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6409,14 +6344,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "b7e9bb203386f8e4e391f2234545bc10555e7c1f91e9a188c9416c21f7e3f3d1",
+      "manifestDigest": "665f3c5f78026c2501a372bbf2e1311cd390655b7a62d1940da81d72718aea3a",
       "name": "@deepseek-ai/dsh-headless",
       "path": "packages/bundle/headless",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6450,14 +6385,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "cb6362f16b8a23fe669ea6c95576283f65b47908a25d81df3925617d5af03a2b",
+      "manifestDigest": "25585fb57fc8c99e8e3ee758c13630afd4e5447e2ed67c37fa1e653a3397bc5b",
       "name": "@deepseek-ai/dsh-home-paths",
       "path": "packages/util/home-paths",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6493,14 +6428,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e5e6de52169c7506b52da79cf5074034db09508f60d4f787056ceb8e4a8eece1",
+      "manifestDigest": "e3faa04a72a15e055272385fb49ff3768dfc41e8daea0d3070955f17d895e815",
       "name": "@deepseek-ai/dsh-hook-protocol",
       "path": "packages/hooks/hook-protocol",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6544,14 +6479,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "b5939b9dad9178de1e62fcb6a996b4c645533ebc7e79b51802974dadefe2514c",
+      "manifestDigest": "3899c7cf8fc6243e6eec03c5a66591f338238fb1bc271df78e22c662dd60e832",
       "name": "@deepseek-ai/dsh-hooks-claude-code",
       "path": "packages/hooks/hooks-claude-code",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6594,14 +6529,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "a6ba65682a7a5d9c369bed03ca15fd65cd439a55105d00a23868d8cb65b44478",
+      "manifestDigest": "aed3dd773352aa689afd5d1f3fbe939c82c3aca6da24109d8f005b66ce86f5c3",
       "name": "@deepseek-ai/dsh-hooks-codex",
       "path": "packages/hooks/hooks-codex",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6640,14 +6575,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c30748eb7849dbde4ec134cda0410daf10616da932f9dd0c948a14b0225a8323",
+      "manifestDigest": "1596f401ca7243bb53224be57f7c34a921207e1d61bf85ecfa2bf105603aa1de",
       "name": "@deepseek-ai/dsh-host-directory-picker",
       "path": "packages/host/directory-picker",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6687,14 +6622,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "227cac3f251173184b435991323c40ba056b4da2558e7059265580a295329712",
+      "manifestDigest": "3a4dceefc75744de7aac09fceb9725646b36e20cc0c3aa767242aa00abb627c3",
       "name": "@deepseek-ai/dsh-host-directory-picker-auto",
       "path": "packages/host/directory-picker-auto",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6731,14 +6666,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1a3677d750d66d5fefa92ac5b71ae3b793b245744baec8ef5bb9da3f9dbd0e7c",
+      "manifestDigest": "aaa52ad21eb0ce0e93687344d4f13bdc54c0a5b414f43a5098ec2451e276b1a7",
       "name": "@deepseek-ai/dsh-host-directory-picker-browse",
       "path": "packages/host/directory-picker-browse",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6781,14 +6716,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "299e449dd459a74106ff29a49439262ce2e74e10245300c25b905daca4b3224c",
+      "manifestDigest": "456994b14ec137bf2b3b96aac84cc7dfb23a9cb370293cee2992c70c7b440799",
       "name": "@deepseek-ai/dsh-host-directory-picker-native",
       "path": "packages/host/directory-picker-native",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6826,14 +6761,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "da3e700959a5a78c0d92b8d2c01563569e5be992addd1f5b3a7cc15eeb40e0be",
+      "manifestDigest": "4012b97675fc9d436f7bfc02bd7780d29bb025986b286aa6a9b262eeace8d36f",
       "name": "@deepseek-ai/dsh-host-frontend-static",
       "path": "packages/host/frontend-static",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6890,14 +6825,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "af72bd8069eb76ed75e37305dbf889f2e811910ab64f7fbff5ecfb761b2d9aae",
+      "manifestDigest": "3fe0e94ab47be47f954413417359696890f7efce10c315f96f5e4dbb92cbaf4e",
       "name": "@deepseek-ai/dsh-host-plugin-inventory",
       "path": "packages/host/plugin-inventory",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6935,14 +6870,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "93cf1a64aeb4b6fc71b6ef472d946c094be58e7d23f358cad5b682cc1a4c4b77",
+      "manifestDigest": "0de579e888224b229b854c1ec46b0cd90f5157759724761fa24dde21faf7b4b3",
       "name": "@deepseek-ai/dsh-host-webserver",
       "path": "packages/host/webserver",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -6977,14 +6912,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7a7221eaa22f625590dd6b61f623535b7415816d30f76db72e69501c1e81bee2",
+      "manifestDigest": "9645d6c86cc5cfef46b809d39482014f6f7012fe15e02c85877a76ccb55daa5a",
       "name": "@deepseek-ai/dsh-invariants",
       "path": "packages/runtime-diagnostics/invariants",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7026,14 +6961,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "258c33702e84955047edd622d8bd93ec1e8bb69bcf29f3912f6820d68ceb3f37",
+      "manifestDigest": "0b7f4184d6230f9ba4b16b55c1f338747793b8fdc86735e942620f6e6e1e2216",
       "name": "@deepseek-ai/dsh-jobs",
       "path": "packages/jobs/jobs",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7073,14 +7008,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c7fea38f930c244758c8de9d3c4c4768649be8b71e50a983989267c23edcfcc4",
+      "manifestDigest": "9f4268848f1f219ccffe53418240bf62114d774bb8d0b93d2baecc1f56c3325a",
       "name": "@deepseek-ai/dsh-jobs-local",
       "path": "packages/jobs/jobs-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7114,14 +7049,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "5114a461378901f4361bfc52fbfe00ee015e651cddcf86e00aab679bfbabe02f",
+      "manifestDigest": "494bb91f5a0afd6d75dd043b4e63f145320bbd8186bbf263097a0cf064a6d6c3",
       "name": "@deepseek-ai/dsh-launch-environment",
       "path": "packages/util/launch-environment",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7187,14 +7122,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "75c05dfcadfe9ea2962bd614fd6fd1f25bd1bb7bd1ecd39e3ed656268e2ac730",
+      "manifestDigest": "37b0af275d0e2a5f15b17fd22a287598a533788a626e82c0fb95bca2a37101b4",
       "name": "@deepseek-ai/dsh-llm",
       "path": "packages/llm/llm",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7244,14 +7179,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e10cca715d88b9a59b2485e079401027f30ff7033cf9340beaaa15dd9351079e",
+      "manifestDigest": "301443e7d682dc957410d872d9a55f96ffd05865fe6d2d6786344989cb87cb9c",
       "name": "@deepseek-ai/dsh-llm-deepseek",
       "path": "packages/llm/llm-deepseek",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7285,14 +7220,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "a2582920b333e3975e6ec5ebb574da72c174e66dd0669e7293bd45efb39daffa",
+      "manifestDigest": "59164c8007aad4d5a5031d7133d96418737df69193d0c29eda65641aaeb67733",
       "name": "@deepseek-ai/dsh-llm-mock-server",
       "path": "packages/test-support/llm-mock-server",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7339,14 +7274,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c677885e01ba8f78fb6424d364b9679cd2c11ca12aa37fabff9cc77d7ef94693",
+      "manifestDigest": "4b1a75111d6fbae87b419fdf30df5c67f7437762c70075ce8d7e3956fc21b3df",
       "name": "@deepseek-ai/dsh-llm-pi-ai",
       "path": "packages/llm/llm-pi-ai",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7386,14 +7321,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c155765c0b9b534c1c5f0cdd4dc8abeb1e576afb60f1e4fe0571c9933663779a",
+      "manifestDigest": "4e87420b6a9fdc2373e6937d700409ff4534a4fc689065148362b4e08d0b094f",
       "name": "@deepseek-ai/dsh-llm-replay",
       "path": "packages/test-support/llm-replay",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7440,14 +7375,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d9d210a263a4884c9679426010bb80d74601159c3baa82221bf5ea064012e5d7",
+      "manifestDigest": "f9a31727349f09a98951694ec3d11d94d4b4ee3cedf411227b850b4a99985c7d",
       "name": "@deepseek-ai/dsh-llm-retry",
       "path": "packages/llm/llm-retry",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7487,14 +7422,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "876ab319567ac7642ac9afa685725e7d6ac18f039ab83ab8c81033e855737a2d",
+      "manifestDigest": "01ac34c69e21ce059ef5e653dd91e0a20ca6a86223d1d38d14a882b8004951b4",
       "name": "@deepseek-ai/dsh-loader-smoke",
       "path": "packages/test-support/loader-smoke",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7530,14 +7465,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "b5ca60fef6c8a69d39a522b26f61acee447ee48813111e5f536e31c2ac3187f6",
+      "manifestDigest": "1508340a641c84b504782a5fe679bbc8e188af970e4e1e0e89a0a8a1cefde921",
       "name": "@deepseek-ai/dsh-lsp",
       "path": "packages/lsp/lsp",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7580,14 +7515,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4764e14ac66fd4c65325e2ae76d007fa61a08432c014ae4cf04edebd4faec6da",
+      "manifestDigest": "e3b59a77e28639f9cc9f17c20de3d3a769a2511c3a9cfd8a0c69fa18a851f686",
       "name": "@deepseek-ai/dsh-lsp-stdio",
       "path": "packages/lsp/lsp-stdio",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7631,14 +7566,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "06a7c041175425eb330bff6da941e887dffd997f34ca06e73349072c7195c184",
+      "manifestDigest": "4009e5778c139826de511aa384286a3c6ec8fd25e04321a745eee16f9a43b289",
       "name": "@deepseek-ai/dsh-mcp-client",
       "path": "packages/mcp/mcp-client",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7698,14 +7633,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "86562c2eaf628e96163e0d40ec8ffb4e738939cea02412b76a73ac48790ab541",
+      "manifestDigest": "64de61b53e7a310e6aab18716b2d91f9b5f2eb7d0c205dd0f2bd975e9eb8d7b4",
       "name": "@deepseek-ai/dsh-message-feedback",
       "path": "packages/feedback/message-feedback",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7739,14 +7674,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e0749e1150cf4fd0d870cbd2938fdf28842eb8156e2f9e6cf8dbbe18d039bcb4",
+      "manifestDigest": "b545eeb96c2bc0990186fd243cd3ea699a90801797f0cbe00b9af24a8c28b4b1",
       "name": "@deepseek-ai/dsh-native-command",
       "path": "packages/util/native-command",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7780,14 +7715,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7c71a560607c8f7967bb81fb5e6f701754d6d0f1f89e181c2c1e36c6857928a6",
+      "manifestDigest": "59575cd56f09697f38112e9a78fcd1eea0a37c0c22e9fb6fd101ec857eb52562",
       "name": "@deepseek-ai/dsh-output-retention",
       "path": "packages/util/output-retention",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7841,14 +7776,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e6fae8b3d1823a0b96d5004c53ba1cbd9dd57beef81067e988580823c4e720e6",
+      "manifestDigest": "de26845f0452767a6143e6ff408f597d891582b369f7f4c004ff41c551d4fdf7",
       "name": "@deepseek-ai/dsh-permission-presets",
       "path": "packages/interaction/permission-presets",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7885,14 +7820,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "640bdbf49c1c54dfb5f317883d35a642b7534d22aef2b11e581e0629d728f9f9",
+      "manifestDigest": "af986bbef7b5c9976fd2eacfabfd1ec04f9aa169c72019eddc5b15a07d116c7c",
       "name": "@deepseek-ai/dsh-persona",
       "path": "packages/preset/persona",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7945,14 +7880,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e4e9458b3cef28aa8f3b686778d5dee137bfdf91f92ad7b7f5cce587ff358a91",
+      "manifestDigest": "1723b8054a6e7d415f5a1b3f70ac26cae9d4cd322ba1b497be027efa845c0352",
       "name": "@deepseek-ai/dsh-plan-mode",
       "path": "packages/plan/plan-mode",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -7999,14 +7934,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "6b787cf59a60257c1612f36ac885ad21cf06da227693aaa9c9a788884d420d90",
+      "manifestDigest": "406d28f83ac1148e3214dfb44aadf8419e452f2578ff086928d7624a5b904cee",
       "name": "@deepseek-ai/dsh-plugin-package-inventory-deepseek",
       "path": "packages/llm/plugin-package-inventory-deepseek",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8046,14 +7981,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "0a8b291212bec6d5d03a7d392b030fa037da84f0cf471b93a765c8115c058416",
+      "manifestDigest": "deea8f4463d24450ffbf414107336426de4ce245ec488f07a88d212cdd4e4bcf",
       "name": "@deepseek-ai/dsh-pwsh-local",
       "path": "packages/shell/pwsh-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8091,14 +8026,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "94880e9ed26084d7b138689c34a6a82a4917e2eb058f69ad5e18dfb653920d16",
+      "manifestDigest": "f9e90cbe305c581233123a59a4170958e792a98bb2cd75e2841dae7f5101cb92",
       "name": "@deepseek-ai/dsh-pwsh-sandbox",
       "path": "packages/shell/pwsh-sandbox",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8136,14 +8071,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1aea0962798eae43b441ad5e37d94b5c79d7fed2166b681c50e8660823801e66",
+      "manifestDigest": "24f325d78b4717ebc56b04d4fd21ae4ab9f68a2a0245d1d9749a88698c65d22c",
       "name": "@deepseek-ai/dsh-repeat-tool-reminder",
       "path": "packages/guard/repeat-tool-reminder",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8181,14 +8116,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "21e1cd921a5898bac6808d8732e9f23038cac300bb24e020d68c02315b25262c",
+      "manifestDigest": "a3ac434ad6d382cd6b5c632223d81bf5d3ed043dbab8c4519963df2efa08c526",
       "name": "@deepseek-ai/dsh-sandbox",
       "path": "packages/sandbox/sandbox",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8230,14 +8165,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "534df4aefb5af1b31a23abbd08993efaf5788d7775f83a031ca71c0e5e95c2ab",
+      "manifestDigest": "22f2c24a4e1c6e341a5137a436e1d6f3f48dd73ccf68e082cdb8cc2cc87b3f18",
       "name": "@deepseek-ai/dsh-sandbox-local",
       "path": "packages/sandbox/sandbox-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8279,14 +8214,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e7f7f6c93a1aa2067f7f951aefc841901e2d9981d8bb5a550bf1dc190572546c",
+      "manifestDigest": "3bea1830de0f399dd7be1c89f603fedee84e7c7a18f15edbc1834f0841707d58",
       "name": "@deepseek-ai/dsh-sandbox-policy",
       "path": "packages/sandbox/sandbox-policy",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8329,14 +8264,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1d48e3873f1a935a8460ea80bd387fc4f7f000daead0fef6261aae7c0ed805b1",
+      "manifestDigest": "c0330be85e581bc179ac268759fa697803fdf5a8a9255f5274685c2d0fb580eb",
       "name": "@deepseek-ai/dsh-sandbox-windows-acl",
       "path": "packages/sandbox/sandbox-windows-acl",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8384,14 +8319,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f63eb25d8340d4a3b92cf2f13e032d037ad78bc51fd323f2def65428fbebf92b",
+      "manifestDigest": "04ae82dd131d4f236cb544389ddc5abefa76e220b7a5dd6ef0e546b228e91556",
       "name": "@deepseek-ai/dsh-schedule",
       "path": "packages/schedule/schedule",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8425,14 +8360,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "58707437c76d4d7b13a3ba4e80fd5af5f6bd2bea331dad8214c339baca4e8a92",
+      "manifestDigest": "105505156dd9f213a27f8db85ad5bc28eafc92e5c8bcb80dd3892071e6c0cd36",
       "name": "@deepseek-ai/dsh-scope",
       "path": "packages/core/scope",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8478,14 +8413,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "800040df234b0c0496a1794690e8d3882eed93dd71542e4f7c3296eee7e221e0",
+      "manifestDigest": "f6c854d6701986813dc755ddef9b53a5786a5c9a958a42ddb394dfdbaa49a604",
       "name": "@deepseek-ai/dsh-sdk-app",
       "path": "packages/bundle/sdk-app",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8523,14 +8458,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "b7b0c3ece39975dde21323d0428fb0fe663e4feb491c5dd2b1f1e507e7ddb8ac",
+      "manifestDigest": "e1c7baadae8f99f9591070bf116d915e71d188e8044862c3c0e78ff97abe4439",
       "name": "@deepseek-ai/dsh-sdk-client",
       "path": "packages/sdk/client",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8575,36 +8510,47 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d9150ae555ab9c3131178fccd32b07242a75972ff85b655274e0e329894dc92f",
+      "manifestDigest": "60cf7018b9e69199ed3956a9503ba5cc7573d4db4a3a36e72b517cff664ce25d",
       "name": "@deepseek-ai/dsh-sdk-jsonrpc-server",
       "path": "packages/sdk/server",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
         "dependencies": {
-          "@deepseek-ai/dsh-agent-spine-demo": "workspace:^",
+          "@deepseek-ai/cordis-plugin-timer": "workspace:^",
+          "@deepseek-ai/dsh-agent": "workspace:^",
+          "@deepseek-ai/dsh-agent-loop": "workspace:^",
           "@deepseek-ai/dsh-deepseek-llm-api-extensions": "workspace:^",
           "@deepseek-ai/dsh-fs-local": "workspace:^",
+          "@deepseek-ai/dsh-invariants": "workspace:^",
+          "@deepseek-ai/dsh-jobs-local": "workspace:^",
+          "@deepseek-ai/dsh-llm": "workspace:^",
           "@deepseek-ai/dsh-llm-deepseek": "workspace:^",
+          "@deepseek-ai/dsh-llm-retry": "workspace:^",
           "@deepseek-ai/dsh-plugin-package-inventory-deepseek": "workspace:^",
           "@deepseek-ai/dsh-sandbox-local": "workspace:^",
           "@deepseek-ai/dsh-sandbox-policy": "workspace:^",
+          "@deepseek-ai/dsh-scope": "workspace:^",
           "@deepseek-ai/dsh-sdk-app": "workspace:^",
           "@deepseek-ai/dsh-sdk-jsonrpc-server": "workspace:^",
+          "@deepseek-ai/dsh-session": "workspace:^",
           "@deepseek-ai/dsh-session-log-deepseek": "workspace:^",
           "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:^",
           "@deepseek-ai/dsh-session-projection": "workspace:^",
+          "@deepseek-ai/dsh-session-title": "workspace:^",
           "@deepseek-ai/dsh-subprocess-local": "workspace:^",
+          "@deepseek-ai/dsh-system-prompt": "workspace:^",
           "@deepseek-ai/dsh-terminal": "workspace:^",
           "@deepseek-ai/dsh-terminal-bash": "workspace:^",
           "@deepseek-ai/dsh-tool-bash-persistent": "workspace:^",
           "@deepseek-ai/dsh-tool-pwsh-persistent": "workspace:^",
-          "@deepseek-ai/dsh-tool-str-replace-editor": "workspace:^"
+          "@deepseek-ai/dsh-tool-str-replace-editor": "workspace:^",
+          "@deepseek-ai/dsh-tools": "workspace:^"
         },
         "dsh": {
           "bundle": {
@@ -8642,14 +8588,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1ce5f454c0db18645d3d0746d0cfda7d99102b0673082c557193b4ddd4aac9e4",
+      "manifestDigest": "af3992b5de3b21011567e736b27290805415b1c5872ee8cc4dffeaa8bebaac3e",
       "name": "@deepseek-ai/dsh-sdk-minimal",
       "path": "packages/bundle/sdk-minimal",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8685,14 +8631,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "2195e784520c2b35cba75ed9d943c7a2f0a4a9c51bfcd1c8d191d8926d808bcb",
+      "manifestDigest": "9eb13891c7d8f7650b8a47468db9a8a544cbe41f934b914baa5f92e15c249076",
       "name": "@deepseek-ai/dsh-sdk-protocol",
       "path": "packages/sdk/protocol",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8743,14 +8689,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "bc35ea7cac7e616d06e92647b2b514f46978d9136b11c9f5d346416181926f95",
+      "manifestDigest": "54a441cf273b5532a838b9fb4d7d250129ec68a5baf598f0a6aa96acbf0854f9",
       "name": "@deepseek-ai/dsh-session",
       "path": "packages/core/session",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8789,14 +8735,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "79ffdb8b5f4b670be1120d4324ec87fcd44941b93781b0efb39d5d0f3424d26a",
+      "manifestDigest": "34342ae40eed418090340f36651f75df32fe4ef0c6e878a6bcf1249e24a02acc",
       "name": "@deepseek-ai/dsh-session-checkpoint-policy",
       "path": "packages/session/session-checkpoint-policy",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8840,14 +8786,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "48003a95af72afba761c8d41165843ac09335d8fd6b6c3c5cfef3c89d8cbabdc",
+      "manifestDigest": "4f02c36c352a2d4f5cf2f40620ce57d074e0718bf0466b2b4b39c0116b9a2342",
       "name": "@deepseek-ai/dsh-session-log-deepseek",
       "path": "packages/session/session-log-deepseek",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8901,14 +8847,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f5eb6d2b5778b9dedc3aaf45c883d3d92b4c56a11829986f16a56f6c982accc9",
+      "manifestDigest": "4294fc16dd97161c9228058378b7869de47dac642c92c2146e5c0d6adfb412f0",
       "name": "@deepseek-ai/dsh-session-log-export",
       "path": "packages/session-query/session-log-export",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8947,14 +8893,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "559ce63a8f11becc7243d9faaa4e10f06c21960cc6cf2c3e04db52e567ab564f",
+      "manifestDigest": "4d14133b564fa069715da5e7066f0445917ac6f2762939e1fc6453d2040cd1b1",
       "name": "@deepseek-ai/dsh-session-persistence",
       "path": "packages/session/session-persistence",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -8993,63 +8939,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "80d878f3596846907d7ca9f819e804f32518d804abaf19f769d40eecc6d3e159",
+      "manifestDigest": "e48fec4bbdaf31d48d75e7a8f87258b0097fe8b29debad076dd3287624a242d5",
       "name": "@deepseek-ai/dsh-session-persistence-jsonl",
       "path": "packages/session/session-persistence-jsonl",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
-    },
-    {
-      "manifest": {
-        "dependencies": {
-          "@deepseek-ai/dsh-brand": "workspace:^",
-          "@deepseek-ai/schemastery": "workspace:^"
-        },
-        "exports": {
-          ".": {
-            "default": "./lib/index.js",
-            "types": "./lib/types/index.d.ts"
-          },
-          "./invariant": {
-            "default": "./lib/invariant.js",
-            "types": "./lib/types/invariant.d.ts"
-          },
-          "./package.json": "./package.json",
-          "./src/*": "./src/*"
-        },
-        "files": [
-          "lib/index.js",
-          "lib/invariant.js",
-          "resources/zstd-dictionary.bin",
-          "resources/sql/**/*.sql",
-          "lib/types/**/*.d.ts"
-        ],
-        "main": "lib/index.js",
-        "name": "@deepseek-ai/dsh-session-persistence-sqlite",
-        "optionalDependencies": {},
-        "peerDependencies": {
-          "@deepseek-ai/cordis": "workspace:^",
-          "@deepseek-ai/dsh-invariants": "workspace:^",
-          "@deepseek-ai/dsh-llm": "workspace:^",
-          "@deepseek-ai/dsh-session": "workspace:^",
-          "@deepseek-ai/dsh-session-persistence": "workspace:^"
-        },
-        "publishConfig": {
-          "access": "public"
-        },
-        "type": "module",
-        "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
-      },
-      "manifestDigest": "3aa3e034a2c6e8ea166e6508e13f383f511215ee10fc646690bd3343555d66fc",
-      "name": "@deepseek-ai/dsh-session-persistence-sqlite",
-      "path": "packages/session/session-persistence-sqlite",
-      "private": false,
-      "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9091,14 +8988,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "bbdcbd5d7a6dde74bdf6446614c9f0bbb966b6c4323dd4d9018a921f70bac22a",
+      "manifestDigest": "aab7af380c0c4a0510a595e5d25edeca22ab6e6abc01e31412ff5244340ed26e",
       "name": "@deepseek-ai/dsh-session-projection",
       "path": "packages/session/session-projection",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9139,14 +9036,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d75fcb43ca7c61fe7e9adc91b04b00520b3c505dce34144d1e2183a9ab1a09d1",
+      "manifestDigest": "d3ec3e2410b06382f96744c016394eba12e4a458b452c6f68eb96ee1c0a0766d",
       "name": "@deepseek-ai/dsh-session-projection-cache",
       "path": "packages/session/session-projection-cache",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9188,14 +9085,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "23b678d61ecd019446180adb90b752d889585344c04df3a2e36cefd3751e3322",
+      "manifestDigest": "6b091623dcd330925ab8d318d3bb143a1adf0ad5639e1c0769b4153c0ddb5c60",
       "name": "@deepseek-ai/dsh-session-query",
       "path": "packages/session-query/session-query",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9234,14 +9131,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "309b6e0e5dc976e6a8ccaaff5f37c98996e3b8bd0b1f31fd960dce2b1a59cf51",
+      "manifestDigest": "eb9251ead347268444d38633c74bd0c9a3b13994fe685d29c7d814eec6462ff1",
       "name": "@deepseek-ai/dsh-session-query-sqlite",
       "path": "packages/session-query/session-query-sqlite",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9307,14 +9204,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "57bdf1800d0fe52026e7d181dca7fe84d596a0fc8441e41a286bde0068a88ca3",
+      "manifestDigest": "84d73ca69e8ecfb62653558260b12be26075e23168ed046294718c70ba588fcd",
       "name": "@deepseek-ai/dsh-session-reference",
       "path": "packages/context/session-reference",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9355,14 +9252,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "250d85a6a6f6e7372274efa44512c734f452ebe91f23294e4fbd7c4a3b2bf97c",
+      "manifestDigest": "8ce3703939dc4f8bff142261580154470fb2186f04368e3086725fc93e3ac4c1",
       "name": "@deepseek-ai/dsh-session-snapshot",
       "path": "packages/test-support/session-snapshot",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9410,14 +9307,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "02e3ddb9153e047c1500b9017a3f8440b9737adb2fc0009ffc5a6f34e9840860",
+      "manifestDigest": "c4387e38de9985d5317831a30bc7e10501dab7f02c1ddb578cee5d0d66bec5b0",
       "name": "@deepseek-ai/dsh-session-stats",
       "path": "packages/session/session-stats",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9453,14 +9350,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "091c2c37b55d9b4c773d26bc7109c10ef2a8500efa27facadf51999117fa7ff2",
+      "manifestDigest": "74491257119ba78baa796850529760653b4d9164da9b58a739131580c448b488",
       "name": "@deepseek-ai/dsh-session-telemetry",
       "path": "packages/session/session-telemetry",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9507,14 +9404,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "52ee914868639cea8530f60eea63286f19b3e199b102e94b548ea794609dad58",
+      "manifestDigest": "3790bc9c71bbc052acb69f378ecbf75017a6a7fe8794dfbaba10f633bd945a7d",
       "name": "@deepseek-ai/dsh-session-telemetry-otel",
       "path": "packages/session/session-telemetry-otel",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9566,14 +9463,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "ea0e8168b347ac709e0153d7f03b124131ec2599197fb84b181a8059340f5a2b",
+      "manifestDigest": "6f32d2ee51288becca65a12b6947a8eced17c2fb27516b1c2f020865116b797f",
       "name": "@deepseek-ai/dsh-session-title",
       "path": "packages/session/session-title",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9612,14 +9509,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "6736a630200279a3fc9e87ab28f015c4ce1690a4a45b39dcea305ade5f7f8dbb",
+      "manifestDigest": "addd3e233b95c2df5ac1f0261d2b4a25edb2dea849f6d245d80ec12d4840ac51",
       "name": "@deepseek-ai/dsh-session-title-all-prompts-llm",
       "path": "packages/session/session-title-all-prompts-llm",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9658,14 +9555,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "5bafd9b7b70940c6eb8026eb27da6126cabac9763b7f0a270c57f57cc9082504",
+      "manifestDigest": "105eb8a859212f85eece4586facd8688303572e4b53039d8930d1d8e8243a7ca",
       "name": "@deepseek-ai/dsh-session-title-first-prompt-llm",
       "path": "packages/session/session-title-first-prompt-llm",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9706,14 +9603,69 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e5236d551db66d3d3be780d2e5458116a1a4a1878fe51823262d6753661295c6",
+      "manifestDigest": "d5651c00bbfab4cd47d1115b1f6719df4046acb17a9f14243fdefa1d3b893afc",
       "name": "@deepseek-ai/dsh-session-title-llm",
       "path": "packages/session/session-title-llm",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
+    },
+    {
+      "manifest": {
+        "dependencies": {
+          "zod": "^4.4.3"
+        },
+        "exports": {
+          ".": {
+            "default": "./lib/index.js",
+            "types": "./lib/types/index.d.ts"
+          },
+          "./client": {
+            "default": "./lib/types/client.js",
+            "types": "./lib/types/client.d.ts"
+          },
+          "./invariant": {
+            "default": "./lib/invariant.js",
+            "types": "./lib/types/invariant.d.ts"
+          },
+          "./package.json": "./package.json",
+          "./src/*": "./src/*",
+          "./types": {
+            "default": "./lib/types/types.js",
+            "types": "./lib/types/types.d.ts"
+          }
+        },
+        "files": [
+          "lib/index.js",
+          "lib/invariant.js",
+          "lib/types/**/*.js",
+          "lib/types/**/*.d.ts"
+        ],
+        "main": "lib/index.js",
+        "name": "@deepseek-ai/dsh-session-turn-outline",
+        "optionalDependencies": {},
+        "peerDependencies": {
+          "@deepseek-ai/cordis": "workspace:^",
+          "@deepseek-ai/dsh-invariants": "workspace:^",
+          "@deepseek-ai/dsh-llm": "workspace:^",
+          "@deepseek-ai/dsh-session": "workspace:^",
+          "@deepseek-ai/dsh-session-projection": "workspace:^"
+        },
+        "publishConfig": {
+          "access": "public"
+        },
+        "type": "module",
+        "types": "lib/types/index.d.ts",
+        "version": "0.1.2-alpha.3"
+      },
+      "manifestDigest": "20bc6bc9f48092e29e9b5c13c3fd3851994359d12b944e7b5ea1396c80c93dcb",
+      "name": "@deepseek-ai/dsh-session-turn-outline",
+      "path": "packages/session/session-turn-outline",
+      "private": false,
+      "releaseFamily": "dsh",
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9757,14 +9709,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "21a5784249a95a5f4d73a3fbbfa7fe4fd8bad9fdd1e2d4d08a5d1c8bc6a247fd",
+      "manifestDigest": "6b4c6218b7072459e658c847e385013ece62d7e349f234cd6b394574db0aeef6",
       "name": "@deepseek-ai/dsh-settings",
       "path": "packages/settings/settings",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9806,14 +9758,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "fd16f4ee8ab8e45a9977c3074fafd6b4893d78ca27c8e5fe38dfd2c7bf00c958",
+      "manifestDigest": "42a567558e6cfcc949b5f4797a31c25aa198d57477724acf1a14037226c4571b",
       "name": "@deepseek-ai/dsh-settings-file",
       "path": "packages/settings/settings-file",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9850,14 +9802,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "574afe6827dd112b7e219472a1059b6ec008304073531dfa292ee104cc6d3da8",
+      "manifestDigest": "6c04c85404913eb1d4a7feb168a99edc744acd2a451aefa1146a408f8737256f",
       "name": "@deepseek-ai/dsh-shell",
       "path": "packages/shell/shell",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9897,14 +9849,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1cc55109cbf73c6da3ad6ae2fbd0dcc5a131fdbe23d56d030339fdabe2b41cc1",
+      "manifestDigest": "40d217761ef0dec1c282d32f3e08e3d783d4872bde546ab001fc2ada4bad7c65",
       "name": "@deepseek-ai/dsh-shell-env",
       "path": "packages/shell/shell-env",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9943,14 +9895,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "6345722649c6bbc0022464f56cc4b0c2edacb9e1ccdeb090328ed3eac736b630",
+      "manifestDigest": "21dd99da97c995308d3babb3f58fec53f365c8524bda76494cde10c90551dd90",
       "name": "@deepseek-ai/dsh-skill",
       "path": "packages/skill/skill",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -9985,14 +9937,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4d1ce2f4f8a0399b7c3691033aaffc75ebde76582fcd77372c516f5a192e480c",
+      "manifestDigest": "bef2699cec7c016fe9559598755761f058409060d817ec0986a07b0115aa28e7",
       "name": "@deepseek-ai/dsh-skill-badge",
       "path": "packages/skill/skill-badge",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10033,14 +9985,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "b8015ef25bb8cd145c93a4ed3c7843447b52ec3b92226389f75241c9b9a40fad",
+      "manifestDigest": "3cf4ba7081f6d1e552dffec5d48b7fd0ad3cc9d7c3e52fc81dfef64e2be8c4e6",
       "name": "@deepseek-ai/dsh-skill-filesystem",
       "path": "packages/skill/skill-filesystem",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10077,14 +10029,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "0f03084bde4499908b772b99cf78b7e288bcfd9f10b20b89be6480dbeefc29a9",
+      "manifestDigest": "8b1017f2faeb45e9ffda18f2f2be50b742f26d2e884cca66c98d584eb80fec4a",
       "name": "@deepseek-ai/dsh-spill",
       "path": "packages/spill/spill",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10121,14 +10073,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "9f40524f5fc85107558d66f0349eb7a7281404bed4717b7d643a74e7b47e34b2",
+      "manifestDigest": "d90e2a9a2fbc9e00cb83e0af23fa621a1a11b8f3c6a196ac9145314bfa33c231",
       "name": "@deepseek-ai/dsh-spill-local",
       "path": "packages/spill/spill-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10169,14 +10121,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "0c37bdc2d0f557240199a4f1bb9432a7bb28662ef7b4ce1025e05f63d408c60f",
+      "manifestDigest": "b39c77cb737e73bbd2c13599587afab741e5058699af3552b1650fdf97c7e87c",
       "name": "@deepseek-ai/dsh-spill-policy",
       "path": "packages/spill/spill-policy",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10210,14 +10162,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "f39d57ab0ca5e2b51299c0839e4d6bf8be67dc9b43253f9207557ed1d17f28a5",
+      "manifestDigest": "0b4952716c787ae89afb0555570770f9e253b33e4658ef9fc32abf5e65b0d6f2",
       "name": "@deepseek-ai/dsh-storage",
       "path": "packages/storage/storage",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10255,14 +10207,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "16bd91979830b65942850a12e3c5afd5f314d2dff492d2d00364ab21d228004e",
+      "manifestDigest": "f7548dcbddb597dc6038ade7b12f552845463e4913c9fcea647f08c1e636431f",
       "name": "@deepseek-ai/dsh-storage-domain",
       "path": "packages/storage/storage-domain",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10299,14 +10251,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "da791e294687b1e582538ffbad4ccf5448f7cfed706845c2788d6ace982868c2",
+      "manifestDigest": "accd09f07a9d72950b8409d37f8a91d733235b1d66a0a0c2c553b7dc3666c1ae",
       "name": "@deepseek-ai/dsh-storage-json",
       "path": "packages/storage/storage-json",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10343,14 +10295,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "0985242adb6f674a245e9dcc37ca23c7b48774c96cb3c88d050ad3e910eb4ce6",
+      "manifestDigest": "3207228bf9adb3e2a22863a363d376ee6c28f6ebec79e4d21327f69d668a3422",
       "name": "@deepseek-ai/dsh-storage-sqlite",
       "path": "packages/storage/storage-sqlite",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10423,14 +10375,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1c5f4276c3fe5101f1196436208d9008e2a259d6a14e39357a221db11e7ea671",
+      "manifestDigest": "054ccdb740848c78bff4d941201669358011b5ffd2fecc8e81b1b33180583a8c",
       "name": "@deepseek-ai/dsh-subagent",
       "path": "packages/subagent/subagent",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10474,14 +10426,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "27fdeca3c2f86ca97f96e7388fa06292c91760a9f5de872ecd1088adf250d55b",
+      "manifestDigest": "9e66579f070b3893ab6bcf2baa810c46a5e2fe4459cbb733ed7c592933003e4d",
       "name": "@deepseek-ai/dsh-subagent-acp",
       "path": "packages/subagent/subagent-acp",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10533,14 +10485,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "5ae1b7b896a2f45ff2d991e53f731eb1f2cfdf5cd0f409f8ee3d5fe25d6c0bf6",
+      "manifestDigest": "5578db78b4b2b32289c82789893ceae4b1053796f01c6932ba53b1d585a968b5",
       "name": "@deepseek-ai/dsh-subagent-claude-code",
       "path": "packages/subagent/subagent-claude-code",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10590,14 +10542,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "0a5ed1a1b5f5324f7da8e8427e637ded8cd8c00bd0d801037d095330807b55c0",
+      "manifestDigest": "c89aff07e824b9eaa418932e80edd1592d89fdab901f338ed4d108e34179af97",
       "name": "@deepseek-ai/dsh-subagent-codex",
       "path": "packages/subagent/subagent-codex",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10640,14 +10592,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7bbd45ee42f44496dab4c961e1a83d05cf5a24730cb1f425db9555b451ec6500",
+      "manifestDigest": "c01cd6c02e50e98d0819f3797fca4c3a64d103e66573e36af366735d78d6dcc0",
       "name": "@deepseek-ai/dsh-subagent-dsh-sdk",
       "path": "packages/subagent/subagent-dsh-sdk",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10687,14 +10639,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4c90ae27f903beea47f274519153b6b25b5d25d9b453b727be321ef6d8dbda50",
+      "manifestDigest": "cb4446d361ac883b02dac14cf4f66e5b4fc36074e54e3fba57be639faf81a271",
       "name": "@deepseek-ai/dsh-subagent-fork-in-process",
       "path": "packages/subagent/subagent-fork-in-process",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10736,14 +10688,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e89a6135c9c08de20f8c9ba5b3a2d7c486d6555bac51133db7fbcbb588b53a11",
+      "manifestDigest": "b500b6d3748e2c0c72c6882ccdf4b6bbb3322c73ce45826d6f1be8fdd7a51572",
       "name": "@deepseek-ai/dsh-subagent-in-process-driver",
       "path": "packages/subagent/subagent-in-process-driver",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10781,14 +10733,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7a23cc1f747cc2c29ff42ce8b4118e36b056cbf7116e368f98311f24e84038c6",
+      "manifestDigest": "fa917d9e154b629d979b17f5d25a34c1de94f8b8269f8780d75ba5b27dfb6154",
       "name": "@deepseek-ai/dsh-subagent-spawn-in-process",
       "path": "packages/subagent/subagent-spawn-in-process",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10822,14 +10774,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1dc2b60c1543a544ef6cc91b0f90b9ae3fd982a006c5752baaf4e9d4f29fab6c",
+      "manifestDigest": "cdc2d8ff60b542d540fa07b45a00ab7eb072aabad8864bedf4f83e17a73f38da",
       "name": "@deepseek-ai/dsh-subprocess",
       "path": "packages/subprocess/subprocess",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10868,14 +10820,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "71d3f935e3b62bf1b2ac5c49f9f4feaa82f004b6270ba2acbd474a5002da4da0",
+      "manifestDigest": "ab9221ce1629339a002820883522f932ac6ef43cd7cee0c9b55159d8e9124c78",
       "name": "@deepseek-ai/dsh-subprocess-e2b",
       "path": "packages/e2b/subprocess-e2b",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10915,14 +10867,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "1d72413d6a9c3ff7dedde937e24e8b84fb6bf49c59235794aeb31572453c5017",
+      "manifestDigest": "be906276858fc008c9e80ffb7b3eff8573bf07affdb0e52a06dd3cd082240e31",
       "name": "@deepseek-ai/dsh-subprocess-local",
       "path": "packages/subprocess/subprocess-local",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -10960,14 +10912,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "04e390a2075b74fc8c8ac96f0912f9c9daebea917e44c3b9b02b0ac1b8f289e4",
+      "manifestDigest": "6659e80b787c215136b53baf07bbb001049120cd9075f1eb20b2813888e4c15e",
       "name": "@deepseek-ai/dsh-system-prompt",
       "path": "packages/core/system-prompt",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11003,14 +10955,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "ebb3ba19a9e1a86becf931c941d19ce066c3c2471ebb04c2285aaf3374d96a3d",
+      "manifestDigest": "c51bca9e06ff4085365daf80d4428408845fe360e44b34a07af712539f2888c9",
       "name": "@deepseek-ai/dsh-terminal",
       "path": "packages/terminal/terminal",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11055,14 +11007,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7153e28f47f3aec18e9266e9c7a9671d9503c8a991e1a63e65e539953521c34c",
+      "manifestDigest": "424f07d9fe176d15838ea3aa67bcb79dce5acc6f83dc3c029033c04c92396a5b",
       "name": "@deepseek-ai/dsh-terminal-bash",
       "path": "packages/terminal/terminal-bash",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11104,14 +11056,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "40d03a31b10594ce471f46fa59e94d531be801851c8d1934bf04d5d3dbaf4e1a",
+      "manifestDigest": "8bb7a0fd98e3b404a6bf9e9f3e0cca718d6dc94f5304547844ff87956410ef44",
       "name": "@deepseek-ai/dsh-time-context",
       "path": "packages/context/time-context",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11145,14 +11097,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "afcf60b79e72bb500bdfb61a8a3503c7a0e2de9304ba2d80a742ce84fba99605",
+      "manifestDigest": "4e96251635998c95fbcef348469f9a589dab999a304c4d57919900cfbe130203",
       "name": "@deepseek-ai/dsh-timeout",
       "path": "packages/util/timeout",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11193,14 +11145,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "76667e2d601d8da3ff1eb9237ca0fcf19783360b954c4035bce98098ff652f79",
+      "manifestDigest": "41bfcdcb325a5d2a87dc805d476c04188fbcfd596100177f563417d0153f7257",
       "name": "@deepseek-ai/dsh-tmux-context",
       "path": "packages/context/tmux-context",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11248,14 +11200,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "2793c14f1166f268db32cb1720eb6def534aea7e2d6997c58ac0b19ec35efb57",
+      "manifestDigest": "138000dfb3545ac9393c34dd8684176e3919049bb171a6c52342a2e6442d9918",
       "name": "@deepseek-ai/dsh-token-meter",
       "path": "packages/llm/token-meter",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11292,14 +11244,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d0dd053f054a0ef3e17fcd48ac4d86187d632130c0090894306cd824c1cbc45c",
+      "manifestDigest": "8f38c67a0906b7dde5578a814661edae26f90c03fceb72b35b04b6f99d63404a",
       "name": "@deepseek-ai/dsh-tool-ask-user",
       "path": "packages/interaction/tool-ask-user",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11345,14 +11297,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "0ecb129387fb0a8f5882b2e44c37d2184e6aa72f6ac2bf9a52c0285b4c9758db",
+      "manifestDigest": "70246c733144dbab3c8f496fa35edbfbf9d8225f69166ad9486abc8adc1c848c",
       "name": "@deepseek-ai/dsh-tool-bash",
       "path": "packages/shell/tool-bash",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11391,14 +11343,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "c48d180f08bd4fac324482060784a7d834076e5d2eb9e8d52bebf66b8be6e2a8",
+      "manifestDigest": "ad3da408f64aee2b14fc77af562811d53ef687363bdb94425a84ad4ec034ead1",
       "name": "@deepseek-ai/dsh-tool-bash-persistent",
       "path": "packages/shell/tool-bash-persistent",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11435,14 +11387,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "544935406709e9f459548eea907d6c72584baa5a05c8cb19b4cdc0f07c38f013",
+      "manifestDigest": "f4fd0696c4845857fa19acdac34f0ebe604bc8dc68cfb9d6fe85550e66a26bc3",
       "name": "@deepseek-ai/dsh-tool-call-timeout-policy",
       "path": "packages/guard/timeout-policy",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11483,14 +11435,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "621bb05f06c5a6f629e7a61eaf734a914337a55d691bb4ceb0d826bf46895f54",
+      "manifestDigest": "f7fc9840bb97cedb0ce1a3d0ef417daab704f148de7ca2f525e21122a19fbf3d",
       "name": "@deepseek-ai/dsh-tool-cordis",
       "path": "packages/extensions/tool-cordis",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11536,14 +11488,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7c27b0bcbbb86db7f576de5cab93e2ba27dead9655914ac091a38c759fec1d19",
+      "manifestDigest": "3a408ce3c0a4c942221e221c26a5ad7479fb1af8b3c151530e5dfa09a7583344",
       "name": "@deepseek-ai/dsh-tool-fs",
       "path": "packages/fs/tool-fs",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11588,14 +11540,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "9c05ad89ac90f04c8170b4bec59cc80cda2adc2eef943b33af8028020f9a15e6",
+      "manifestDigest": "6736dd4738982496153df87634752ce75b321c6b51115d76252e834ca252397f",
       "name": "@deepseek-ai/dsh-tool-fs-search",
       "path": "packages/fs/tool-fs-search",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11638,14 +11590,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "2bc749f5622bbb7f19a64b807ace8e1e566eef11cf7f9c396d0fc93c0d21cdc9",
+      "manifestDigest": "83b5c436e0f1138190fac191955ffe5901d1dd98176b0b7bbd18f0e632fd5903",
       "name": "@deepseek-ai/dsh-tool-goal",
       "path": "packages/goal/tool-goal",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11687,14 +11639,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "9de21123c6931909538c67bb9a8d43ff7de87c6dbd0ee12c889bd0335386ac24",
+      "manifestDigest": "49d4885a6de27bf94b9cb8ba9593f24345873139dce0e8426981d1d2b2bf2038",
       "name": "@deepseek-ai/dsh-tool-jobs",
       "path": "packages/jobs/tool-jobs",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11736,14 +11688,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "d946ba65526f5435899614c3c041dcaf1c772535a96fa3fded42d55951dcf6b9",
+      "manifestDigest": "f15ae1528dd9be852b30a9532d1ac9b2dcb1da01b2a8efd09b007f5bf8462ff7",
       "name": "@deepseek-ai/dsh-tool-lsp",
       "path": "packages/lsp/tool-lsp",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11789,14 +11741,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "20b52185435cc3128370956289bcd1608a8cdd472c3963995b7cc0143009cd56",
+      "manifestDigest": "eb07c7d3a5d18d12351e66a0a42139697485beaf0a62f5ffe6a8847bdfd25f34",
       "name": "@deepseek-ai/dsh-tool-pwsh",
       "path": "packages/shell/tool-pwsh",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11835,14 +11787,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "36284c1dbaaa10b2f9814429758be7020e53ed197b5a0413fbc2738fad2ffbc3",
+      "manifestDigest": "d889c15e9fd71722581ac3ff41e6fe32152e5cb649f8b6c9c2a488ba01699ea9",
       "name": "@deepseek-ai/dsh-tool-pwsh-persistent",
       "path": "packages/shell/tool-pwsh-persistent",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11884,14 +11836,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "94670169afe34ddf8022ce52b54e58e8a0928b68261c7991a05cd2609bbf77b6",
+      "manifestDigest": "30e942535fe73f6c3c7af725c9af36d945391631108f226c0c1e2997bf3829d5",
       "name": "@deepseek-ai/dsh-tool-ralph",
       "path": "packages/workflow/tool-ralph",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11936,14 +11888,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "54247fdce147984cfd5f7707eee3aa7f1094165fd7b4641cf9ec69b24882f990",
+      "manifestDigest": "1c49095c6a701a27197321599f46ada7c53ef30852e00332b4e7bc81df2f6712",
       "name": "@deepseek-ai/dsh-tool-session-query",
       "path": "packages/session-query/tool-session-query",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -11983,14 +11935,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "71af58868523bb06ea2f422be4c42f4c80cc0ab2db93d48fc249afa6a5cd61ab",
+      "manifestDigest": "773876046fe1e452c1eae64135ffccfaaa21977334ea4c333559566350d1ed68",
       "name": "@deepseek-ai/dsh-tool-skill",
       "path": "packages/skill/tool-skill",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12029,14 +11981,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "3dd8a4104599d172e5b84808f3a81279eb2a0a14dc350714c09a4775ccf32cc3",
+      "manifestDigest": "07a497ec954ad438e17b59474af5b0ea7cb8fb733de1c26160d90a566758c71f",
       "name": "@deepseek-ai/dsh-tool-str-replace-editor",
       "path": "packages/fs/tool-str-replace-editor",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12088,14 +12040,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "3f36c2e9c9531a3600aab85e76c23d75b6f4c3dcf2c97ad160c0b85ec5a9536d",
+      "manifestDigest": "fda0bb2b78353d3dd2ce8fb2db2ac720c80f815d76f82dd309169e719c42d81c",
       "name": "@deepseek-ai/dsh-tool-subagent",
       "path": "packages/subagent/tool-subagent",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12141,14 +12093,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "70183921fc018cf51b761ac7ef7296424d44ed42d6c100834de1eec78cbda5ae",
+      "manifestDigest": "8671ef5cf25ea4910cd7c01870a26e6918bdf6fd1ffe736729b760bd9bb753f5",
       "name": "@deepseek-ai/dsh-tool-subagent-control",
       "path": "packages/subagent/tool-subagent-control",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12188,14 +12140,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "310529d144bf445c6bac06dfe1f21ed6462672bf6303cde55bae6149af168fb0",
+      "manifestDigest": "e0a1e7858ec2e93224daea0a58ed62d3885d674f30633eb24b460f5dddbde75c",
       "name": "@deepseek-ai/dsh-tool-subagent-report",
       "path": "packages/subagent/tool-subagent-report",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12238,14 +12190,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "aaa4210bd2aa774ec0621492d0cc91a88ff9142b89931026bd243ac501bf88b1",
+      "manifestDigest": "0381e0394b02ac8a2ddff544e77538c1b049a68a408c8fb37e5b409d1de52dd4",
       "name": "@deepseek-ai/dsh-tool-terminal",
       "path": "packages/terminal/tool-terminal",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12291,14 +12243,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "a5e44c844978adaaa6cb09072feba758aac357617cb73a7b32b73a4ba10fe575",
+      "manifestDigest": "b4f0b4e7bf7c4c9adb688f8763ec5ef0cf63b10d2cd5b182ed4641227eb6b32e",
       "name": "@deepseek-ai/dsh-tool-todo",
       "path": "packages/todo/tool-todo",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12341,14 +12293,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "a92e4747443f0213cca4c81044cc759bc8fde0a7eabf38c43a3a9604395c01b3",
+      "manifestDigest": "55bdadb1fb79d35e31b9d5a5aa3326da5d00c88057094ca51125bf25996fbc81",
       "name": "@deepseek-ai/dsh-tool-web",
       "path": "packages/web/tool-web",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12395,14 +12347,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4466bed2f4f37811c97d6957323a84c2d83de5371666a4044bd5997582c8b5ff",
+      "manifestDigest": "fc916b267ff5873701885a1115071eab4212158094f0bc6539d56182e8567c1c",
       "name": "@deepseek-ai/dsh-tool-workflow",
       "path": "packages/workflow/tool-workflow",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12456,14 +12408,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "2910e91997156f850dfceb2fba7c4e34a06ea74ff75e9667d296fd24b6db329c",
+      "manifestDigest": "0f3d3a43e8f0786d348b2ef3f83b54edd8e7c78599f231b9035ce2036aea5c58",
       "name": "@deepseek-ai/dsh-tools",
       "path": "packages/core/tools",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12505,14 +12457,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "14629ba8ccacad920ece6f389cf03bfc1c2704f0720ffdd3163aec86763f6b54",
+      "manifestDigest": "2c360d0dd2d5accc14c58960b5c6fbebfa7ac18b30d2e57da900c86b9c5fc81d",
       "name": "@deepseek-ai/dsh-typert-generator",
       "path": "packages/typert/generator",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12550,14 +12502,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "3d8bfe5d0404ffeee5c76a4ffddf1cd564c2c0697e9b042c685ffbfc3533a86b",
+      "manifestDigest": "4a06aaf0aa456c77769c20a028ce922c8657162c46f637dc3b5b42ecea09915e",
       "name": "@deepseek-ai/dsh-typert-loader",
       "path": "packages/typert/loader",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12596,14 +12548,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "2d4b554d866de25cf9d52324bfe2e1b2d11950329e56e2cceada12e1c798af5d",
+      "manifestDigest": "1aad4ebc12d5563279fec0157742c3142d1909ee8064174207df862ddf6a4aaa",
       "name": "@deepseek-ai/dsh-typert-protocol",
       "path": "packages/typert/protocol",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12655,14 +12607,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "bfb3fd6e0e8516e73e0a82a0cbea9381c9e6ee326ee7a46d7b4e314659ef8d4a",
+      "manifestDigest": "52ab1e5dcb6a77f7779bcd95f882d20673a525d38d847c65acd8bbb093333f60",
       "name": "@deepseek-ai/dsh-typert-registry",
       "path": "packages/typert/registry",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12709,14 +12661,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "e4949b67ad6ca0e56203ef85c4b26432e1052d3b670b3e16702acd5beb446ae9",
+      "manifestDigest": "9b90647a286736fd98b24aa29510f808eefb6204bf91a7e5cb84fd2a65234bf4",
       "name": "@deepseek-ai/dsh-user-approval",
       "path": "packages/interaction/user-approval",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12758,14 +12710,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "bdc31e9312c9459ce07e14b034ebeefc97954b05e83fe00b2c944f4ad87ca10f",
+      "manifestDigest": "3f91f39a32d83742613942d2088c12ddbf0b036c770fe1fb1b91682fdb3a77ad",
       "name": "@deepseek-ai/dsh-user-questions",
       "path": "packages/interaction/user-questions",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12799,14 +12751,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "593a0c835efea4b09e97dd1c750157873dffb2e55baa6d80cf66fbd67a43bc57",
+      "manifestDigest": "bac72e5c3962179c7c563d808224a4f475b4480714d1801429e9a76f22512328",
       "name": "@deepseek-ai/dsh-util-crypto",
       "path": "packages/util/crypto",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12840,14 +12792,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "70aabcd54bdb699635e5784ff2123c945867ecef4daf3a61d8e665ab2fbfc971",
+      "manifestDigest": "3e5c7fc15b244e42bd5d804b97a674820af528acda917698f2d9b40103dc0aff",
       "name": "@deepseek-ai/dsh-util-time",
       "path": "packages/util/time",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12881,14 +12833,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4a21184f98e4e10ca8525c2dfda2ee1a082a617bd3dfda10e0e5c67f858c6b35",
+      "manifestDigest": "cc68aa713ff0659217b32c8cb6a03704853f5994f92dec00adff02c29f7823f6",
       "name": "@deepseek-ai/dsh-util-values",
       "path": "packages/util/values",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12922,14 +12874,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4449c04f42eb67820be55b7d3b96b75336d86145914f89b996ab843a2a105be9",
+      "manifestDigest": "bfbce5ddb55add78cd415dcb58b2cb3a185fbafb9f6441e45710e2f17a4de3ef",
       "name": "@deepseek-ai/dsh-util-workspace-path",
       "path": "packages/util/workspace-path",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -12966,14 +12918,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "6bbc38351a2905312331f6af5c68eda59f5b00acad1584d491e184b167c8fc9f",
+      "manifestDigest": "7d5c8c96becffa5275c561eda1ec9e63e8bbe8565163091634415cbb1a20b90c",
       "name": "@deepseek-ai/dsh-web",
       "path": "packages/web/web",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13042,6 +12994,7 @@
           "@deepseek-ai/dsh-session-log-export": "workspace:^",
           "@deepseek-ai/dsh-session-reference": "workspace:^",
           "@deepseek-ai/dsh-session-stats": "workspace:^",
+          "@deepseek-ai/dsh-session-turn-outline": "workspace:^",
           "@deepseek-ai/dsh-subprocess": "workspace:^",
           "@deepseek-ai/dsh-tool-subagent": "workspace:^",
           "@deepseek-ai/dsh-web-frontend": "workspace:^",
@@ -13094,14 +13047,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "425d3d8ed7ad31a10f3c41f096db60ffb7172e69078c027414c98c38c7b8d288",
+      "manifestDigest": "61be50a895e83a49d4100fbd333ee7306438382a723330e99ce78125cf8fb09a",
       "name": "@deepseek-ai/dsh-web-app",
       "path": "packages/bundle/web-app",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13141,14 +13094,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "df908750b9cc48a576c99b4ff4fa8482b715baf95b1a9b428ff1c2ce38a68550",
+      "manifestDigest": "6408cad15d66e433d2d46867dc54ee283f38ee8b44c2fcebd2d72d0501efe3dd",
       "name": "@deepseek-ai/dsh-web-fetch-http",
       "path": "packages/web/web-fetch-http",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13170,14 +13123,14 @@
           "access": "public"
         },
         "type": "module",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "294055ce8e424673566d2fbce40ca35a3168cb10e4ad03ab4cd3ad34d54e4512",
+      "manifestDigest": "a2152826e268f99c05251ef0e7d7fe0ef36f945edd57c47936c845a888e7aada",
       "name": "@deepseek-ai/dsh-web-frontend",
       "path": "apps/web",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13219,14 +13172,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "3936d38a8e77785da6865534cd81eab9206b648575de40a3103b2b0454fde6d8",
+      "manifestDigest": "09601d99daab13002cb85b9921e623c4e9a945a323ff7e86a7719c641375c316",
       "name": "@deepseek-ai/dsh-web-search-deepseek",
       "path": "packages/web/web-search-deepseek",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13264,14 +13217,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "4ba69c0e0df8315a3518d0782342d0b9d1f5b46dc2223763b481d56dcb56b53f",
+      "manifestDigest": "d1b9490d4086852daf143e35799c15edba46168a843e725d02d578657f3ef5fc",
       "name": "@deepseek-ai/dsh-web-search-exa",
       "path": "packages/web/web-search-exa",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13309,14 +13262,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "482064af3adbb54b713a51bfb3273fff702e83ecc4b6b4840fc5d40576dea0cb",
+      "manifestDigest": "95a6b600157b9e6fa7619d036886c5ba71ead1d5442e8711be132bbef177cd8e",
       "name": "@deepseek-ai/dsh-web-search-perplexity",
       "path": "packages/web/web-search-perplexity",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13366,14 +13319,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "7d1fd94da1f57bb13b18e0fff65004c3191f35d5cee2554c3b4990e851a44418",
+      "manifestDigest": "196908f5058ffa966d8f47faee0a66329b88405d9d71de0916d8a7ae7ec9816f",
       "name": "@deepseek-ai/dsh-webhook",
       "path": "packages/webhook/webhook",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13420,14 +13373,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "74df9396241a0337ac6cf59077f389ccd297b8e1ddffe4da4ae15174a9c4fdb3",
+      "manifestDigest": "ea563f0f750a127fb1f5b586b8688ce3d46ba38cea6b6a6644bc2e3bc3ad81b8",
       "name": "@deepseek-ai/dsh-webhook-github",
       "path": "packages/webhook/webhook-github",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13463,14 +13416,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "63c6033f41f39d7812c5b3d7ded57b15f7086dbbc603dd7c70608491bb488190",
+      "manifestDigest": "2534b71c9972d5dbc1d8cb434c0d24af4930c76048c1e1e10ff6e5fc68074ff7",
       "name": "@deepseek-ai/dsh-win32-process",
       "path": "packages/subprocess/win32-process",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13513,14 +13466,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "5b22a090188a95297d7413867de2c54d911997400235691fecabda69d9509a9c",
+      "manifestDigest": "effc362052d8cd71f7fc2731e2ae4764611830da59c3bd589d3be81ba50cdc2b",
       "name": "@deepseek-ai/dsh-workflow",
       "path": "packages/workflow/workflow",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13569,14 +13522,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "031adf47bf09be9a267174dc7cefe2ff37fa5d9937be2c50ff1643cd81266fd2",
+      "manifestDigest": "cc2ec569fcefc6b9a7a38f0070021be1c0b847c5fef332601681dfc45ed8ae53",
       "name": "@deepseek-ai/dsh-workflow-worker-thread",
       "path": "packages/workflow/workflow-worker-thread",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13623,14 +13576,14 @@
         },
         "type": "module",
         "types": "lib/types/index.d.ts",
-        "version": "0.1.2-alpha.2"
+        "version": "0.1.2-alpha.3"
       },
-      "manifestDigest": "6bc8c4d28d3639798f2599b33c5b21a1c2e0658792e9d038df9c55c4fc48b6ad",
+      "manifestDigest": "a0a34faea981107ecf17e9a26144ceb03c1c503b0debdf70bf4f6eacc9fec9b7",
       "name": "@deepseek-ai/dsh-workspace",
       "path": "packages/workspace/workspace",
       "private": false,
       "releaseFamily": "dsh",
-      "version": "0.1.2-alpha.2"
+      "version": "0.1.2-alpha.3"
     },
     {
       "manifest": {
@@ -13812,7 +13765,6 @@
           "@deepseek-ai/dsh-agent": "workspace:^",
           "@deepseek-ai/dsh-agent-instructions": "workspace:^",
           "@deepseek-ai/dsh-agent-loop": "workspace:^",
-          "@deepseek-ai/dsh-agent-spine-demo": "workspace:^",
           "@deepseek-ai/dsh-agent-tool-presentation": "workspace:^",
           "@deepseek-ai/dsh-anonymous-user-id": "workspace:^",
           "@deepseek-ai/dsh-app-boot": "workspace:^",
@@ -13869,7 +13821,6 @@
           "@deepseek-ai/dsh-session-log-deepseek": "workspace:^",
           "@deepseek-ai/dsh-session-persistence": "workspace:^",
           "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:^",
-          "@deepseek-ai/dsh-session-persistence-sqlite": "workspace:^",
           "@deepseek-ai/dsh-session-projection": "workspace:^",
           "@deepseek-ai/dsh-session-query": "workspace:^",
           "@deepseek-ai/dsh-session-query-sqlite": "workspace:^",
@@ -13934,7 +13885,7 @@
         "type": "module",
         "version": "0.0.1"
       },
-      "manifestDigest": "cb610deffc3847889a8ab166846ffbd93092cf77335b83b10e1b2f89712338fa",
+      "manifestDigest": "407e78b8d39f7ad5f3a8d6eb6de426a67d9317a7ea8f77af8e58e3043d369489",
       "name": "dsh-python-runtime-closure",
       "path": "python/sdk-runtime",
       "private": true,
@@ -13991,21 +13942,21 @@
       "role": "maintainer"
     },
     {
-      "digest": "fd9cc3dd5d7bb8a9ecf7f58d79b562942d3127d7942f415a13e5e4745c075692",
-      "entryDigest": "2c9bd2b966d427d6403e2402a7c908bd6c1e4b6f60e6e111b9054675691c6bf2",
+      "digest": "be8e8dde9b77212768750aaeadd2734b167068b6066619b093282e3b60550002",
+      "entryDigest": "0de6b482d4bc180727eebc1af42d7190b92e0a6cc4338956663ce819af042b92",
       "fileCount": 10,
       "files": [
         {
           "path": "SKILL.md",
-          "sha256": "2c9bd2b966d427d6403e2402a7c908bd6c1e4b6f60e6e111b9054675691c6bf2"
+          "sha256": "0de6b482d4bc180727eebc1af42d7190b92e0a6cc4338956663ce819af042b92"
         },
         {
           "path": "references/metadata-links-i18n.md",
-          "sha256": "d21506913a6e44da66b8b80ab8d302419b0666c1a994ce613346093fb3b76f1a"
+          "sha256": "b505cf2de8c91e0ba1b39e16393059ce1d879937531579fd7690fdaaf7edcd3c"
         },
         {
           "path": "references/review.md",
-          "sha256": "477be22b99d68eed4bdf7ef1a86e4ee99fa1d5cad16f463af8205a689f927368"
+          "sha256": "e6aaa94d660987f9ec7e4fe425d6ea8a95d9f6a801a0097e0704159c5f588887"
         },
         {
           "path": "references/structure-hierarchy.md",
@@ -14013,7 +13964,7 @@
         },
         {
           "path": "references/style.md",
-          "sha256": "a29ce7ccbbc388fc255a6022e35a4e0d18e90c46ee150e73b828a4cc784ba9a6"
+          "sha256": "1dece6210506d6c5d485f0d2c03aa93d009cd4b52da3cea664b0d888666ba3b0"
         },
         {
           "path": "references/website-sync.md",
@@ -14033,7 +13984,7 @@
         },
         {
           "path": "templates/package-reference.md",
-          "sha256": "63bd1525ed45571be9e93ee85599e2b2d5fab771e3946fe633c28a98742ca8d1"
+          "sha256": "93b0c7398dc4c0280d17fd5dd283a6bbf5d532a454a898288d0e2d27ac6b4a8e"
         }
       ],
       "name": "dsh-doc",
@@ -14041,13 +13992,13 @@
       "role": "maintainer"
     },
     {
-      "digest": "833ddc4543b4d3827a9b74ea40a271816f4056825c012051bc6e1b33dc1736e5",
-      "entryDigest": "3f062460e5629c686e72ecae8c877a0c3d65c87d2b6bef34b6b91065947d57b1",
+      "digest": "eadbdec23378ee8fc7d65bedc9592ef8408ce336707c86bb36954da46dc0d885",
+      "entryDigest": "41b5eefbefd26982c6716778937a2a409132facea69e45799f67c4466bcbc7d9",
       "fileCount": 1,
       "files": [
         {
           "path": "SKILL.md",
-          "sha256": "3f062460e5629c686e72ecae8c877a0c3d65c87d2b6bef34b6b91065947d57b1"
+          "sha256": "41b5eefbefd26982c6716778937a2a409132facea69e45799f67c4466bcbc7d9"
         }
       ],
       "name": "dsh-find-simplifications",
@@ -14241,13 +14192,13 @@
   ],
   "summary": {
     "experimentalPackageCount": 8,
-    "packageCount": 268,
-    "packageGraphDigest": "c0578c120f6f566431eaa9f40c97a0811f352a4a96b4d3198e46f16e8cbc8554",
+    "packageCount": 267,
+    "packageGraphDigest": "7c8f5049463b7f52ea077970ab803c97512f97245f9463dcb6d328f1e8b58923",
     "privatePackageCount": 11,
     "productSkillCount": 2,
-    "releasePackageCount": 254,
+    "releasePackageCount": 253,
     "skillCount": 17,
-    "skillsDigest": "a1e24ea3f10b424d1b54c155be34f3f444c2e43688ab2f64f73099b605f9f716"
+    "skillsDigest": "708cb5735cf976683a01185a49b6f42d0d5f67aca53d795252b86b37777ee698"
   },
   "toolchain": {
     "dependencies": {
@@ -14258,12 +14209,12 @@
     "packageManager": "pnpm@11.7.0"
   },
   "upstream": {
-    "commit": "0a53fb55bea101816fa226bb964ae2bed71c343b",
-    "docsDigest": "8bbbb665703f15154762ec2ece7402e33fbef44b55257dc74816aff4bde6e9dd",
+    "commit": "dd6322d604e00eec1ba5e0c8541159906a21094a",
+    "docsDigest": "a57975cf6f331daef2e84daf9c70ba94145cd26a786cc5052accab04325da34d",
     "node": "^22.19.0 || >=24.0.0",
     "packageManager": "pnpm@11.7.0",
     "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
-    "tag": "dsh-v0.1.2-alpha.2",
-    "version": "0.1.2-alpha.2"
+    "tag": "dsh-v0.1.2-alpha.3",
+    "version": "0.1.2-alpha.3"
   }
 }

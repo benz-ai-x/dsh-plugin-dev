@@ -2,73 +2,73 @@
   "channels": {
     "edge": {
       "catalog": {
-        "packageCount": 268,
+        "packageCount": 267,
         "path": "baselines/edge/catalog.json",
         "productSkillCount": 2,
-        "sha256": "076ef3920a5654c33c8a0153096fffddcdf784656b104c8d48b21ebb623d336c",
+        "sha256": "10205028c20fc305977a3b54b4ff96f94531e1b3f221e67beb7b3c9938fd384a",
         "skillCount": 17
       },
       "localResolution": {
         "environmentVariable": "DSH_HARNESS_BASELINE_ROOT",
-        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-alpha.2"
+        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-alpha.3"
       },
       "registry": {
-        "checkedAt": "2026-08-31T03:16:58.748Z",
+        "checkedAt": "2026-09-01T02:14:12.247Z",
         "path": "baselines/edge/registry.json",
-        "sha256": "d1ba8e5592bd24df6f6ebcb38a241ce420eb5a4c07c5a8fefd354ebb7578b400",
+        "sha256": "31e5a49e3c168ba67cda3c68398b90d7c9d75a2c227bf188d3277d924bda7f2e",
         "status": "ready"
       },
       "upstream": {
-        "commit": "0a53fb55bea101816fa226bb964ae2bed71c343b",
-        "docsDigest": "8bbbb665703f15154762ec2ece7402e33fbef44b55257dc74816aff4bde6e9dd",
+        "commit": "dd6322d604e00eec1ba5e0c8541159906a21094a",
+        "docsDigest": "a57975cf6f331daef2e84daf9c70ba94145cd26a786cc5052accab04325da34d",
         "node": "^22.19.0 || >=24.0.0",
         "packageManager": "pnpm@11.7.0",
         "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
-        "tag": "dsh-v0.1.2-alpha.2",
-        "version": "0.1.2-alpha.2"
+        "tag": "dsh-v0.1.2-alpha.3",
+        "version": "0.1.2-alpha.3"
       },
       "verification": {
-        "checkedAt": "2026-08-31T06:05:01.361Z",
+        "checkedAt": "2026-09-01T02:17:12.492Z",
         "path": "baselines/edge/verification.json",
-        "sha256": "fb85f12d18f93f12efab0f4e69d6bb0cf74c2f266cea2b3f8a5d36bfe2edf7e8",
+        "sha256": "b909d2f65e8304cfcb3cecbb615dd3b08661628b53a5652c302582e61799669a",
         "status": "passed"
       },
-      "verifiedOn": "2026-08-31"
+      "verifiedOn": "2026-09-01"
     },
     "stable": {
       "catalog": {
-        "packageCount": 268,
+        "packageCount": 267,
         "path": "baselines/stable/catalog.json",
         "productSkillCount": 2,
-        "sha256": "076ef3920a5654c33c8a0153096fffddcdf784656b104c8d48b21ebb623d336c",
+        "sha256": "10205028c20fc305977a3b54b4ff96f94531e1b3f221e67beb7b3c9938fd384a",
         "skillCount": 17
       },
       "localResolution": {
         "environmentVariable": "DSH_HARNESS_BASELINE_ROOT",
-        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-alpha.2"
+        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-alpha.3"
       },
       "registry": {
-        "checkedAt": "2026-08-31T03:16:58.748Z",
+        "checkedAt": "2026-09-01T02:14:12.247Z",
         "path": "baselines/stable/registry.json",
-        "sha256": "582a97795be87786e821e672d6c6b5342bce86d4dd816779dc28d050cfa98d1a",
+        "sha256": "0b1700885a9c64d675a2053fb7c56b9e0282beeb4ddbd3407410fcd11f7df1f0",
         "status": "ready"
       },
       "upstream": {
-        "commit": "0a53fb55bea101816fa226bb964ae2bed71c343b",
-        "docsDigest": "8bbbb665703f15154762ec2ece7402e33fbef44b55257dc74816aff4bde6e9dd",
+        "commit": "dd6322d604e00eec1ba5e0c8541159906a21094a",
+        "docsDigest": "a57975cf6f331daef2e84daf9c70ba94145cd26a786cc5052accab04325da34d",
         "node": "^22.19.0 || >=24.0.0",
         "packageManager": "pnpm@11.7.0",
         "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
-        "tag": "dsh-v0.1.2-alpha.2",
-        "version": "0.1.2-alpha.2"
+        "tag": "dsh-v0.1.2-alpha.3",
+        "version": "0.1.2-alpha.3"
       },
       "verification": {
-        "checkedAt": "2026-08-31T06:05:01.361Z",
+        "checkedAt": "2026-09-01T02:17:12.492Z",
         "path": "baselines/stable/verification.json",
-        "sha256": "8fbba2ac7010fc8b0165327256ff67178efe382ec190d40cb56337b98e9cca71",
+        "sha256": "693c85fa4cf138b4f946c5fdccc12773c0408b6a6f7b40d724849f4d2a27bed0",
         "status": "passed"
       },
-      "verifiedOn": "2026-08-31"
+      "verifiedOn": "2026-09-01"
     }
   },
   "defaultChannel": "stable",

@@ -1,6 +1,6 @@
 # dsh-plugin-dev Maintainer Handoff
 
-Updated: 2026-08-31 (Asia/Shanghai)
+Updated: 2026-09-01 (Asia/Shanghai)
 
 ## Outcome
 
@@ -10,9 +10,9 @@ packaging, profile integration, and release preparation. It is not a DSH
 runtime plugin. Its own implementation is now TypeScript-first while its
 installed public commands remain dependency-free `.mjs` artifacts.
 
-The audited default baseline is DeepSeek Harness `0.1.2-alpha.2`, official tag
-`dsh-v0.1.2-alpha.2`, commit
-`0a53fb55bea101816fa226bb964ae2bed71c343b`. The baseline was scanned from a
+The audited default baseline is DeepSeek Harness `0.1.2-alpha.3`, official tag
+`dsh-v0.1.2-alpha.3`, commit
+`dd6322d604e00eec1ba5e0c8541159906a21094a`. The baseline was scanned from a
 clean detached official-tag worktree built with `pnpm@11.7.0`.
 
 ## Read first
@@ -45,12 +45,12 @@ directory and refuses stale or hand-edited output. Do not edit generated
 
 | Item | Stable state |
 |---|---|
-| Harness | `0.1.2-alpha.2` / `dsh-v0.1.2-alpha.2` |
-| Commit | `0a53fb55bea101816fa226bb964ae2bed71c343b` |
+| Harness | `0.1.2-alpha.3` / `dsh-v0.1.2-alpha.3` |
+| Commit | `dd6322d604e00eec1ba5e0c8541159906a21094a` |
 | Node | `^22.19.0 || >=24.0.0` |
 | Package manager | `pnpm@11.7.0` |
-| Workspace packages | 268 |
-| Public DSH/vendor packages | 254 |
+| Workspace packages | 267 |
+| Public DSH/vendor packages | 253 |
 | Upstream Skills | 17: 11 maintainer, 4 fixture, 2 product |
 | Tool Registry closure | `ready`: 24/24 exact requirements available |
 | Verification | `passed`, bound to catalog and project digests |
@@ -59,6 +59,28 @@ The two official Cordis product Skills are materialized and hash-pinned under
 `baselines/{stable,edge}/skills/`. Upstream maintainer Skills remain cataloged
 evidence; they are not installed as project-development Skills. The canonical
 development workflow remains this repository's `skills/dsh-plugin-dev/`.
+
+## Alpha.3 changes reviewed
+
+The stable-to-edge review removed `@deepseek-ai/dsh-session-persistence-sqlite`
+(the JSONL backend remains the one shipped persistence provider; the abstract
+`SessionPersistence` seam now explicitly welcomes out-of-tree backends) and the
+`@deepseek-ai/dsh-agent-spine-demo` example, and added
+`@deepseek-ai/dsh-session-turn-outline`. Both product Skill bodies are
+unchanged and two maintainer Skills changed. `vendor/loader`, the Session
+event vocabulary, and the toolchain contract (Node engine, pnpm) are
+unchanged.
+
+Contract guidance was updated for these alpha.3 runtime facts:
+
+- The Session projection change feed now gates publication on raw `view`
+  identity: listeners fire only when consecutive raw `view` results compare
+  unequal by `Object.is`, so an object-valued view must reuse its reference to
+  stay silent across internal-only state changes (`core-contracts.md`,
+  `client-plugin.md`).
+- Conversation targets activate lazily: creating or reading a target source
+  does not activate it; first subscription (or the shell's explicit selection)
+  does, and unsubscription does not deactivate one.
 
 ## Alpha.2 changes reviewed
 
@@ -136,7 +158,7 @@ Decision: [`0005-registry-delivery.md`](../decisions/0005-registry-delivery.md).
 
 ## Verification evidence
 
-The alpha.2 and TypeScript-first ladder passes with:
+The alpha.3 ladder (TypeScript-first tooling carried forward) passes with:
 
 - compiled artifact freshness and strict TypeScript typecheck;
 - strict context: 272 checks, 0 warnings;

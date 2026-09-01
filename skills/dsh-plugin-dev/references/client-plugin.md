@@ -110,7 +110,10 @@ Choose the two similarly named extension points by output shape:
 
 - A Host Session projection (`ProjectionDefinition` plus
   `SessionProjectionMap`) is a pure fold that publishes a whole current
-  business value and may be cached or served without replaying the UI.
+  business value and may be cached or served without replaying the UI. Keep
+  `view` outputs reference-stable: the change feed notifies only when the raw
+  view result changes by `Object.is`, so a fresh object per call republishes
+  on every internal-only state change.
 - `ConversationNodeDefinition` is a Client-side event-to-node state machine for
   transcript or trajectory rows. It derives presentation from transported
   Session records and is not the authority for the domain snapshot.
@@ -151,7 +154,7 @@ only after the named Remote service becomes available. If UI mounting fails,
 dispose the partial UI and the Remote contribution. On unload, dispose both in
 the reverse ownership order.
 
-The alpha.2 Remote contract uses one shared `RemoteError` class and a
+The pinned Remote contract uses one shared `RemoteError` class and a
 declaration-mergeable `RemoteErrorDetailsMap`. Owners declare stable
 `<domain>/<reason>` codes beside their browser-safe detail types and throw
 `RemoteError` at the failure point. Discriminate by `error.code`, not
