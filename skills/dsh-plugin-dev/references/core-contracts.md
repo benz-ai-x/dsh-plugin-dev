@@ -141,10 +141,12 @@ Use schema defaults for universal defaults. Keep deployment choices required
 when no universal choice is justified. Do not expose runtime-only test hooks or
 transport objects as YAML configuration.
 
-`!!js` expressions are supported recursively inside plugin `config`. In the
-pinned Loader, the entry's `disabled` field also evaluates `!!js`; other entry
-metadata stays literal. Conditional trees should normally use explicit overlay
-patches rather than clever metadata expressions.
+`!!js` expressions are supported recursively inside plugin `config`. A row's
+`config` expressions evaluate after its declared injections activate, against
+that row's own plugin context (`ctx.serviceName` is readable there); the
+entry's `disabled` field evaluates at every mount decision against the Loader
+context. Other entry metadata stays literal. Conditional trees should normally
+use explicit overlay patches rather than clever metadata expressions.
 
 Canonical reading:
 

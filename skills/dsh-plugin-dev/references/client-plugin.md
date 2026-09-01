@@ -28,6 +28,8 @@ Canonical reading:
 - `docs/subsystems/session-projection.md`
 - `docs/subsystems/conversation.md`
 - `docs/api-gateway.md`
+- `docs/cookbook/adding-a-remote-api.md`
+- `docs/cookbook/adding-a-settings-card.md`
 - `packages/client/ui-goal/`
 
 ## Package manifest
@@ -155,7 +157,12 @@ contributions rather than making business components load the Gateway.
 Mount generated Remote contributions explicitly with `$mount`, then compose UI
 only after the named Remote service becomes available. If UI mounting fails,
 dispose the partial UI and the Remote contribution. On unload, dispose both in
-the reverse ownership order.
+the reverse ownership order. A Client caller declares both `remote` and
+`remote.<namespace>` in its `inject` and calls `ctx.remote.<ns>.<method>()`
+directly — no hand-written method signature or relay object. Fixed Host facts
+are plain reads on `ctx.remote.$host` (`home` is `undefined` until the first
+ready frame); refresh them after a reconnect through `ctx.on('connection/reset')`
+or a domain Remote event.
 
 The pinned Remote contract uses one shared `RemoteError` class and a
 declaration-mergeable `RemoteErrorDetailsMap`. Owners declare stable
@@ -231,6 +238,9 @@ Remote contributor tests:
 - contribution mount, partial-failure rollback, and unmount work;
 - unary success and the `RemoteResult` error branch are handled without
   treating carrier outcomes as Promise rejection;
+- owner-side assertions recover the thrown failure with `remoteErrorOf` and
+  compare `code`/`details` with `toMatchObject` — never `toEqual` on the error
+  object, never `instanceof`;
 - declared domain codes narrow their matching `details`, while unknown/newer
   codes remain readable as Remote failures.
 

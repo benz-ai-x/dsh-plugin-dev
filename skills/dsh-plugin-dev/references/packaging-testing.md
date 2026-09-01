@@ -130,6 +130,12 @@ dsh --profile demo --dump-config
 The dump is diagnostic and loadable, but its byte formatting is not a stable
 serialization contract.
 
+Custom profiles default to live patch reload; the shipped one-shot/stdio
+profiles (`headless`, `sdk`, `sdk-minimal`, `acp`) apply every layer once at
+startup, because replacing a one-shot or stdio application's dependencies after
+it owns work would invalidate that lifecycle. Choose test composition
+accordingly: reload behavior belongs to a live-reload profile.
+
 ## Local installation
 
 From the directory containing a plugin checkout:

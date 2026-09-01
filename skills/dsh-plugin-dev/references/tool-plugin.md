@@ -57,6 +57,8 @@ state.
 Canonical examples:
 
 - `docs/user/develop/basic/tool.md`
+- `docs/cookbook/adding-a-tool.md` — the authoritative execute/presentation contract
+- `docs/cookbook/extension-cookbook.md` — extension-point selection patterns
 - `docs/subsystems/tools.md`
 - `docs/tool-execution-pipeline.md`
 - `packages/todo/tool-todo/src/index.ts`
@@ -103,6 +105,11 @@ Never accept a model-supplied Session or Agent id as a substitute for
 If the operation has no valid non-Agent meaning, reject an invocation without
 `exec.agent` rather than silently writing global state.
 
+A tool may notify through `exec.agent.inject({ content, source: { kind: 'plugin',
+plugin: '<name>' } })`: the content is durable and the NEXT model request sees
+it — it is not a wake-up, and an idle agent stays idle. Guard the call against
+an already disposed agent.
+
 ## Cancellation and ownership
 
 Pass `exec.signal` through every provider, network request, child tool,
@@ -127,6 +134,18 @@ not enforcement.
 
 Use `ctx.tools.guard` only for monotonic policy. A guard may deny or narrow; it
 must not replace identity or elevate authority.
+
+Choose among the five extension points by intent: `tools/pre-execute` for
+extensible allow/deny/ask policy, `ctx.tools.guard()` for a final monotonic
+denial later listeners cannot undo, `tools/execute` to wrap the dispatch
+lifetime (deadline, retry, metrics — the only place a wrapper may replace and
+restore the required `exec.signal`; it cannot remove it), `tools/post-execute`
+to transform or block the result, and `tools/result` for contained observation
+of the immutable outcome.
+
+A registered definition is borrowed read-only: never mutate its schema or
+callbacks after registration. Hot-swap by disposing the owning effect and
+registering the replacement.
 
 ## Session effects
 
