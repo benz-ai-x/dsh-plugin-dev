@@ -4,6 +4,21 @@
   "private": true,
   "description": "Codex and Claude Code Skill plus project generator for DeepSeek Harness plugin development",
   "type": "module",
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "cordis",
+    "claude-code",
+    "codex",
+    "plugin-development",
+    "agent-skills",
+    "code-agent",
+    "scaffold",
+    "generator",
+    "typescript",
+    "developer-tools"
+  ],
   "packageManager": "pnpm@11.7.0",
   "engines": {
     "node": "^22.19.0 || >=24.0.0"

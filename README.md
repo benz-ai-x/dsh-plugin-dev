@@ -1,16 +1,32 @@
 # DSH Plugin Dev
 
-[中文使用手册](#中文使用手册) | [English Quick Guide](#english-quick-guide)
+**DeepSeek Harness (DSH · Cordis) plugin development for Codex & Claude Code — one reusable Skill plus a deterministic project generator, with audited baselines and real Loader/profile verification.**
+
+[中文使用手册](#中文使用手册) · [English Quick Guide](#english-quick-guide)
+
+[![version](https://img.shields.io/badge/version-0.2.0-4c6ef5)](package.json)
+[![DSH baseline](https://img.shields.io/badge/DSH%20baseline-0.1.2--alpha.3-1c7ed6)](dsh-reference.lock.json)
+[![Codex](https://img.shields.io/badge/agent-Codex-000000)](skills/dsh-plugin-dev/)
+[![Claude Code](https://img.shields.io/badge/agent-Claude%20Code-d97706)](skills/dsh-plugin-dev/)
+[![Node](https://img.shields.io/badge/node-%5E22.19.0%20%7C%7C%20%3E%3D24.0.0-339933)](package.json)
+[![pnpm](https://img.shields.io/badge/pnpm-11.7.0-F69220)](package.json)
 
 ## 中文使用手册
 
 ### 这是什么
 
-`dsh-plugin-dev` 是供 Codex 和 Claude Code 共用的 DeepSeek Harness 插件开发 Skill。你只需安装一次，然后在任意空目录中描述业务需求，Code Agent 就会判断 DSH 扩展形态、生成项目脚手架，并继续完成业务实现和验证。
+`dsh-plugin-dev` 是供 Codex 和 Claude Code 共用的 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH，基于 Cordis）插件开发 Skill。你只需安装一次，然后在任意空目录中描述业务需求，Code Agent 就会判断 DSH 扩展形态、生成项目脚手架，并继续完成业务实现和验证。
 
 本仓库是插件开发工具，不是 DSH 运行时插件。当前确定性生成器支持 Host 侧、面向模型的 Tool 插件；Service、Client、LLM Adapter、Bundle/Profile 和 Agent Team 需求仍可通过 Skill 中的专项指南开发，但尚无确定性模板。
 
 仓库自身采用 TypeScript-first 工具链。生成器、基线管理、上下文校验和安装器的权威源码位于 `.mts` 文件，严格类型检查后编译到现有 `.mjs` 公共入口；因此安装后的 Skill 仍可直接由 Node 执行，不要求用户额外安装 `tsx`。`tooling-artifacts.json` 将源码、JavaScript 和声明文件的摘要绑定在一起。
+
+### 核心特性
+
+- **双 Agent 一份 Skill**：Codex（`$HOME/.agents/skills`）与 Claude Code（`$HOME/.claude/skills`）共享同一份 canonical Skill、参考资料、生成器和模板。
+- **审计基线双通道**：`dsh-reference.lock.json` 锁定官方 tag/commit/docs 摘要，`stable`/`edge` 内容寻址通道加上完整验证与 Registry 闭包证据，升级走可审计的 runbook。
+- **双交付模式**：`source` 模式链接本地干净 Harness worktree；`registry` 模式在闭包 `ready` 时生成普通精确版本依赖与可发布 manifest。
+- **真实验证阶梯**：生成项目通过 strict 源校验、类型检查、单元/HMR 测试、真实 Loader 组合、profile add/dump/boot/remove 与打包产物检查。
 
 ### 环境要求
 
@@ -28,7 +44,7 @@ export DSH_HARNESS_ROOT=/path/to/deepseek-harness
 ### 安装
 
 ```sh
-git clone git@github.com:benz-ai-x/dsh-plugin-dev.git
+git clone https://github.com/benz-ai-x/dsh-plugin-dev.git
 cd dsh-plugin-dev
 pnpm install
 pnpm context:check:strict
@@ -96,7 +112,7 @@ pnpm typecheck
 pnpm verify
 ```
 
-架构、验收证据、项目交接和后续计划分别见 `docs/agent/ARCHITECTURE.md`、`docs/agent/ACCEPTANCE.md`、[`docs/agent/HANDOFF.md`](docs/agent/HANDOFF.md) 和 `TODO.md`。
+架构、验收证据、项目交接和后续计划分别见 [`docs/agent/ARCHITECTURE.md`](docs/agent/ARCHITECTURE.md)、[`docs/agent/ACCEPTANCE.md`](docs/agent/ACCEPTANCE.md)、[`docs/agent/HANDOFF.md`](docs/agent/HANDOFF.md) 和 [`TODO.md`](TODO.md)；基线升级流程见 [`docs/agent/BASELINE_UPGRADE.md`](docs/agent/BASELINE_UPGRADE.md)，产品决策见 [`docs/decisions/`](docs/decisions)。
 
 ---
 
@@ -104,7 +120,7 @@ pnpm verify
 
 ### What this is
 
-`dsh-plugin-dev` is a shared DeepSeek Harness plugin-development Skill for Codex and Claude Code. Install it once, then describe a business requirement from any empty directory. The code agent classifies the DSH extension shape, generates a project scaffold, and continues through the real implementation and verification.
+`dsh-plugin-dev` is a shared [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (DSH, Cordis-based) plugin-development Skill for Codex and Claude Code. Install it once, then describe a business requirement from any empty directory. The code agent classifies the DSH extension shape, generates a project scaffold, and continues through the real implementation and verification.
 
 This repository is development tooling, not a DSH runtime plugin. The deterministic generator currently supports Host-side, model-facing Tool plugins. The Skill also guides Service, Client, LLM Adapter, Bundle/Profile, and Agent Team work, but deterministic templates for those shapes are still on the roadmap.
 
@@ -113,6 +129,13 @@ context, and installer sources use strict `.mts`; compilation preserves the
 existing dependency-free `.mjs` entry paths, so an installed Skill does not
 require `tsx`. `tooling-artifacts.json` binds source, JavaScript, and declaration
 digests.
+
+### Highlights
+
+- **One Skill, two agents**: Codex (`$HOME/.agents/skills`) and Claude Code (`$HOME/.claude/skills`) read the same canonical Skill, references, generator, and templates.
+- **Audited baseline channels**: `dsh-reference.lock.json` pins the official tag, commit, and docs digest; content-addressed `stable`/`edge` channels carry full verification and Registry-closure evidence through an auditable upgrade runbook.
+- **Two delivery modes**: `source` links a clean local Harness worktree; `registry` emits exact ordinary dependency versions and a publishable manifest once the closure is `ready`.
+- **A real verification ladder**: strict source checks, typecheck, unit/HMR tests, real Loader composition, profile add/dump/boot/remove, and packed-artifact inspection.
 
 ### Requirements
 
@@ -130,7 +153,7 @@ export DSH_HARNESS_ROOT=/path/to/deepseek-harness
 ### Install
 
 ```sh
-git clone git@github.com:benz-ai-x/dsh-plugin-dev.git
+git clone https://github.com/benz-ai-x/dsh-plugin-dev.git
 cd dsh-plugin-dev
 pnpm install
 pnpm context:check:strict
@@ -198,6 +221,6 @@ pnpm typecheck
 pnpm verify
 ```
 
-See `docs/agent/ARCHITECTURE.md`, `docs/agent/ACCEPTANCE.md`, the [maintainer handoff](docs/agent/HANDOFF.md), and `TODO.md` for architecture, acceptance evidence, current handoff state, and the live roadmap.
+See the [architecture notes](docs/agent/ARCHITECTURE.md), [acceptance evidence](docs/agent/ACCEPTANCE.md), the [maintainer handoff](docs/agent/HANDOFF.md), the [baseline upgrade runbook](docs/agent/BASELINE_UPGRADE.md), [product decisions](docs/decisions), and [`TODO.md`](TODO.md) for architecture, acceptance evidence, current handoff state, and the live roadmap.
 
 The discovery model follows the official [OpenAI Skills](https://learn.chatgpt.com/docs/build-skills), [OpenAI Plugins](https://learn.chatgpt.com/docs/build-plugins), and [Claude Code Skills](https://code.claude.com/docs/en/skills) documentation.
