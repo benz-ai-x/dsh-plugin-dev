@@ -86,6 +86,12 @@ maintained Harness source overlay, a regenerated persistence catalog, the
 matching rebuilt Harness, and a format/migration plan. It remains log-only
 unless that matching build also changes the closed surface contract.
 
+The shipped `SessionPersistence` provider is JSONL, one artifact per Session.
+An out-of-tree backend implementing the same service contract is a supported
+route, but it owns the equivalent direction-aware format refusal
+(`SessionFormatUnsupportedError`, never "corrupt" for a foreign version) at its
+own physical boundary.
+
 `Session.append()` is the in-memory acceptance/publication boundary, not proof
 of durable storage. Await `ctx.sessions.flush(session)` when success must
 survive a crash before reporting success or transferring ownership. Treat
@@ -110,7 +116,9 @@ authority is the defined direct-parent address or exact live ancestor object.
 Visibility is not inheritance. In-process children receive a new flat scope;
 forking completed conversation history does not imply inherited tools,
 services, sandbox policy, approval, credentials, or authority. Install desired
-child capabilities explicitly and lifecycle-own the installation.
+child capabilities explicitly and lifecycle-own the installation. Prompt image
+parts are admitted and persisted through the attachment store before inbox
+delivery, and the child's model must accept image input.
 
 Before publication, caller cancellation owns preparation. After an accepted
 run/message is published, the runtime/holder owns it independently. Always

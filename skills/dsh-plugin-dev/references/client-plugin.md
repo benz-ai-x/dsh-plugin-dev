@@ -250,5 +250,7 @@ Add the applicable feature-specific tests:
   cursor or replacement baseline and normal-end classification, obtains the
   current whole snapshot when required, and never duplicates accepted items.
 
-Use `packages/client/ui-goal` as the small canonical projection/Slot example and
+Use `packages/client/ui-goal` as the small canonical projection/Slot example,
+`packages/session/session-turn-outline` as the whole-log projection with
+`./types` and `./client` subpath exports, and
 `packages/experimental/client-ui-agent-team` for Remote mount plus UI lifecycle.
