@@ -66,11 +66,12 @@ The first generator implements the `tool` kind. Unsupported kinds fail explicitl
 
 ## Source and Registry delivery
 
-Generated projects use semver peer contracts for their eventual runtime package shape, but their development dependencies link to the audited local Harness checkout. Static `link:` specs point at each directly consumed package's declared build output, so strict validation covers two distinct planes: clean tracked/non-ignored inputs at the pinned commit with no ignored root `.env` for the source CLI to load, and present, timestamp-fresh `main`/`types` entries. Ignored dependency/build output remains allowed. This includes the source-launched CLI used by profile acceptance as well as package/build inputs. It gives typecheck, real Cordis services, Loader tests, lifecycle tests, and built public-import smokes access to the audited baseline even while the DSH runtime packages are unpublished.
+Generated projects use semver peer contracts for their eventual runtime package shape, but their development dependencies link to the audited local Harness checkout. Static `link:` specs point at each directly consumed package's declared build output, so strict validation covers two distinct planes: clean tracked/non-ignored inputs at the pinned commit with no ignored root `.env` for the source CLI to load, and present, timestamp-fresh `main`/`types` entries. Ignored dependency/build output remains allowed. This includes the source-launched CLI used by profile acceptance as well as package/build inputs. It gives typecheck, real Cordis services, Loader tests, lifecycle tests, and built public-import smokes access to the audited baseline whether or not those runtime packages are available from the Registry.
 
 The timestamp check detects absent and visibly older artifacts; it is not a content digest. If the Harness checkout moves, generated projects run `context:sync` with the selected new root so package links, the fallback lock, and the package-manager lock move together. An environment override by itself cannot rewrite an already generated manifest.
 
-Source-linked success is not publication evidence. Registry delivery is a
+Source-linked success is not publication evidence, even when the selected
+baseline's packages are available from the Registry. Registry delivery is a
 separate generated contract enabled only by a `ready` closure report. It uses
 exact ordinary versions, retains the report as `dsh-registry.lock.json`, and
 contains no local-resolution path or sync command. Its acceptance installs the
