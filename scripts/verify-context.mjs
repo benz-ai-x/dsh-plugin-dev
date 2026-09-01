@@ -207,6 +207,7 @@ const requiredFiles = [
     'CLAUDE.md',
     'TODO.md',
     'package.json',
+    'LICENSE',
     'dsh-reference.lock.json',
     '.codex-plugin/plugin.json',
     'docs/agent/PROJECT_CONTRACT.md',
@@ -363,6 +364,7 @@ if (manifest) {
     check(manifest.name === 'dsh-plugin-dev', 'package name is dsh-plugin-dev');
     check(manifest.version === '0.2.0', 'package has the 0.2.0 audited-alpha.3 tooling version');
     check(manifest.private === true, 'development-tooling repository package remains private');
+    check(manifest.license === 'MIT', 'package is MIT licensed');
     check(manifest.type === 'module', 'project uses ESM');
     check(manifest.engines?.node === '^22.19.0 || >=24.0.0', 'project Node engine matches the pinned Harness');
     check(manifest.packageManager === 'pnpm@11.7.0', 'project package manager matches the pinned Harness');
@@ -398,6 +400,7 @@ if (manifest) {
 if (pluginManifest) {
     check(pluginManifest.name === 'dsh-plugin-dev', 'Codex Plugin name is dsh-plugin-dev');
     check(pluginManifest.version === manifest?.version, 'Codex Plugin and package versions match');
+    check(pluginManifest.license === manifest?.license, 'Codex Plugin and package licenses match');
     check(pluginManifest.skills === './skills/', 'Codex Plugin exposes the top-level skills directory');
     check(existsSync(resolve(projectRoot, pluginManifest.skills ?? '', 'dsh-plugin-dev', 'SKILL.md')), 'Codex Plugin Skill target resolves');
     check(pluginManifest.interface?.capabilities?.includes('Write'), 'Codex Plugin declares project-write capability');

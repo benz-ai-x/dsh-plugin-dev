@@ -5,6 +5,7 @@
   "author": {
     "name": "dsh-plugin-dev contributors"
   },
+  "license": "MIT",
   "skills": "./skills/",
   "interface": {
     "displayName": "DSH Plugin Dev",

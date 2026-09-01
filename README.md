@@ -10,6 +10,7 @@
 [![Claude Code](https://img.shields.io/badge/agent-Claude%20Code-d97706)](skills/dsh-plugin-dev/)
 [![Node](https://img.shields.io/badge/node-%5E22.19.0%20%7C%7C%20%3E%3D24.0.0-339933)](package.json)
 [![pnpm](https://img.shields.io/badge/pnpm-11.7.0-F69220)](package.json)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ## 中文使用手册
 

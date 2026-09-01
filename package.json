@@ -19,11 +19,13 @@
     "typescript",
     "developer-tools"
   ],
+  "license": "MIT",
   "packageManager": "pnpm@11.7.0",
   "engines": {
     "node": "^22.19.0 || >=24.0.0"
   },
   "files": [
+    "LICENSE",
     ".codex-plugin/plugin.json",
     "skills/dsh-plugin-dev/**",
     "src/**",
