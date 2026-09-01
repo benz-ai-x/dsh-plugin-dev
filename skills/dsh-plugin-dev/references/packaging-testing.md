@@ -94,6 +94,21 @@ Canonical implementations:
 - `packages/boot/app-boot/src/profile.ts`
 - `apps/cli/src/plugin.ts`
 
+A bundle that defines a runnable app (a surface bundle) can mount a provider
+plugin that declares `inject: ['cmdlineArgs']`, parses the shared immutable
+argument snapshot with `parseCmdline` from `@deepseek-ai/dsh-cmdline`, and
+feeds dependent rows through `!!js` config expressions with deployment
+fallbacks. Those rows stay inactive on `--help` because the provider publishes
+no service then. This pattern is upstream territory outside the deterministic
+Tool template; walk through `publish.md`'s surface-bundle section before
+building one.
+
+Canonical reading:
+
+- `docs/user/develop/basic/publish.md` — "Give a surface bundle its own command line"
+- `packages/boot/cmdline/README.md`
+- `packages/bundle/web-app/cordis.patch.yml` — an in-tree bundle overriding `dsh-base` rows
+
 ## Patch semantics
 
 Profile composition starts with an empty root and applies bundle patches,
@@ -130,10 +145,29 @@ dsh plugin --profile demo remove dsh-example-plugin
 to the user's invoking directory. On successful pnpm operations, it reconciles
 the installed packages that currently declare `dsh.bundle`.
 
-For a Git source dependency, the package must build during installation,
-normally through `prepare`. Modern pnpm may block dependency build scripts
-until the exact package is allowlisted. Registry tarballs should already
-contain built output and are a safer distribution path.
+The first successful `add` initializes the profile with `@deepseek-ai/dsh-base`
+as its first bundle, then appends each installed bundle in add order. In-box
+bundle names resolve from the dsh installation itself — pnpm manages only
+out-of-tree packages — so a bundle can rely on `@deepseek-ai/dsh-base` being
+present and current without declaring or installing it.
+
+For a Git source dependency, the install fetches sources, not built artifacts:
+nothing runs the package's `build` script, so the author ships a self-contained
+`prepare` that builds the published entry points without assuming dev-only
+context such as a sibling monorepo. On the user side, pnpm ≥10 blocks the
+dependency's `prepare` until the exact package key from its error message is
+allowlisted in the profile's `pnpm-workspace.yaml`:
+
+```yaml
+allowBuilds:
+  dsh-example-plugin: true
+```
+
+The first `add` fails; copy the key pnpm printed and re-run. Treat that entry
+as permission to execute the package's code at install time, outside the
+agent's sandbox: allow only trusted sources and pin a commit
+(`github:you/example#<sha>`). Registry tarballs that already contain built
+output need no allowance and are the safer distribution path.
 
 For a source-linked project, distinguish the source plane from the executable
 artifact plane. Matching the pinned commit and docs is insufficient when
