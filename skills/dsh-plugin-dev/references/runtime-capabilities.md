@@ -90,9 +90,11 @@ unless that matching build also changes the closed surface contract.
 of durable storage. Await `ctx.sessions.flush(session)` when success must
 survive a crash before reporting success or transferring ownership. Treat
 listener notifications as post-commit observation and contain their failures.
-Projections are pure synchronous whole-value folds; return the same reference
-for unrelated events and bump persisted state versions when fold semantics or
-serialized state changes.
+Projections are pure synchronous whole-value folds; return the same state
+reference for unrelated events, reuse an object-valued `view` reference across
+internal-only state changes (the change feed republishes only when the raw
+`view` result changes by `Object.is`), and bump persisted state versions when
+fold semantics or serialized state changes.
 
 Read `docs/subsystems/session.md`, `docs/subsystems/persistence.md`,
 `docs/subsystems/session-projection.md`, and the generated

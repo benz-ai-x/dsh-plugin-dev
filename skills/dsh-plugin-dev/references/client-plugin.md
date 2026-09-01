@@ -116,7 +116,10 @@ Choose the two similarly named extension points by output shape:
   on every internal-only state change.
 - `ConversationNodeDefinition` is a Client-side event-to-node state machine for
   transcript or trajectory rows. It derives presentation from transported
-  Session records and is not the authority for the domain snapshot.
+  Session records and is not the authority for the domain snapshot. Conversation
+  targets activate lazily: creating or reading a target source does not activate
+  it — the first source subscription (or the shell's explicit View selection)
+  does, and unsubscription does not deactivate one.
 
 Do not implement one as a substitute for the other. A feature may use both: a
 whole projection for current controls/status and a Conversation Definition for
