@@ -205,10 +205,13 @@ one reviewable change, without altering business behavior silently.
 
 ## Remaining work
 
-[`TODO.md`](../../TODO.md) is the live queue. The next high-priority item is the
-packaged Codex Plugin/local marketplace installation, reinstall, discovery,
-and semantic smoke. Additional deterministic Service, Host/Client, LLM,
-Agent-Team, and library/bundle project kinds remain future work.
+[`TODO.md`](../../TODO.md) is the live queue. The packaged Plugin/local
+marketplace path now has a deterministic install/reinstall/discovery e2e
+(`tests/plugin-marketplace.e2e.test.ts`); its real-model semantic leg is gated
+behind `DSH_CODEX_SEMANTIC=1` and still needs one recorded pass on a machine
+with working Codex backend connectivity. Additional deterministic Service,
+Host/Client, LLM, Agent-Team, and library/bundle project kinds remain future
+work.
 
 Do not claim those shapes are generator-supported, and do not treat upstream
 maintainer Skills as product runtime capabilities.

@@ -55,6 +55,36 @@ access, clean install and verification, exact `.tgz` install/import from a
 second clean directory, and pinned-CLI profile add/dump/real boot/graceful
 shutdown/remove/post-remove absence.
 
+## Packaged marketplace smoke
+
+The packaged Codex Plugin path installs through a local marketplace instead of
+the user-skill symlink. `tests/plugin-marketplace.e2e.test.ts` materializes a
+marketplace fixture (`.agents/plugins/marketplace.json` plus
+`plugins/dsh-plugin-dev/` carrying the repo's `.codex-plugin/` and `skills/`)
+into a temporary directory and drives an isolated `CODEX_HOME` through
+`codex plugin marketplace add`, `plugin list --available`,
+`plugin add dsh-plugin-dev@dsh-plugin-dev-local`, an idempotent reinstall, a
+byte-exact cached-Skill comparison against the canonical source,
+`plugin remove` (cache cleared), and marketplace removal. The leg self-skips
+when no `codex` binary is present.
+
+The real-model semantic leg runs only with `DSH_CODEX_SEMANTIC=1`: it copies
+the user's Codex auth into the isolated home, installs the plugin through the
+marketplace, runs `codex exec` from an empty directory with the repository
+audit prompt, and asserts the agent names the Skill, generates
+`dsh-repository-audit`, and passes the generated dependency-free strict source
+check against the pinned Harness. A failed run preserves its scratch directory
+for inspection.
+
+Marketplace lifecycle evidence (2026-09-01, codex-cli 0.151.0): the
+deterministic leg passes locally — marketplace registration, packaged install,
+reinstall, byte-exact Skill delivery, and clean removal all succeeded under an
+isolated `CODEX_HOME`. The semantic leg is recorded as pending: at run time the
+machine could not reach the Codex backend (`codex doctor`: Responses WebSocket
+timeout, CDN unreachable), so no real-model evidence was captured. Re-run with
+`DSH_CODEX_SEMANTIC=1 pnpm exec vitest run tests/plugin-marketplace.e2e.test.ts`
+once connectivity is restored.
+
 ## Fresh-agent semantic smoke
 
 After `pnpm install:skill`, start new Codex and Claude Code sessions from unrelated empty directories. Use:

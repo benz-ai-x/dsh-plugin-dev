@@ -64,7 +64,7 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 - [x] Install the canonical Skill into both Codex and Claude Code user scope without overwriting an unrelated installation or leaving a partial cross-agent setup after a preflight conflict.
 - [x] Run a fresh Codex process from an unrelated empty directory and confirm implicit or explicit Skill discovery.
 - [x] Verify the agent selects the Tool shape, runs the generator, implements a representative business request, and reports the source-linked publication limitation.
-- [ ] Repeat the semantic smoke through the packaged Plugin/local marketplace path.
+- [ ] Repeat the semantic smoke through the packaged Plugin/local marketplace path. The deterministic marketplace lifecycle (fixture, install, reinstall, discovery, remove) is covered by `tests/plugin-marketplace.e2e.test.ts`; the real-model semantic leg is gated behind `DSH_CODEX_SEMANTIC=1` and awaits a working Codex backend connection on the recording machine.
 - [x] Run an authenticated Claude Code semantic smoke from an unrelated empty directory: discover `/dsh-plugin-dev`, generate a Tool baseline, implement real business behavior, and pass strict source, test, build, pack, and isolated profile lifecycle checks.
 
 ## P4 — Additional deterministic project kinds
@@ -77,7 +77,7 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 
 ## P5 — Distribution and baseline evolution
 
-- [ ] Add a local marketplace fixture and packaged Plugin installation/reinstall smoke.
+- [x] Add a local marketplace fixture and packaged Plugin installation/reinstall smoke.
 - [ ] Define repository release packaging and a version/cachebuster workflow.
 - [x] Recheck npm availability for the complete minimal Tool runtime and peer
   closure, and persist the blocked/ready evidence per baseline channel.
