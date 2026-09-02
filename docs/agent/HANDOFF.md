@@ -181,7 +181,7 @@ Decision: [`0005-registry-delivery.md`](../decisions/0005-registry-delivery.md).
 
 ## Verification evidence
 
-The alpha.3 ladder (TypeScript-first tooling carried forward) passes with:
+The alpha.4 ladder (TypeScript-first tooling carried forward) passes with:
 
 - compiled artifact freshness and strict TypeScript typecheck;
 - strict context: 272 checks, 0 warnings;

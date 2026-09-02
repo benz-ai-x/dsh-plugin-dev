@@ -13,6 +13,9 @@ const pluginManifest = JSON.parse(await readFile(pluginManifestPath, 'utf8')) as
   name: string
   version: string
 }
+const repositoryLockDefaultChannel = JSON.parse(
+  await readFile(join(repositoryRoot, 'dsh-reference.lock.json'), 'utf8'),
+) as { defaultChannel: string }
 
 const codexPath = spawnSync('which', ['codex'], { encoding: 'utf8' }).stdout.trim()
 const codexAvailable = codexPath.length > 0
@@ -212,7 +215,16 @@ test(
       t.skip('no Codex auth.json to copy into the isolated home')
       return
     }
-    const harnessRoot = resolve(repositoryRoot, '..', 'deepseek-harness-baseline-0.1.2-alpha.3')
+    const repositoryLock = JSON.parse(
+      await readFile(join(repositoryRoot, 'dsh-reference.lock.json'), 'utf8'),
+    ) as {
+      channels: Record<string, { localResolution: { fallbackRelativePath: string } }>
+    }
+    const harnessRoot = resolve(
+      repositoryRoot,
+      repositoryLock.channels[repositoryLockDefaultChannel.defaultChannel]!.localResolution
+        .fallbackRelativePath,
+    )
     if (!existsSync(harnessRoot)) {
       t.skip('pinned Harness baseline worktree is not present for source resolution')
       return

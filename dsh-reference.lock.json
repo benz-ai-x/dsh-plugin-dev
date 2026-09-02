@@ -28,9 +28,9 @@
         "version": "0.1.2-alpha.4"
       },
       "verification": {
-        "checkedAt": "2026-09-02T01:50:50.878Z",
+        "checkedAt": "2026-09-02T01:54:01.933Z",
         "path": "baselines/edge/verification.json",
-        "sha256": "c453648fd3de9616a13be04cc04ff47a63a787b756df3eb8dbdcc6b264d4c1d1",
+        "sha256": "2e4095e79d069474d8d65bade06f5a9c503fb2db3ced1ace754a03bb76235510",
         "status": "passed"
       },
       "verifiedOn": "2026-09-02"
@@ -63,9 +63,9 @@
         "version": "0.1.2-alpha.4"
       },
       "verification": {
-        "checkedAt": "2026-09-02T01:50:50.878Z",
+        "checkedAt": "2026-09-02T01:54:01.933Z",
         "path": "baselines/stable/verification.json",
-        "sha256": "59f708f8e48269343c464c0f375fcb56fab0cecf4acae36c4fe89c59d6ee6ae0",
+        "sha256": "9b56f50c494e3872def3440d60412df68335ca56059ffb36c4d03622c8cbbfad",
         "status": "passed"
       },
       "verifiedOn": "2026-09-02"
