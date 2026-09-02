@@ -184,7 +184,10 @@ durable facts. Use a Session event when behavior must survive restart, replay,
 or appear consistently in queries and clients.
 
 Session event values must be lossless JSON. Treat appended values as detached
-and immutable. `SessionEventMap` is declaration-merge extensible at compile
+and immutable. Event sequence positions crossing Session, persistence, and
+projection APIs are branded numbers (`SessionSeq`, `SessionLogOffset`): pass
+the exported constructors, not raw numbers, or the call will not typecheck.
+`SessionEventMap` is declaration-merge extensible at compile
 time, while the pinned persistence runtime has no out-of-repo registration
 surface and compares recovered types with a generated, build-time vocabulary.
 An unknown stored event is accepted only when its own envelope explicitly

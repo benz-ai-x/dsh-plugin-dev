@@ -22,8 +22,8 @@
       "source": "src/scripts/verify-context.mts",
       "runtime": "scripts/verify-context.mjs",
       "declaration": "scripts/verify-context.d.mts",
-      "sourceSha256": "9cbaa896e61690d9c5a9e3feffdf73478b41aa2c32c3855acdc9d01fec6d4e5b",
-      "runtimeSha256": "ffa7d7f376c92dc23cb9ca4d2f3993bc927e8438251a0c4f8a7508d4e6f18764",
+      "sourceSha256": "36dd8c79481fc07ada26c822acabb6dad5d383a5c17e1ed150a006e39b774e27",
+      "runtimeSha256": "c8b6a3c343189124368e79fef33dba618285069a0de7181c7c952a9d44169d6e",
       "declarationSha256": "43e818adf60173644896298637f47b01d5819b17eda46eaa32d0c7d64724d012"
     },
     {

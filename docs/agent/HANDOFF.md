@@ -1,6 +1,6 @@
 # dsh-plugin-dev Maintainer Handoff
 
-Updated: 2026-09-01 (Asia/Shanghai)
+Updated: 2026-09-02 (Asia/Shanghai)
 
 ## Outcome
 
@@ -10,9 +10,9 @@ packaging, profile integration, and release preparation. It is not a DSH
 runtime plugin. Its own implementation is now TypeScript-first while its
 installed public commands remain dependency-free `.mjs` artifacts.
 
-The audited default baseline is DeepSeek Harness `0.1.2-alpha.3`, official tag
-`dsh-v0.1.2-alpha.3`, commit
-`dd6322d604e00eec1ba5e0c8541159906a21094a`. The baseline was scanned from a
+The audited default baseline is DeepSeek Harness `0.1.2-alpha.4`, official tag
+`dsh-v0.1.2-alpha.4`, commit
+`4e84901e6471b79ec0338099867ebb4606d12bb5`. The baseline was scanned from a
 clean detached official-tag worktree built with `pnpm@11.7.0`.
 
 ## Read first
@@ -45,12 +45,12 @@ directory and refuses stale or hand-edited output. Do not edit generated
 
 | Item | Stable state |
 |---|---|
-| Harness | `0.1.2-alpha.3` / `dsh-v0.1.2-alpha.3` |
-| Commit | `dd6322d604e00eec1ba5e0c8541159906a21094a` |
+| Harness | `0.1.2-alpha.4` / `dsh-v0.1.2-alpha.4` |
+| Commit | `4e84901e6471b79ec0338099867ebb4606d12bb5` |
 | Node | `^22.19.0 || >=24.0.0` |
 | Package manager | `pnpm@11.7.0` |
-| Workspace packages | 267 |
-| Public DSH/vendor packages | 253 |
+| Workspace packages | 266 |
+| Public DSH/vendor packages | 251 |
 | Upstream Skills | 17: 11 maintainer, 4 fixture, 2 product |
 | Tool Registry closure | `ready`: 24/24 exact requirements available |
 | Verification | `passed`, bound to catalog and project digests |
@@ -59,6 +59,29 @@ The two official Cordis product Skills are materialized and hash-pinned under
 `baselines/{stable,edge}/skills/`. Upstream maintainer Skills remain cataloged
 evidence; they are not installed as project-development Skills. The canonical
 development workflow remains this repository's `skills/dsh-plugin-dev/`.
+
+## Alpha.4 changes reviewed
+
+The stable-to-edge review (2371 files, 297 commits) renamed subagent
+continuation messaging — `followup()` is now `sendMessage()` with narrowed
+routing (exact live sender, direct parent or direct continuable child only;
+running targets steer the nearest step, waiting targets wake and steer, cold
+targets resume then steer) — and removed the child-scoped `report` return
+channel (`dsh-tool-subagent-report`). `dsh-code-runtime-python` moved into
+`packages/experimental/`. Session sequence positions crossing public APIs are
+now branded (`SessionSeq`, `SessionLogOffset`, with constructors); the fork
+header split `seedLength` into `isSeeded` plus a construction-time
+`inheritedEventCount`. The Loader, persistence event vocabulary, projection
+change-feed gating, tool registry, surface event set, and both product Skill
+bodies are unchanged, and the toolchain contract (Node engine, pnpm) holds.
+
+Contract guidance was updated for these alpha.4 runtime facts:
+
+- Sequence positions are branded numbers at Session/persistence/projection
+  boundaries (`core-contracts.md`).
+- The completed-turn fork-prefix claim and all other reference assertions were
+  re-verified against the alpha.4 tree; no reference cited the renamed or
+  removed subagent APIs.
 
 ## Alpha.3 changes reviewed
 

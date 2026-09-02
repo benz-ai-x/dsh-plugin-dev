@@ -88,6 +88,13 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
   `session-turn-outline` addition, document the projection view-identity
   change-feed gate, and re-prove source plus Registry delivery against the
   official tagged worktree.
+- [x] Upgrade the audited baseline to DSH `0.1.2-alpha.4`: review the branded
+  `SessionSeq`/`SessionLogOffset` boundary types, the `seedLength` →
+  `isSeeded`/`inheritedEventCount` fork-header split, the subagent
+  `followup()` → `sendMessage()` rename with its narrowed routing, the
+  `tool-subagent-report` removal, and the `code-runtime-python` move to
+  experimental; document the branded-sequence boundary in core-contracts and
+  re-prove source plus Registry delivery against the official tagged worktree.
 - [x] Define schema-v2 stable/edge baseline catalogs, official product-Skill
   snapshots, audited upgrade/promotion gates, and generated-project migration
   guidance.
@@ -96,4 +103,4 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 
 P1 and P2 are complete when `pnpm verify` passes and a fresh generated Tool project proves strict source lock, typecheck, unit behavior, HMR removal, real Loader configuration, build output, bundle contents, and overwrite refusal from an unrelated empty directory.
 
-Current status: met for the deterministic Tool vertical slice in both Codex and Claude Code. Audited baseline evolution uses content-addressed stable/edge channels; the audited baseline is `0.1.2-alpha.3`, and the Registry-delivered Tool mode introduced at alpha.2 is re-proved after a clean archive/profile smoke. P3's packaged-marketplace smoke remains follow-up work, as do the additional project kinds in P4.
+Current status: met for the deterministic Tool vertical slice in both Codex and Claude Code. Audited baseline evolution uses content-addressed stable/edge channels; the audited baseline is `0.1.2-alpha.4`, and the Registry-delivered Tool mode introduced at alpha.2 is re-proved after a clean archive/profile smoke. P3's marketplace semantic leg (real-model, `DSH_CODEX_SEMANTIC=1`) remains gated on backend connectivity, as do the additional project kinds in P4.

@@ -229,6 +229,7 @@ const requiredFiles = [
     'docs/decisions/0005-registry-delivery.md',
     'docs/decisions/0006-typescript-first-tooling.md',
     'docs/decisions/0007-tooling-0.2.0-alpha.3.md',
+    'docs/decisions/0008-tooling-0.3.0-alpha.4.md',
     'src/scripts/baseline.mts',
     'src/scripts/install-user-skill.mts',
     'src/scripts/verify-context.mts',
@@ -362,7 +363,7 @@ const manifest = parseJson('package.json');
 const pluginManifest = parseJson('.codex-plugin/plugin.json');
 if (manifest) {
     check(manifest.name === 'dsh-plugin-dev', 'package name is dsh-plugin-dev');
-    check(manifest.version === '0.2.0', 'package has the 0.2.0 audited-alpha.3 tooling version');
+    check(manifest.version === '0.3.0', 'package has the 0.3.0 audited-alpha.4 tooling version');
     check(manifest.private === true, 'development-tooling repository package remains private');
     check(manifest.license === 'MIT', 'package is MIT licensed');
     check(manifest.type === 'module', 'project uses ESM');

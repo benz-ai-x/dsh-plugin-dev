@@ -4,8 +4,8 @@
 
 [中文使用手册](#中文使用手册) · [English Quick Guide](#english-quick-guide)
 
-[![version](https://img.shields.io/badge/version-0.2.0-4c6ef5)](package.json)
-[![DSH baseline](https://img.shields.io/badge/DSH%20baseline-0.1.2--alpha.3-1c7ed6)](dsh-reference.lock.json)
+[![version](https://img.shields.io/badge/version-0.3.0-4c6ef5)](package.json)
+[![DSH baseline](https://img.shields.io/badge/DSH%20baseline-0.1.2--alpha.4-1c7ed6)](dsh-reference.lock.json)
 [![Codex](https://img.shields.io/badge/agent-Codex-000000)](skills/dsh-plugin-dev/)
 [![Claude Code](https://img.shields.io/badge/agent-Claude%20Code-d97706)](skills/dsh-plugin-dev/)
 [![Node](https://img.shields.io/badge/node-%5E22.19.0%20%7C%7C%20%3E%3D24.0.0-339933)](package.json)
