@@ -3,6 +3,11 @@
 Read this reference when a DSH extension adds Web UI, browser state, a Remote
 API, a renderer, or a Slot contribution.
 
+For alpha.1, also apply the settlement/transient, file-upload and checkpoint
+boundaries in [version-specific contracts](version-contracts.md). Keep durable
+cursors separate from live attempt frames and converge history/reconnect on
+the settled record.
+
 ## Host and Client boundary
 
 The Host owns domain truth, durable state, permissions, and external effects.

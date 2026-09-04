@@ -9,7 +9,7 @@ interface ArtifactDefinition {
   source: string
   runtime: string
   declaration: string
-  group: 'root' | 'skill'
+  group: 'root' | 'skill' | 'compatibility'
 }
 
 interface ArtifactRecord extends Omit<ArtifactDefinition, 'group'> {
@@ -52,6 +52,12 @@ const artifacts: readonly ArtifactDefinition[] = [
     declaration: 'skills/dsh-plugin-dev/scripts/create-project.d.mts',
     group: 'skill',
   },
+  ...['analyze-project', 'compare-revisions', 'dependencies'].map(name => ({
+    source: `skills/version-compatibility-analysis/src/${name}.mts`,
+    runtime: `skills/version-compatibility-analysis/scripts/${name}.mjs`,
+    declaration: `skills/version-compatibility-analysis/scripts/${name}.d.mts`,
+    group: 'compatibility' as const,
+  })),
 ]
 
 function sha256(content: string | Buffer): string {
@@ -136,9 +142,11 @@ async function checkArtifacts(): Promise<void> {
     const temporaryRoots = {
       root: join(temporaryRoot, 'root'),
       skill: join(temporaryRoot, 'skill'),
+      compatibility: join(temporaryRoot, 'compatibility'),
     } as const
     runTypeScript('tsconfig.scripts.json', temporaryRoots.root)
     runTypeScript('skills/dsh-plugin-dev/tsconfig.json', temporaryRoots.skill)
+    runTypeScript('skills/version-compatibility-analysis/tsconfig.json', temporaryRoots.compatibility)
     for (const artifact of artifacts) {
       await assertCurrentArtifact(artifact, 'runtime', temporaryRoots)
       await assertCurrentArtifact(artifact, 'declaration', temporaryRoots)
@@ -156,6 +164,7 @@ async function checkArtifacts(): Promise<void> {
 async function buildArtifacts(): Promise<void> {
   runTypeScript('tsconfig.scripts.json')
   runTypeScript('skills/dsh-plugin-dev/tsconfig.json')
+  runTypeScript('skills/version-compatibility-analysis/tsconfig.json')
   await writeFile(manifestPath, manifestText(await buildManifest()), 'utf8')
 }
 

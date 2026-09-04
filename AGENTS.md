@@ -9,6 +9,9 @@ For any DeepSeek Harness plugin task, use the repository skill
 `dsh-plugin-dev` from `skills/dsh-plugin-dev/SKILL.md`. Read only the
 task-specific references it routes to.
 
+For upstream version/dependency impact analysis, use the project companion at
+`skills/version-compatibility-analysis/SKILL.md`.
+
 Run `pnpm context:check` before planning or editing. Run
 `pnpm context:check:strict` before claiming compatibility with the pinned DSH
 source. Stop and report a version-lock mismatch instead of silently developing

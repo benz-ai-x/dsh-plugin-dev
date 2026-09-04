@@ -2,6 +2,38 @@
 
 This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex Plugin, and project generator. Stable rules belong in `docs/agent/PROJECT_CONTRACT.md`; completed product choices belong in `docs/decisions/`.
 
+## Current execution — DSH 0.1.3-alpha.1 compatibility (2026-09-05)
+
+- [x] Create `codex/dsh-0.1.3-compatibility`, preserving the project companion
+  migration already in the worktree.
+- [x] Preserve the broken alpha.4 worktree, restore a clean tagged stable
+  source, and pass strict validation without changing the stable revision.
+- [x] Prepare a clean tagged alpha.1 candidate and update edge through the
+  baseline runbook; review workspace, API and dependency changes.
+- [x] Route version-specific guidance for persistence handles, format-v2
+  migration, assistant streams, Client transients, Team messages, attachments,
+  proxy transport and native installation without changing alpha.4 semantics.
+- [x] Add regression coverage for the discovered compatibility boundaries;
+  verify both channels' generated Tool Loader/profile and archive behavior.
+- [x] Exercise candidate persistence migration/cold recovery and record the
+  historical-load performance limitation separately from correctness.
+- [x] Fix cross-channel Registry test fallback and require verification to
+  bind the same Registry report before promotion; cover stale/source-only
+  evidence with regression tests.
+- [x] Refresh both channels' digest-bound verification and Registry evidence.
+  Keep alpha.1 in edge if its Registry closure is blocked; do not promote it.
+
+Delivery handoff: commit/push the verified branch, open a PR, and send the
+completion summary/PR link through Feishu CLI. Recipient and bot identity were
+confirmed by the user; GitHub and Feishu receipts belong in the task handoff,
+not in the digest-bound runtime evidence.
+
+External gates: the refreshed public Registry report still records E404 for
+15 exact alpha.1 Tool-closure packages. Stable is ready (24/24); edge remains
+source-only. Recheck Registry and rerun same-channel verification before any
+promotion. Representative historical-load performance acceptance and the
+real-model marketplace smoke remain pending; neither is silently passed.
+
 ## P0 — Audited DSH knowledge foundation
 
 - [x] Pin the audited DeepSeek Harness version, commit, and docs digest.
@@ -77,6 +109,18 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 
 ## P5 — Distribution and baseline evolution
 
+- [x] Migrate `version-compatibility-analysis` into the project as a canonical
+  companion with Codex/Claude Code adapters and Plugin/archive distribution;
+  keep the existing personal installer scoped to the development skill.
+- [x] Add read-only, version-adaptive analysis: derive the baseline and delivery
+  roots from current lock/catalog data, rediscover candidate workspaces and
+  dependency edges, and compare arbitrary Git revisions without changing code
+  or promoting channels first.
+- [x] Verify fixture upgrades, read-only behavior and relocated/packed companion
+  execution; record actual-candidate evidence separately from pinned-runtime
+  validation. The broken alpha.4 worktree was preserved and rebuilt at its
+  original locked tag; strict validation now passes for both channels.
+
 - [x] Add a local marketplace fixture and packaged Plugin installation/reinstall smoke.
 - [ ] Define repository release packaging and a version/cachebuster workflow.
 - [x] Recheck npm availability for the complete minimal Tool runtime and peer
@@ -103,4 +147,20 @@ This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex 
 
 P1 and P2 are complete when `pnpm verify` passes and a fresh generated Tool project proves strict source lock, typecheck, unit behavior, HMR removal, real Loader configuration, build output, bundle contents, and overwrite refusal from an unrelated empty directory.
 
-Current status: met for the deterministic Tool vertical slice in both Codex and Claude Code. Audited baseline evolution uses content-addressed stable/edge channels; the audited baseline is `0.1.2-alpha.4`, and the Registry-delivered Tool mode introduced at alpha.2 is re-proved after a clean archive/profile smoke. P3's marketplace semantic leg (real-model, `DSH_CODEX_SEMANTIC=1`) remains gated on backend connectivity, as do the additional project kinds in P4.
+Recorded deterministic Tool acceptance was met in both Codex and Claude Code.
+Audited baseline evolution uses content-addressed stable/edge channels; the
+audited baseline remains `0.1.2-alpha.4`. Historical Registry acceptance does
+not establish the current checkout or a newer candidate's compatibility.
+P3's marketplace semantic leg (real-model, `DSH_CODEX_SEMANTIC=1`) remains gated
+on backend connectivity, as do the additional project kinds in P4.
+
+Current evidence (2026-09-05): both channel verification ladders pass with
+30 unit tests passed / 1 conditional skip, and 3 e2e tests passed / 2 skips.
+Stable covers source plus ordinary Registry archive/profile delivery; edge
+covers source delivery plus explicit Registry refusal. The marketplace
+real-model leg is skipped on both. Seven companion regressions include packed
+execution and version-independent discovery; build/typecheck/Skill validation
+pass. The candidate's selected upstream regressions pass 826 tests across
+28 files (migration/leases/resume, stream/Team/upload/proxy, read-only queries).
+These do not certify performance, other operating systems or unsupported P4
+generators. See `docs/agent/ACCEPTANCE.md` for scope and reproduction.

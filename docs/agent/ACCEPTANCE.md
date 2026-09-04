@@ -5,7 +5,7 @@
 - `.codex-plugin/plugin.json` validates as a skills-only Codex Plugin and points at the canonical skill directory.
 - Codex repository discovery, Codex Plugin discovery, and the Claude Code adapter reach one canonical `SKILL.md` body.
 - Every routed reference exists, and scaffolding instructions select only the references required by the requested DSH shape.
-- The pinned Harness checkout resolves through `DSH_HARNESS_ROOT` or the recorded fallback; version, commit, docs digest, and Node engine match the lock; tracked/non-ignored inputs are clean; the ignored root `.env` loaded by the source CLI is absent; and every directly linked package has present, fresh declared build entries. Ignored dependency/build output is allowed.
+- The pinned repository Harness checkout resolves through `DSH_HARNESS_BASELINE_ROOT` or the recorded fallback; version, commit, docs digest, and Node engine match the lock; tracked/non-ignored inputs are clean; the ignored root `.env` loaded by the source CLI is absent; and every directly linked package has present, fresh declared build entries. Generated projects separately use `DSH_HARNESS_ROOT`. Ignored dependency/build output is allowed.
 - The user-skill installer preflights and creates both Codex and Claude Code personal links, is idempotent for the same source, supports either agent independently, and refuses partial installation when either target conflicts.
 - Unit tests cover generator validation, reserved `run_code` rejection,
   collision refusal, deterministic output, source and Registry delivery,
@@ -27,6 +27,113 @@ pnpm test:e2e
 pnpm verify
 ```
 
+## Version-adaptive companion acceptance
+
+- Both project adapters reach `skills/version-compatibility-analysis/SKILL.md`;
+  the same canonical resources and executable helpers are shipped in archives.
+- `pnpm test:compatibility` exercises new arbitrary versions, package moves,
+  workspace changes/exclusions, dependency/peer/optional edges, skill-resource
+  drift, invalid inputs, missing revisions, and relocated distribution.
+- Committed-object analysis leaves lock files, Git HEAD/index and worktree
+  state unchanged and works without the old baseline worktree or a build of
+  the candidate. It reads no historical Registry status as current readiness.
+- Unknown schemas/protocols produce explicit gaps or actionable errors, never
+  an automatic compatibility verdict; explicit refs/roots and Agent inspection
+  remain available without version-specific edits.
+- Passing these checks proves the analysis tool, not the candidate runtime or
+  the current health of the pinned Harness checkout.
+
+Recorded 2026-09-05: seven companion tests pass, including arbitrary successive
+version/layout fixtures, no-write assertions and execution from an actual
+tarball. The isolated marketplace test also installs and runs the companion;
+the real-model semantic leg was not run. Live committed-object analysis found
+266 → 272 workspace packages between the locked alpha.4 and local alpha.1 of
+the next minor release, with an unchanged 20-node Tool declaration graph.
+This analysis alone is not runtime or Registry evidence. The broken old
+worktree was subsequently preserved and reconstructed at its exact official
+tag; both channels now pass strict source checks. The following current
+verification supersedes the earlier environment-blocked run.
+
+## Current stable/edge verification — 2026-09-05
+
+Both official tagged worktrees were freshly installed with the frozen lock and
+built through `build:official` using Node `26.4.0` and pnpm `11.7.0` on macOS
+arm64. Stable remains alpha.4 at `4e84901e6471b79ec0338099867ebb4606d12bb5`;
+edge is alpha.1 at `d347e703908d0406b7a7ef80e3a0e594d86b2215`.
+
+| Evidence | Stable alpha.4 | Edge alpha.1 |
+|---|---|---|
+| Build freshness, typecheck, strict source | Passed | Passed |
+| Repository units | 30 passed, 1 conditional skip | 30 passed, 1 conditional skip |
+| Repository e2e | 3 passed, 2 skips | 3 passed, 2 skips |
+| Source Tool Loader/HMR, build/pack, profile boot/SIGTERM/remove | Passed | Passed |
+| Exact Registry archive, clean consumer import and profile lifecycle | Passed | Skipped: Registry blocked |
+| Unready Registry generation refusal | Not applicable | Passed |
+| Public Registry requirements | 24 available, 0 blocked | 9 available, 15 E404 |
+| Real-model marketplace semantic leg | Not run | Not run |
+
+The unit skip is the opposite Registry-state branch. The e2e skips are the
+opposite Registry-state branch and the explicitly disabled real-model leg.
+The deterministic marketplace install/reinstall/remove and both packaged
+Skills are verified. Source profile boot is now tested even without Registry
+availability. It is not mislabeled as an ordinary-dependency archive install.
+
+`node scripts/baseline.mjs verify --channel stable` and the equivalent edge
+command generate schema-v2 reports, binding the current project, selected
+catalog and exact Registry report/status. They run the complete `pnpm verify`
+with the locked toolchain. Re-run them after edits to this document; do not
+manually update a passed digest. The reports under `baselines/` are the
+authoritative current bindings. Promotion remains blocked for edge.
+
+Regression coverage now also exercises the actual copied baseline CLI:
+historical unbound, source-only and rechecked-Registry reports refuse
+preflight; a correctly bound ready report passes, and promotion preserves
+the binding after channel relabeling. Fixtures use no live Registry or real
+repository mutation.
+
+Candidate upstream verification (all against the exact alpha.1 worktree):
+
+- 551 tests / 13 files: JSONL generation, write leases and storage; released
+  v0/v1 migration codecs; Agent-loop resume and contract regressions.
+- 208 tests / 13 files: Team persistence/tool behavior; HTTP proxy policy and
+  installation; Host/Client file upload; session-controller assistant stream,
+  cold Session and file-reference paths; Conversation assembly and LLM
+  assistant-stream encoding.
+- 67 tests / 2 files: Session-query reads and observation behavior.
+
+Reproduce from that clean candidate with `CI=true DSH_TELEMETRY_DISABLED=1
+pnpm exec vitest run` and these selectors:
+
+```text
+packages/session/session-persistence-jsonl/tests/generation.spec.ts
+packages/session/session-persistence-jsonl/tests/lease.spec.ts
+packages/session/session-persistence-jsonl/tests/jsonl.spec.ts
+packages/session/session-format-v0-to-v1/tests
+packages/session/session-format-v1-to-v2/tests
+packages/core/agent-loop/tests/resume.spec.ts
+packages/core/agent-loop/tests/contract-regressions.spec.ts
+packages/experimental/agent-team/tests/persistence.spec.ts
+packages/experimental/tool-agent-team/tests/tool-team.spec.ts
+packages/util/http-proxy/tests
+packages/client/file-upload/tests
+packages/api/session-controller/tests/assistant-stream.host.spec.ts
+packages/api/session-controller/tests/assistant-stream.client.spec.ts
+packages/api/session-controller/tests/session-cold.host.spec.ts
+packages/api/session-controller/tests/file-references.host.spec.ts
+packages/client/ui-conversation/tests/conversation-assembler.client.spec.ts
+packages/llm/llm/tests/assistant-stream.spec.ts
+packages/session-query/session-query/tests/session-query.spec.ts
+packages/session-query/session-query/tests/observation.spec.ts
+```
+
+This is targeted upstream regression evidence, not a full Harness suite,
+production data migration or cross-platform certification. The official
+[alpha.1 release notes](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.3-alpha.1)
+identify a historical-session loading performance regression. Representative
+cold-open/query latency and memory budgets remain a deployment gate; passing
+the correctness suites does not clear it. No new deterministic P4 project
+kind or baseline promotion is claimed.
+
 ## Empty-directory acceptance
 
 From a temporary empty directory, the supported Tool vertical slice must:
@@ -42,8 +149,8 @@ From a temporary empty directory, the supported Tool vertical slice must:
    exact-schema tests, unit/HMR tests, real `cordis.yml` Loader composition,
    build, public-name import from `lib`, and inspection of a real `.tgz`;
 6. expose no namespace-plugin default export;
-7. add/dump/remove the actual bundle through an isolated pinned DSH profile and
-   prove the expected stable Loader row/config appears and disappears;
+7. add/dump/boot/gracefully stop/remove the actual bundle through an isolated
+   pinned DSH profile and prove its Loader row/config appears and disappears;
 8. resynchronize its `link:` dependencies after a Harness checkout move;
 9. remain marked private while its DSH dependency closure is source-linked and
    omit accidental source/declaration maps from the package.
@@ -136,7 +243,8 @@ verification ladder pass against edge, and Registry status is persisted.
 
 Promotion additionally requires the Registry report to be `ready` and the
 verification report to be `passed`, with both reports bound to the same catalog
-and current project-contract digests. A `blocked` Registry report is successful
+and current project-contract digests, plus the exact ready Registry report
+used by that verification run. A `blocked` Registry report is successful
 edge evidence but must make promotion and release preflight fail.
 
 ## Future scaffold acceptance

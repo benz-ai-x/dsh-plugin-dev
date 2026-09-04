@@ -1,8 +1,8 @@
 {
   "capability": "tool",
-  "catalogSha256": "699a1b5ef07259d88d6f9aa4930d7a68dfd3646532f440855ba717c041efb1f2",
+  "catalogSha256": "0b63e9b3749215f15a86ebc41bb6c240c298a87f670d422ec7d5db87c1f910a4",
   "channel": "edge",
-  "checkedAt": "2026-09-02T01:50:14.778Z",
+  "checkedAt": "2026-09-04T21:11:00.578Z",
   "externalRequirements": [
     {
       "available": true,
@@ -96,154 +96,154 @@
       "version": "1.8.3"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-agent",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-agent@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-agent@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-agent@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-brand",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-brand@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-brand@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-brand@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-code-runtime",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-code-runtime@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-code-runtime@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-code-runtime@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-invariants",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-invariants@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-invariants@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-invariants@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-llm",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-llm@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-llm@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-llm@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-scope",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-scope@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-scope@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-scope@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-session",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-session@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-session@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-session@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-session-projection",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-session-projection@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-session-projection@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-session-projection@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-system-prompt",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-system-prompt@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-system-prompt@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-system-prompt@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-timeout",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-timeout@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-timeout@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-timeout@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-tools",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-tools@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-tools@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-tools@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-typert-protocol",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-typert-protocol@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-typert-protocol@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-typert-protocol@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-user-approval",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-user-approval@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-user-approval@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-user-approval@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-util-crypto",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-util-crypto@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-util-crypto@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-util-crypto@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
-      "available": true,
+      "available": false,
       "kind": "upstream",
       "name": "@deepseek-ai/dsh-util-values",
       "private": false,
+      "reason": "{\n  \"error\": {\n    \"code\": \"E404\",\n    \"summary\": \"No match found for version 0.1.3-alpha.1\",\n    \"detail\": \"The requested resource '@deepseek-ai/dsh-util-values@0.1.3-alpha.1' could not be found or you do not have permission to access it.\\n\\nNote that you can also install from a\\ntarball, folder, http url, or git url.\"\n  }\n}",
       "releaseFamily": "dsh",
-      "requirement": "@deepseek-ai/dsh-util-values@0.1.2-alpha.4",
-      "resolved": "0.1.2-alpha.4",
-      "version": "0.1.2-alpha.4"
+      "requirement": "@deepseek-ai/dsh-util-values@0.1.3-alpha.1",
+      "version": "0.1.3-alpha.1"
     },
     {
       "available": true,
@@ -256,7 +256,7 @@
       "version": "3.18.2"
     }
   ],
-  "registry": null,
+  "registry": "https://registry.npmjs.org",
   "schemaVersion": 1,
-  "status": "ready"
+  "status": "blocked"
 }

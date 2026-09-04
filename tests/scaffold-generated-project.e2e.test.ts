@@ -6,7 +6,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { test } from 'vitest'
 
-import { createProject } from '../skills/dsh-plugin-dev/scripts/create-project.mjs'
+import { createProject, ScaffoldError } from '../skills/dsh-plugin-dev/scripts/create-project.mjs'
 
 interface BaselineFileRecord {
   catalog: { path: string }
@@ -206,6 +206,7 @@ test('an unrelated empty directory becomes a fully verified DSH Tool project', {
     assert.match(dump, /id: repository-audit/)
     assert.match(dump, /name: '@example\/dsh-repository-audit'/)
     assert.match(dump, /maxInputLength: 2000/)
+    await bootAndStopProfile(harnessRoot, 'scaffold-e2e', profileEnvironment)
 
     run(
       'pnpm',
@@ -225,21 +226,19 @@ test('an unrelated empty directory becomes a fully verified DSH Tool project', {
   }
 })
 
-test('a Registry-delivered Tool survives clean install, pack, import, and profile lifecycle', { timeout: 600_000 }, async () => {
+test.skipIf(selectedBaseline.registry.status !== 'ready')('a Registry-delivered Tool survives clean install, pack, import, and profile lifecycle', { timeout: 600_000 }, async () => {
   const root = await mkdtemp(join(tmpdir(), 'dsh-scaffold-registry-e2e-'))
-  const registryChannel = repositoryLock.channels.edge!.registry.status === 'ready' ? 'edge' : 'stable'
-  const registryBaseline = repositoryLock.channels[registryChannel]!
-  assert.equal(registryBaseline.registry.status, 'ready')
   try {
     const result = await createProject({
       target: join(root, 'registry-audit'),
-      channel: registryChannel,
+      channel: baselineChannel,
       delivery: 'registry',
       name: '@example/dsh-registry-audit',
       pluginName: 'registry-audit',
       toolName: 'audit_registry',
       description: 'Inspect a Registry-delivered plugin input and return its canonical value.',
     })
+    assert.equal(result.channel, baselineChannel)
 
     run('pnpm', ['install', '--frozen-lockfile=false'], result.target)
     const verification = run('pnpm', ['verify'], result.target)
@@ -300,6 +299,21 @@ test('a Registry-delivered Tool survives clean install, pack, import, and profil
       profileEnvironment,
     )
     assert.doesNotMatch(afterRemove, /id: registry-audit/)
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
+})
+
+test.skipIf(selectedBaseline.registry.status === 'ready')('an unpublished channel refuses Registry generation without falling back to stable', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'dsh-registry-blocked-e2e-'))
+  try {
+    await assert.rejects(
+      createProject({
+        target: join(root, 'blocked-tool'), channel: baselineChannel,
+        delivery: 'registry', description: 'Unpublished candidate.',
+      }),
+      error => error instanceof ScaffoldError && error.code === 'DSH_SCAFFOLD_REGISTRY_UNREADY',
+    )
   } finally {
     await rm(root, { recursive: true, force: true })
   }

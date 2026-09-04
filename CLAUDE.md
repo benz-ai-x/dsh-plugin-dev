@@ -9,6 +9,10 @@ For any DeepSeek Harness plugin task, use `/dsh-plugin-dev`. The Claude Code
 entry under `.claude/skills/dsh-plugin-dev/` delegates to the canonical shared
 skill under `skills/dsh-plugin-dev/`.
 
+For upstream version/dependency impact analysis, use
+`/version-compatibility-analysis`, whose canonical body is
+`skills/version-compatibility-analysis/SKILL.md`.
+
 Run `pnpm context:check` before planning or editing. Run
 `pnpm context:check:strict` before claiming compatibility with the pinned DSH
 source. Stop and report a version-lock mismatch instead of silently developing

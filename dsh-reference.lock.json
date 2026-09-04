@@ -2,38 +2,38 @@
   "channels": {
     "edge": {
       "catalog": {
-        "packageCount": 266,
+        "packageCount": 272,
         "path": "baselines/edge/catalog.json",
         "productSkillCount": 2,
-        "sha256": "699a1b5ef07259d88d6f9aa4930d7a68dfd3646532f440855ba717c041efb1f2",
+        "sha256": "0b63e9b3749215f15a86ebc41bb6c240c298a87f670d422ec7d5db87c1f910a4",
         "skillCount": 17
       },
       "localResolution": {
         "environmentVariable": "DSH_HARNESS_BASELINE_ROOT",
-        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-alpha.4"
+        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.3-alpha.1"
       },
       "registry": {
-        "checkedAt": "2026-09-02T01:50:14.778Z",
+        "checkedAt": "2026-09-04T21:11:00.578Z",
         "path": "baselines/edge/registry.json",
-        "sha256": "dfe5b5461d5181109d1d33622fdaab0a1dac9c38419520ac3b468615df0c4ce7",
-        "status": "ready"
+        "sha256": "8bca05abe2133d56c35ff822d6cb7cef59081668a41363b89113f452b1c70903",
+        "status": "blocked"
       },
       "upstream": {
-        "commit": "4e84901e6471b79ec0338099867ebb4606d12bb5",
-        "docsDigest": "b0e83ae78c5bf2523dd860382e72aa331cd65ab64e7d81a50a70251a10e0752e",
+        "commit": "d347e703908d0406b7a7ef80e3a0e594d86b2215",
+        "docsDigest": "616762c2dec9d67c159fb14a11569d0ab955dad1397640232c6407aa440c072c",
         "node": "^22.19.0 || >=24.0.0",
         "packageManager": "pnpm@11.7.0",
         "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
-        "tag": "dsh-v0.1.2-alpha.4",
-        "version": "0.1.2-alpha.4"
+        "tag": "dsh-v0.1.3-alpha.1",
+        "version": "0.1.3-alpha.1"
       },
       "verification": {
-        "checkedAt": "2026-09-02T01:54:01.933Z",
+        "checkedAt": "2026-09-04T21:32:44.763Z",
         "path": "baselines/edge/verification.json",
-        "sha256": "2e4095e79d069474d8d65bade06f5a9c503fb2db3ced1ace754a03bb76235510",
+        "sha256": "afe2d828188dd33481dae821153d92a5f4db1e48a9f66feca9250c7eb82c11ca",
         "status": "passed"
       },
-      "verifiedOn": "2026-09-02"
+      "verifiedOn": "2026-09-04"
     },
     "stable": {
       "catalog": {
@@ -48,9 +48,9 @@
         "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-alpha.4"
       },
       "registry": {
-        "checkedAt": "2026-09-02T01:50:14.778Z",
+        "checkedAt": "2026-09-04T21:15:32.307Z",
         "path": "baselines/stable/registry.json",
-        "sha256": "ad624f6830238aa24d162010804a842627d00a7bcab00971253558763fa5dad0",
+        "sha256": "76e227345ca3a01da70383189ff90cfb7eb421fe46a480e80afbeff6e269d3e7",
         "status": "ready"
       },
       "upstream": {
@@ -63,9 +63,9 @@
         "version": "0.1.2-alpha.4"
       },
       "verification": {
-        "checkedAt": "2026-09-02T01:54:01.933Z",
+        "checkedAt": "2026-09-04T21:32:23.502Z",
         "path": "baselines/stable/verification.json",
-        "sha256": "9b56f50c494e3872def3440d60412df68335ca56059ffb36c4d03622c8cbbfad",
+        "sha256": "c7f395c7ce72efc8f1ac8fcf4aeb3b4a04be42598354047a6d6caf96498cb341",
         "status": "passed"
       },
       "verifiedOn": "2026-09-02"

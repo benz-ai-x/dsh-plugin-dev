@@ -5,6 +5,11 @@ plugin, testing Loader/HMR behavior, or preparing publication.
 
 ## Package baseline
 
+Use the selected channel throughout source, ordinary dependency and profile
+tests. Do not boot another channel's Registry artifact with this channel's
+CLI and call it matching-version acceptance. For alpha.1 native/transport
+changes, consult [version-specific contracts](version-contracts.md).
+
 Use ESM and ship built JavaScript plus declarations. A typical Host-only package
 has this shape:
 

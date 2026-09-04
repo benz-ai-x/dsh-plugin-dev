@@ -165,23 +165,19 @@ test('creates a deterministic source-linked Tool project without overwriting it'
   })
 })
 
-test('creates a publishable Registry-delivered Tool project from ready evidence', async () => {
+test.skipIf(selectedBaseline.registry.status !== 'ready')('creates a publishable Registry-delivered Tool project from ready evidence', async () => {
   await withTemporaryDirectory('dsh-generator-registry-', async root => {
-    const edge = repositoryLock.channels.edge!
-    assert.equal(edge.registry.status, 'ready')
-    const edgeCatalog = JSON.parse(
-      await readFile(join(repositoryRoot, edge.catalog.path), 'utf8'),
-    ) as CatalogFile
     const target = join(root, 'registry-audit')
     const result = await createProject({
       target,
-      channel: 'edge',
+      channel: baselineChannel,
       delivery: 'registry',
       name: '@example/dsh-registry-audit',
       description: 'Verify a Registry-delivered plugin project.',
     })
 
     assert.equal(result.delivery, 'registry')
+    assert.equal(result.channel, baselineChannel)
     assert.equal(result.harnessRoot, undefined)
     const manifest = JSON.parse(
       await readFile(join(target, 'package.json'), 'utf8'),
@@ -201,7 +197,7 @@ test('creates a publishable Registry-delivered Tool project from ready evidence'
       prompt: '@deepseek-ai/dsh-system-prompt',
       tools: '@deepseek-ai/dsh-tools',
     })) {
-      const expected = edgeCatalog.packages.find(entry => entry.name === packageName)!.version
+      const expected = selectedCatalog.packages.find(entry => entry.name === packageName)!.version
       assert.equal(manifest.devDependencies[packageName], expected)
     }
     assert.doesNotMatch(JSON.stringify(manifest), /(?:link:|workspace:)/)
@@ -221,6 +217,17 @@ test('creates a publishable Registry-delivered Tool project from ready evidence'
     )
     assert.equal(verified.status, 0, verified.stderr)
     assert.match(verified.stdout, /validated Registry evidence/)
+  })
+})
+
+test.skipIf(selectedBaseline.registry.status === 'ready')('refuses an unready channel without writing a Registry project', async () => {
+  await withTemporaryDirectory('dsh-generator-unready-', async root => {
+    const target = join(root, 'unready')
+    await assert.rejects(
+      createProject({ target, channel: baselineChannel, delivery: 'registry', description: 'Unpublished candidate.' }),
+      hasCode('DSH_SCAFFOLD_REGISTRY_UNREADY'),
+    )
+    await assert.rejects(readFile(join(target, 'package.json')), { code: 'ENOENT' })
   })
 })
 

@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { test } from 'vitest'
 
 import {
@@ -11,10 +11,32 @@ import {
   computeCapabilityClosure,
   diffCatalogs,
   jsonText,
+  projectContractDigest,
   scanHarness,
   selectChannel,
   sha256,
+  validateRegistryVerification,
 } from '../scripts/baseline.mjs'
+
+test('publication requires verification against the same ready Registry evidence', () => {
+  const registry = { status: 'ready', sha256: sha256('ready Registry report') }
+  const verified = { registryStatus: 'ready', registrySha256: registry.sha256 }
+  assert.doesNotThrow(() => validateRegistryVerification(verified, registry))
+  for (const evidence of [
+    {}, // Historical reports did not bind the Registry leg at all.
+    { ...verified, registryStatus: 'blocked' }, // Source-only verification.
+    { ...verified, registrySha256: sha256('previous report') }, // Rechecked later.
+  ]) {
+    assert.throws(
+      () => validateRegistryVerification(evidence, registry),
+      error => error instanceof BaselineError && error.code === 'DSH_BASELINE_REGISTRY_UNVERIFIED',
+    )
+  }
+  assert.throws(
+    () => validateRegistryVerification(verified, { ...registry, status: 'blocked' }),
+    error => error instanceof BaselineError && error.code === 'DSH_BASELINE_REGISTRY_UNVERIFIED',
+  )
+})
 
 async function withTemporaryDirectory<T>(
   prefix: string,
@@ -129,6 +151,77 @@ test('scans a clean tagged Harness into a deterministic package and Skill catalo
       () => scanHarness(root),
       error => error instanceof BaselineError && error.code === 'DSH_BASELINE_SOURCE_DIRTY',
     )
+  })
+})
+
+test('CLI preflight rejects source-only evidence and promotion preserves the Registry binding', async () => {
+  await withTemporaryDirectory('dsh-evidence-cli-', async root => {
+    const harness = join(root, 'harness')
+    const project = join(root, 'project')
+    await mkdir(harness)
+    await createHarnessFixture(harness)
+    const catalog = scanHarness(harness)
+    const catalogSha256 = sha256(jsonText(catalog))
+    const paths = {
+      catalog: 'baselines/edge/catalog.json',
+      registry: 'baselines/edge/registry.json',
+      verification: 'baselines/edge/verification.json',
+    }
+    await mkdir(join(project, 'scripts'), { recursive: true })
+    runGit(project, ['init', '--quiet'])
+    const cliPath = join(project, 'scripts/baseline.mjs')
+    await copyFile(new URL('../scripts/baseline.mjs', import.meta.url), cliPath)
+    const cli = await realpath(cliPath)
+    await mkdir(join(project, 'baselines/edge'), { recursive: true })
+    await writeFile(join(project, paths.catalog), jsonText(catalog))
+    for (const skill of catalog.skills.filter(entry => entry.role === 'product')) {
+      for (const file of skill.files) {
+        const destination = join(project, 'baselines/edge/skills', skill.name, file.path)
+        await mkdir(dirname(destination), { recursive: true })
+        await copyFile(join(harness, dirname(skill.path), file.path), destination)
+      }
+    }
+    // An isolated ready fixture: no live Registry calls or real repository writes.
+    const registry = { schemaVersion: 1, channel: 'edge', status: 'ready', catalogSha256 }
+    await writeFile(join(project, paths.registry), jsonText(registry))
+    const registrySha256 = sha256(jsonText(registry))
+    const record = {
+      upstream: catalog.upstream,
+      catalog: { path: paths.catalog, sha256: catalogSha256 },
+      registry: { path: paths.registry, sha256: registrySha256, status: 'ready' },
+      verification: { path: paths.verification, sha256: '', status: 'passed' },
+      localResolution: { environmentVariable: 'DSH_TEST_EVIDENCE_ROOT', fallbackRelativePath: '../harness' },
+    }
+    const lock = { schemaVersion: 2, defaultChannel: 'stable', channels: { edge: record, stable: record } }
+    const run = (...args: string[]) => spawnSync(process.execPath, [cli, ...args], {
+      cwd: project,
+      encoding: 'utf8',
+    })
+    for (const [binding, passes] of [
+      [{}, false],
+      [{ registryStatus: 'blocked', registrySha256 }, false],
+      [{ registryStatus: 'ready', registrySha256: sha256('older') }, false],
+      [{ registryStatus: 'ready', registrySha256 }, true],
+    ] as const) {
+      const verification = {
+        schemaVersion: 2, channel: 'edge', status: 'passed', catalogSha256,
+        projectDigest: projectContractDigest(project), ...binding,
+      }
+      await writeFile(join(project, paths.verification), jsonText(verification))
+      record.verification.sha256 = sha256(jsonText(verification))
+      await writeJson(join(project, 'dsh-reference.lock.json'), lock)
+      const result = run('preflight', '--channel', 'edge')
+      assert.equal(result.status, passes ? 0 : 1, result.stderr)
+      if (!passes) assert.match(result.stderr, /DSH_BASELINE_REGISTRY_UNVERIFIED/)
+    }
+    const promoted = run('promote')
+    assert.equal(promoted.status, 0, promoted.stderr)
+    const preflight = run('preflight', '--channel', 'stable')
+    assert.equal(preflight.status, 0, preflight.stderr)
+    const stableRegistry = await readFile(join(project, 'baselines/stable/registry.json'), 'utf8')
+    const stableVerification = JSON.parse(await readFile(join(project, 'baselines/stable/verification.json'), 'utf8'))
+    assert.equal(stableVerification.registrySha256, sha256(stableRegistry))
+    assert.equal(stableVerification.registryStatus, 'ready')
   })
 })
 

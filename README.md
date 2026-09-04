@@ -1,6 +1,6 @@
 # DSH Plugin Dev
 
-**DeepSeek Harness (DSH · Cordis) plugin development for Codex & Claude Code — one reusable Skill plus a deterministic project generator, with audited baselines and real Loader/profile verification.**
+**DeepSeek Harness (DSH · Cordis) plugin development for Codex & Claude Code — development and compatibility-analysis Skills plus a deterministic generator, with audited baselines and real Loader/profile verification.**
 
 [中文使用手册](#中文使用手册) · [English Quick Guide](#english-quick-guide)
 
@@ -25,6 +25,7 @@
 ### 核心特性
 
 - **双 Agent 一份 Skill**：Codex（`$HOME/.agents/skills`）与 Claude Code（`$HOME/.claude/skills`）共享同一份 canonical Skill、参考资料、生成器和模板。
+- **项目级兼容性分析**：配套 `version-compatibility-analysis` 每次动态读取上游版本、workspace、依赖与源码契约；分析新版无需先修改代码或版本锁。
 - **审计基线双通道**：`dsh-reference.lock.json` 锁定官方 tag/commit/docs 摘要，`stable`/`edge` 内容寻址通道加上完整验证与 Registry 闭包证据，升级走可审计的 runbook。
 - **双交付模式**：`source` 模式链接本地干净 Harness worktree；`registry` 模式在闭包 `ready` 时生成普通精确版本依赖与可发布 manifest。
 - **真实验证阶梯**：生成项目通过 strict 源校验、类型检查、单元/HMR 测试、真实 Loader 组合、profile add/dump/boot/remove 与打包产物检查。
@@ -39,7 +40,7 @@
 如果 Harness 不在默认相对位置，请先设置：
 
 ```sh
-export DSH_HARNESS_ROOT=/path/to/deepseek-harness
+export DSH_HARNESS_BASELINE_ROOT=/path/to/pinned-deepseek-harness
 ```
 
 ### 安装
@@ -63,6 +64,36 @@ pnpm install:skill
 pnpm install:codex
 pnpm install:claude
 ```
+
+此安装器仍只安装开发 Skill。版本兼容性 Skill 是本仓库的项目级功能，通过 `.agents/skills/`、`.claude/skills/` 发现，并随 Codex Plugin 分发；不需要额外安装到用户目录。
+
+### 分析新版 Harness（无需修改代码）
+
+在本项目中向 Codex 发出：
+
+```text
+使用 $version-compatibility-analysis 分析本项目与 /path/to/deepseek-harness 的版本依赖兼容性，列出必要修复与验证阻塞。
+```
+
+Claude Code 使用 `/version-compatibility-analysis`。也可先运行只读证据采集：
+
+```sh
+pnpm compatibility:analyze --harness-root /path/to/deepseek-harness
+```
+
+基线自动取 `dsh-reference.lock.json` 的默认通道 commit，候选默认取指定仓库 HEAD；可加 `--target TAG_OR_COMMIT`、`--channel CHANNEL` 或 `--capability NAME`。未知锁格式可由 Agent 读取后传 `--base REF --root-package NAME`（根节点可重复），不要求修改助手代码。
+
+“自升级”指每轮重新发现当前版本的包目录、依赖、API 和文档证据，不是自动改写 Skill 或升级已审计基线。脚本按各提交 workspace 定义重建声明依赖图，包版本/包名/目录不写死；复杂声明由 Skill 补充只读调查。脚本只输出 JSON，不联网、不安装、不改锁；完整兼容性结论仍需源码、运行、迁移及发布证据，`exit 0` 只代表证据采集完成。
+
+当前版本分工：stable 保持 `0.1.2-alpha.4`；edge 为
+`0.1.3-alpha.1`，其公开 Registry Tool 闭包仍缺 15 个精确版本包。
+新版的 Session handle、format v2、流式结算与 Team 消息差异见
+[按版本选择的契约](skills/dsh-plugin-dev/references/version-contracts.md)。
+可显式选择 `--channel edge --delivery source`；Registry 不就绪时会拒绝
+`--delivery registry`，不会回退到 stable 包。Registry 查询更新后必须重跑
+同通道验证，旧的源码验证不能用于晋升。详见 [验收记录](docs/agent/ACCEPTANCE.md)。
+
+分析候选路径采用 `--harness-root` → `DSH_HARNESS_ROOT` → 锁中环境变量 → fallback；仓库 strict 校验继续用 `DSH_HARNESS_BASELINE_ROOT` 指向已审计版本，生成项目使用自己的 `DSH_HARNESS_ROOT`。分析不依赖旧 worktree 或新版构建产物，但需要 Git 中存在比较的两个提交；缺失基线、解析限制和未查询的 Registry 状态会明确报告。
 
 ### 在空目录创建插件
 
@@ -134,6 +165,7 @@ digests.
 ### Highlights
 
 - **One Skill, two agents**: Codex (`$HOME/.agents/skills`) and Claude Code (`$HOME/.claude/skills`) read the same canonical Skill, references, generator, and templates.
+- **Project compatibility companion**: discover versions, workspace packages, dependencies and changed contracts afresh; analyzing a new Harness revision requires no version-specific code or lock edits.
 - **Audited baseline channels**: `dsh-reference.lock.json` pins the official tag, commit, and docs digest; content-addressed `stable`/`edge` channels carry full verification and Registry-closure evidence through an auditable upgrade runbook.
 - **Two delivery modes**: `source` links a clean local Harness worktree; `registry` emits exact ordinary dependency versions and a publishable manifest once the closure is `ready`.
 - **A real verification ladder**: strict source checks, typecheck, unit/HMR tests, real Loader composition, profile add/dump/boot/remove, and packed-artifact inspection.
@@ -148,7 +180,7 @@ digests.
 If Harness is not at the default relative location, set:
 
 ```sh
-export DSH_HARNESS_ROOT=/path/to/deepseek-harness
+export DSH_HARNESS_BASELINE_ROOT=/path/to/pinned-deepseek-harness
 ```
 
 ### Install
@@ -172,6 +204,42 @@ Both agents read the same Skill, references, generator, and templates. The insta
 pnpm install:codex
 pnpm install:claude
 ```
+
+The personal installer above installs only the development Skill. The
+`version-compatibility-analysis` companion is discovered within this repository
+by Codex and Claude Code and is also included in the packaged Codex Plugin.
+
+### Analyze a newer Harness
+
+Invoke `$version-compatibility-analysis` (Codex) or
+`/version-compatibility-analysis` (Claude Code) in this project, or collect
+read-only evidence:
+
+```sh
+pnpm compatibility:analyze --harness-root /path/to/deepseek-harness
+```
+
+The base comes from the current project lock; the candidate defaults to the
+specified repository's HEAD. Use `--target REF` to select another revision.
+Workspace definitions and dependency roots are read from data, not a release
+allowlist. Unknown lock formats can use explicit `--base REF` and repeatable
+`--root-package NAME`; unsupported declarations remain visible evidence gaps
+for agent-led inspection. No checkout, fetch, install, lock update or Registry
+query is performed. Exit zero means evidence collected, not compatibility.
+
+Self-upgrading means refreshing analysis knowledge each time, not rewriting the
+Skill or promoting stable. The candidate path precedence is `--harness-root`,
+`DSH_HARNESS_ROOT`, the lock's environment variable, then its fallback. Pinned
+repository checks still use `DSH_HARNESS_BASELINE_ROOT`. Both commits must exist
+in the candidate Git repository; an old baseline worktree is not required.
+
+Stable remains `0.1.2-alpha.4`; edge selects `0.1.3-alpha.1`, whose public
+Tool Registry closure is currently missing 15 exact first-party versions.
+Use `--channel edge --delivery source` for source-linked candidate work and
+read the [version-specific contracts](skills/dsh-plugin-dev/references/version-contracts.md).
+Registry generation refuses an unready channel instead of falling back to
+stable packages. Rechecking Registry requires a new same-channel verification
+before promotion; source-only evidence cannot authorize publication.
 
 ### Create a plugin from an empty directory
 

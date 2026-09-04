@@ -4,6 +4,11 @@ Read this reference for teammate, roster, mailbox, shared-task, Team Remote/UI,
 or other Agent Team extension work. Also read the tool, service, Client, and
 packaging references required by the selected surface.
 
+Select the exact locked revision via
+[version-specific contracts](version-contracts.md). The message/follow-up split
+below describes alpha.4; alpha.1 has one steering `send_message` and no Team
+`followup_task`. Its waits never wake inactive teammates.
+
 ## Audited upstream state
 
 At the pinned DSH revision, Agent Teams is an experimental, private package

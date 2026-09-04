@@ -1,7 +1,7 @@
 {
   "name": "dsh-plugin-dev",
   "version": "0.3.0",
-  "description": "Turn business requirements into verified DeepSeek Harness plugin projects",
+  "description": "Develop DeepSeek Harness plugins and analyze compatibility with evolving upstream versions",
   "author": {
     "name": "dsh-plugin-dev contributors"
   },
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "DSH Plugin Dev",
     "shortDescription": "Scaffold verified DeepSeek Harness plugins.",
-    "longDescription": "Teach Codex the pinned DeepSeek Harness plugin contracts, generate a safe project baseline from a business requirement, and drive it through lifecycle and Loader verification.",
+    "longDescription": "Teach Codex the pinned DeepSeek Harness plugin contracts, generate and verify project baselines, and use the companion compatibility Skill to analyze new upstream versions without promoting the audited lock.",
     "developerName": "dsh-plugin-dev contributors",
     "category": "Developer Tools",
     "capabilities": [

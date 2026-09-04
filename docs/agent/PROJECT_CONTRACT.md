@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository produces `dsh-plugin-dev`: one reusable Agent Skill for Codex and Claude Code, a skills-only Codex Plugin, and deterministic helpers that turn business requirements into DeepSeek Harness plugin projects. A developer installs the skill once, opens either code agent in an empty or existing project directory, describes the desired capability, and receives a DSH-aligned implementation scaffold plus verification.
+This repository produces `dsh-plugin-dev`: a reusable development Skill, a project-level version-compatibility analysis companion, a skills-only Codex Plugin, and deterministic helpers for DeepSeek Harness plugin projects. A developer installs the development skill once, opens either code agent in an empty or existing project directory, describes the desired capability, and receives a DSH-aligned implementation scaffold plus verification. Maintainers use the companion to assess upstream evolution without first changing the audited baseline.
 
 This repository is development tooling for DSH plugins. It is not itself a DSH runtime plugin and does not own a product-specific Agent Team capability.
 
@@ -12,6 +12,7 @@ This repository is development tooling for DSH plugins. It is not itself a DSH r
 |---|---|
 | Always-active repository rules | `docs/agent/PROJECT_CONTRACT.md` |
 | DSH development and generation workflow | `skills/dsh-plugin-dev/SKILL.md` |
+| Version-adaptive compatibility analysis | `skills/version-compatibility-analysis/SKILL.md` and its `src/` |
 | Specialized DSH guidance | `skills/dsh-plugin-dev/references/` |
 | Deterministic generation source and assets | `skills/dsh-plugin-dev/src/` and `assets/` |
 | Current work and progress | `TODO.md` |
@@ -30,9 +31,26 @@ Discovery adapters and plugin metadata point at these sources but do not duplica
 5. Run `pnpm context:check:strict` before implementing or claiming behavior tied to the audited Harness snapshot.
 6. Work from the first relevant unfinished TODO and update it as observable work advances.
 
+An unavailable or mismatched baseline blocks pinned-runtime implementation and
+compatibility claims, not the companion's read-only comparison of committed
+objects. Report the gate failure before continuing that diagnostic scope.
+Version-independent analysis tooling can be maintained and fixture-tested
+separately; never label those checks as Harness runtime verification.
+
 ## Product contract
 
 - One default user-level installation makes the canonical skill discoverable from an unrelated empty directory in both Codex (`$HOME/.agents/skills`) and Claude Code (`$HOME/.claude/skills`); repository-local discovery is not sufficient acceptance.
+- The compatibility companion is project-level, with thin Codex/Claude Code
+  adapters and inclusion in the packaged Plugin. The existing user installer
+  installs only the development skill; it does not implicitly add the companion
+  globally. Both canonical bodies are maintained in `skills/`.
+- Compatibility analysis refreshes its knowledge from the selected lock,
+  candidate Git objects, workspace definitions, dependency declarations,
+  source and tests on every invocation. New upstream versions do not require
+  editing a version list or promoting a baseline before analysis. Unknown
+  formats receive explicit evidence gaps and an Agent-led read-only fallback.
+  Analysis never self-modifies the skill, installs/executes upstream skill
+  instructions, or automatically writes locks and verification evidence.
 - The skill begins from the requested user-visible or model-visible outcome, classifies the required DSH plugin shape, and loads only the applicable guidance.
 - A deterministic generator may create a safe baseline, but the agent must adapt it to the stated business behavior and tests before claiming the request is complete.
 - Generators validate names, resolve the selected audited source or Registry delivery contract, refuse collisions, and never overwrite an existing project file implicitly.
@@ -69,7 +87,11 @@ and real profile add/dump/boot/remove verification for the exact artifact.
 - Every configurable field has a TypeScript contract and runtime Schemastery schema. Defaults belong in the schema; unsupported deployment choices remain required.
 - Every registration, listener, timer, worker, request, and external resource has lifecycle-owned cleanup. Disposal stops admission and awaits quiescence.
 - Durable Session events are facts. Projections are pure, synchronous, whole JSON values derived from those facts; UI state is not a second authority.
-- Unknown persisted Session events are accepted only when their stored envelope explicitly says `ignorable: true`; absence is required-on-read, and the surface event set remains closed.
+- Unknown persisted Session events are not portable by declaration merging.
+  Current-format recovery requires an explicit `ignorable: true` envelope;
+  historical migration may refuse even that envelope. Apply the selected
+  revision's rules in `references/version-contracts.md`; the surface event set
+  remains closed.
 - Tools declare parameter and canonical output schemas, preserve call identity, honor `AbortSignal`, and separate domain outcomes from infrastructure errors.
 - Browser extensions use `exports["./client"]`, `dsh.client`, generated Remote contracts where needed, and Slots. React components do not receive Cordis Context or import another feature's runtime component.
 - A product-visible change requires a real Loader/profile test in addition to unit and HMR tests. Publication requires a packed-artifact ordinary-Node smoke test.
@@ -78,7 +100,7 @@ and real profile add/dump/boot/remove verification for the exact artifact.
 
 - Prefer one verified generator vertical slice over speculative templates for every plugin type.
 - Keep reusable DSH facts in the canonical skill references; keep generator mechanics in TypeScript source and output templates.
-- Treat `src/**/*.mts`, `skills/dsh-plugin-dev/src/**/*.mts`, and TypeScript
+- Treat `src/**/*.mts`, `skills/*/src/**/*.mts`, and TypeScript
   tests as authoritative implementation. The public `.mjs`/`.d.mts` entries
   are generated, dependency-free distribution artifacts; never edit them by
   hand. Run `pnpm build`, and require `pnpm build:check` plus the

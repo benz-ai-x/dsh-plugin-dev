@@ -2,7 +2,7 @@
   "capability": "tool",
   "catalogSha256": "699a1b5ef07259d88d6f9aa4930d7a68dfd3646532f440855ba717c041efb1f2",
   "channel": "stable",
-  "checkedAt": "2026-09-02T01:50:14.778Z",
+  "checkedAt": "2026-09-04T21:15:32.307Z",
   "externalRequirements": [
     {
       "available": true,
@@ -256,7 +256,7 @@
       "version": "3.18.2"
     }
   ],
-  "registry": null,
+  "registry": "https://registry.npmjs.org",
   "schemaVersion": 1,
   "status": "ready"
 }

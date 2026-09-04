@@ -287,6 +287,8 @@ const requiredFiles = [
   claudeAdapterPath,
   'skills/dsh-plugin-dev/agents/openai.yaml',
   'skills/dsh-plugin-dev/references/scaffolding.md',
+  'skills/dsh-plugin-dev/references/version-contracts.md',
+  'docs/decisions/0010-alpha-1-edge-evidence.md',
   'skills/dsh-plugin-dev/scripts/create-project.mjs',
   'scripts/install-user-skill.mjs',
   'scripts/baseline.mjs',
@@ -311,6 +313,19 @@ const requiredFiles = [
   'tsconfig.json',
   'tsconfig.scripts.json',
   'skills/dsh-plugin-dev/tsconfig.json',
+  'skills/version-compatibility-analysis/SKILL.md',
+  '.agents/skills/version-compatibility-analysis/SKILL.md',
+  '.claude/skills/version-compatibility-analysis/SKILL.md',
+  'skills/version-compatibility-analysis/agents/openai.yaml',
+  'skills/version-compatibility-analysis/references/node-projects.md',
+  'skills/version-compatibility-analysis/references/deepseek-harness.md',
+  'skills/version-compatibility-analysis/tsconfig.json',
+  'docs/decisions/0009-project-compatibility-skill.md',
+  ...['analyze-project', 'compare-revisions', 'dependencies'].flatMap(name => [
+    `skills/version-compatibility-analysis/src/${name}.mts`,
+    `skills/version-compatibility-analysis/scripts/${name}.mjs`,
+    `skills/version-compatibility-analysis/scripts/${name}.d.mts`,
+  ]),
   'vitest.config.ts',
   ...requiredTemplates.map(path => `skills/dsh-plugin-dev/assets/tool-project/${path}`),
 ]
@@ -319,7 +334,7 @@ for (const path of requiredFiles) {
   check(existsSync(projectPath(path)), `${path} exists`)
 }
 
-const expectedToolingArtifacts: ReadonlyMap<string, readonly [string, string]> = new Map([
+const expectedToolingArtifacts: ReadonlyMap<string, readonly [string, string]> = new Map<string, readonly [string, string]>([
   ['src/scripts/baseline.mts', ['scripts/baseline.mjs', 'scripts/baseline.d.mts']],
   ['src/scripts/install-user-skill.mts', ['scripts/install-user-skill.mjs', 'scripts/install-user-skill.d.mts']],
   ['src/scripts/verify-context.mts', ['scripts/verify-context.mjs', 'scripts/verify-context.d.mts']],
@@ -327,6 +342,12 @@ const expectedToolingArtifacts: ReadonlyMap<string, readonly [string, string]> =
     'skills/dsh-plugin-dev/scripts/create-project.mjs',
     'skills/dsh-plugin-dev/scripts/create-project.d.mts',
   ]],
+  ...['analyze-project', 'compare-revisions', 'dependencies'].map(name => [
+    `skills/version-compatibility-analysis/src/${name}.mts`, [
+      `skills/version-compatibility-analysis/scripts/${name}.mjs`,
+      `skills/version-compatibility-analysis/scripts/${name}.d.mts`,
+    ],
+  ] as const),
 ] as const)
 const toolingArtifacts = parseJson<ToolingArtifactManifest>('tooling-artifacts.json')
 if (toolingArtifacts !== undefined) {
@@ -449,6 +470,23 @@ check(skillUi.includes('display_name: "DSH Plugin Dev"'), 'Skill UI has the expe
 check(skillUi.includes('$dsh-plugin-dev'), 'Skill UI default prompt explicitly invokes the skill')
 check(skillUi.includes('allow_implicit_invocation: true'), 'Skill allows implicit invocation')
 
+const companionPath = 'skills/version-compatibility-analysis/SKILL.md'
+const companion = readProjectFile(companionPath)
+const companionFrontmatter = parseFrontmatter(companionPath, companion)
+check(companionFrontmatter.get('name') === 'version-compatibility-analysis', 'companion skill has its canonical name')
+for (const agent of ['.agents', '.claude']) {
+  const path = `${agent}/skills/version-compatibility-analysis/SKILL.md`
+  const content = readProjectFile(path)
+  const metadata = parseFrontmatter(path, content)
+  for (const key of ['name', 'description']) {
+    check(metadata.get(key) === companionFrontmatter.get(key), `${path} ${key} matches the canonical companion`)
+  }
+  check(content.length < 2_000 && content.includes('../../../skills/version-compatibility-analysis/SKILL.md'), `${path} remains a thin companion adapter`)
+}
+const companionUi = readProjectFile('skills/version-compatibility-analysis/agents/openai.yaml')
+check(companionUi.includes('$version-compatibility-analysis'), 'companion UI prompt explicitly invokes the skill')
+check(!companionUi.includes('allow_implicit_invocation: false'), 'companion permits implicit invocation')
+
 const manifest = parseJson<PackageJson>('package.json')
 const pluginManifest = parseJson<PluginManifest>('.codex-plugin/plugin.json')
 if (manifest) {
@@ -482,6 +520,9 @@ if (manifest) {
   check(manifest.scripts?.['release:preflight'] === 'node scripts/baseline.mjs preflight --channel stable', 'release preflight command is exposed')
   check(manifest.files?.includes('.codex-plugin/plugin.json'), 'package includes the Codex Plugin manifest')
   check(manifest.files?.includes('skills/dsh-plugin-dev/**'), 'package includes the canonical Skill')
+  check(manifest.files?.includes('skills/version-compatibility-analysis/**'), 'package includes the project compatibility companion')
+  check(manifest.scripts?.['compatibility:analyze'] === 'node skills/version-compatibility-analysis/scripts/analyze-project.mjs', 'read-only compatibility analysis is exposed')
+  check(manifest.scripts?.['test:compatibility'] === 'vitest run tests/compatibility.unit.test.ts', 'independent compatibility regression tests are exposed')
   check(manifest.files?.includes('src/**'), 'package includes authoritative TypeScript sources')
   check(manifest.files?.includes('tooling-artifacts.json'), 'package includes source-to-runtime artifact evidence')
   check(manifest.files?.includes('pnpm-workspace.yaml'), 'package includes the pnpm build-supply-chain policy')

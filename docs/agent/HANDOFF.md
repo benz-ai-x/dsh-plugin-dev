@@ -1,6 +1,6 @@
 # dsh-plugin-dev Maintainer Handoff
 
-Updated: 2026-09-02 (Asia/Shanghai)
+Updated: 2026-09-05 (Asia/Shanghai)
 
 ## Outcome
 
@@ -14,6 +14,12 @@ The audited default baseline is DeepSeek Harness `0.1.2-alpha.4`, official tag
 `dsh-v0.1.2-alpha.4`, commit
 `4e84901e6471b79ec0338099867ebb4606d12bb5`. The baseline was scanned from a
 clean detached official-tag worktree built with `pnpm@11.7.0`.
+
+The current source-only edge is `0.1.3-alpha.1` at
+`d347e703908d0406b7a7ef80e3a0e594d86b2215`. Its Tool Registry closure remains
+blocked (15 unavailable first-party versions); do not promote it. Both local
+tagged worktrees have been rebuilt, and the broken old alpha.4 directory was
+preserved outside the fallback path. See current [acceptance](ACCEPTANCE.md).
 
 ## Read first
 
@@ -30,8 +36,10 @@ source baseline.
 ## TypeScript-first tooling
 
 Authoritative implementation lives in `src/scripts/*.mts` and
-`skills/dsh-plugin-dev/src/create-project.mts`; repository tests are `.ts` and
-run through Vitest. `pnpm build` compiles the four public commands into their
+`skills/dsh-plugin-dev/src/create-project.mts`, plus the three version-adaptive
+companion modules under `skills/version-compatibility-analysis/src/`;
+repository tests are `.ts` and run through Vitest. `pnpm build` compiles seven
+tooling entries into their
 stable `.mjs` paths plus `.d.mts` declarations. The installed Skill therefore
 does not need `tsx`, TypeScript, or Vitest at runtime.
 
@@ -61,6 +69,13 @@ evidence; they are not installed as project-development Skills. The canonical
 development workflow remains this repository's `skills/dsh-plugin-dev/`.
 
 ## Alpha.4 changes reviewed
+
+This and the older sections below are historical reviews, not alpha.1 API
+guidance. For the current delta use
+[version-specific contracts](../../skills/dsh-plugin-dev/references/version-contracts.md):
+persistence handles and async Agent creation, immutable format-v2 migration,
+settlement/transient streams, Team steering, general-file projection and
+process-level proxy transport.
 
 The stable-to-edge review (2371 files, 297 commits) renamed subagent
 continuation messaging — `followup()` is now `sendMessage()` with narrowed
@@ -181,7 +196,8 @@ Decision: [`0005-registry-delivery.md`](../decisions/0005-registry-delivery.md).
 
 ## Verification evidence
 
-The alpha.4 ladder (TypeScript-first tooling carried forward) passes with:
+Historical alpha.4 evidence from 2026-09-02 (superseded for the current checkout
+by [ACCEPTANCE.md](ACCEPTANCE.md) and the refreshed channel reports):
 
 - compiled artifact freshness and strict TypeScript typecheck;
 - strict context: 272 checks, 0 warnings;
@@ -221,6 +237,8 @@ pnpm release:preflight
 package, Skill, API, template, test, and delivery changes before regenerating
 those reports. Promotion requires both `registry=ready` and
 `verification=passed` for the same catalog/project digests.
+Schema-v2 verification also binds the exact Registry digest/status that was
+tested. A later ready lookup cannot upgrade a previous source-only pass.
 
 Existing generated projects never follow a new baseline implicitly. Migrate
 their channel, delivery mode, lock/evidence, and dependency specifications in
