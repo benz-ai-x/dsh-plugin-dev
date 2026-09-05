@@ -4,6 +4,12 @@ Read this reference when a DSH plugin crosses filesystem, subprocess/job,
 sandbox/approval, Session persistence, or subagent boundaries. Load only the
 upstream subsystem documents for the capabilities actually used.
 
+Resolve [version-specific contracts](version-contracts.md) first. The Session
+storage description below applies to alpha.4 and rc.1. For rc.1 derived
+storage, also read its projection-cache recovery section. The historical
+alpha.1 handle, generation, extension and transport/file deltas apply only to
+a project explicitly locked to that version.
+
 ## Filesystem
 
 Use `ctx.fs`, not direct Node filesystem calls, when the capability must follow

@@ -20,6 +20,13 @@ silently replace the default development baseline.
 
 ## Prepare a clean tagged worktree
 
+For impact analysis before authorizing this mutating workflow, invoke the
+project's `version-compatibility-analysis` skill or run
+`pnpm compatibility:analyze --harness-root /path/to/deepseek-harness`.
+It reads the current lock and candidate Git objects without writing edge or
+requiring the old baseline worktree. Its evidence does not satisfy the
+promotion gates below.
+
 Keep the normal Harness development checkout and its local changes separate
 from baseline evidence. For a new official tag:
 
@@ -62,6 +69,8 @@ and compatibility documentation before verification.
 DSH_HARNESS_BASELINE_ROOT=/path/to/clean-worktree \
   pnpm upstream:check --channel edge
 
+pnpm registry:check --channel edge
+
 DSH_HARNESS_BASELINE_ROOT=/path/to/clean-worktree \
   pnpm baseline:verify
 ```
@@ -73,6 +82,16 @@ unit/HMR, Loader, build, archive inspection, and isolated profile
 add/dump/boot/remove coverage. When the Registry report is ready, it also
 generates an ordinary-dependency project, installs its exact archive into a
 clean consumer, and exercises the same profile lifecycle without source links.
+When that channel's Registry is blocked, the archive-install leg is explicitly
+skipped and a negative test proves Registry generation is refused. It never
+falls back to another channel's packages or mixes them with the selected CLI.
+
+Verification schema v2 binds the exact Registry report digest and status used
+by the tests, in addition to the catalog and project digests. Check Registry
+before verification (a blocked query exits 2 but permits source-only work).
+After any Registry recheck, rerun verification before promotion, even if the
+new report is ready. Historical v1 and source-only reports cannot authorize
+publication. Input changes during verification fail closed.
 
 The deterministic acceptance matrix currently covers only Tool projects.
 Service, Host/Client, LLM, Agent Team, and library/bundle-only kinds cannot be
@@ -92,6 +111,10 @@ The command exits non-zero while blocked but still writes an auditable report.
 
 Source-linked verification and a `blocked` Registry report are a valid edge
 result. They are not publication evidence and must not replace stable.
+
+To refresh stable evidence without changing its baseline, use
+`pnpm registry:check --channel stable`, then
+`node scripts/baseline.mjs verify --channel stable` with stable's clean source.
 
 ## Promote or retain edge
 
@@ -113,3 +136,37 @@ project release and stable lock in Git for rollback.
 
 The committed lock stores only a relocatable fallback. Another machine should
 set `DSH_HARNESS_BASELINE_ROOT` or prepare the equivalent sibling worktree.
+
+## Recover invalid local worktree metadata
+
+If the source directory exists but Git reports a missing worktree
+administration directory, do not replace the lock with the main checkout's
+HEAD. Preserve the entire broken directory outside the fallback path, create
+a new detached worktree at the locked tag, install/build there, then pass
+strict validation. Keep the preserved directory until its local changes have
+been reviewed; reconstruction of Git metadata is not proof those files were
+clean. This repairs local resolution without changing either channel's API.
+
+## Align an existing local development checkout
+
+Only align the normal checkout when the user requests it and its tracked and
+non-ignored inputs are clean; preserve its branch tip with a detached checkout
+of the selected tag. Continue using a separate tagged worktree for baseline
+evidence. Check candidate-path environment overrides as well as the lock so
+default analysis does not keep selecting a different HEAD.
+
+An older checkout can retain ignored build outputs for packages absent from
+the selected revision. Workspace build globs may still consume those orphan
+directories even though Git reports clean. Inspect the failing paths, confirm
+they contain only ignored build/dependency artifacts, and preserve them
+outside the workspace before rebuilding; do not broadly clean the repository.
+Incremental TypeScript can also retain declaration timestamps older than
+changed manifests. Recompile the affected projects with `tsc -b --force` and
+run the official build and strict gate again, rather than touching timestamps
+or relaxing freshness validation.
+
+A generated source project's static links must agree with its own
+`DSH_HARNESS_ROOT`. An environment override does not rewrite those links:
+use the root recorded during generation, or explicitly run `context:sync`
+for an authorized move. Never migrate user Harness-home data just to align a
+development checkout; verify profiles in isolated homes.

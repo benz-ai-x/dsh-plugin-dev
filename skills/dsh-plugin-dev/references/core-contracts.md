@@ -2,6 +2,11 @@
 
 Read this reference for every DSH plugin task.
 
+First resolve the project's selected locked commit using
+[version-specific contracts](version-contracts.md). Apply only its relevant
+subsystem deltas; the Session paragraphs below describe the shared alpha.4
+and rc.1 contract, not the historical alpha.1 handle/format-v2 migration API.
+
 ## Runtime model
 
 DSH is one Cordis plugin tree assembled from ordered profile patch layers. A
@@ -178,6 +183,11 @@ Test contribution presence before disposal and absence afterward. A cleanup
 function existing in code is not evidence that teardown works.
 
 ## Events and durable state
+
+The persistence vocabulary rules in this section describe `0.1.2-alpha.4`
+and `0.1.2-rc.1`. For a project explicitly locked to `0.1.3-alpha.1`,
+distinguish current recovery from historical-format migration as
+specified in [version-specific contracts](version-contracts.md).
 
 Cordis events are live process coordination. Session events are append-only
 durable facts. Use a Session event when behavior must survive restart, replay,

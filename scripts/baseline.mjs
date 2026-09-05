@@ -823,10 +823,20 @@ function validateReport(loaded, kind, requiredStatus) {
     }
     return report;
 }
+/** A source-only pass cannot authorize publication after Registry availability changes. */
+export function validateRegistryVerification(verification, registry) {
+    if (registry.status !== 'ready'
+        || verification.registryStatus !== 'ready'
+        || typeof registry.sha256 !== 'string'
+        || verification.registrySha256 !== registry.sha256) {
+        fail('DSH_BASELINE_REGISTRY_UNVERIFIED', 'verification must exercise the same ready Registry report; rerun baseline verification after registry:check');
+    }
+}
 export function preflightChannel(channel) {
     const loaded = loadLockedChannel(projectRoot, channel);
     validateReport(loaded, 'registry', 'ready');
-    validateReport(loaded, 'verification', 'passed');
+    const verification = validateReport(loaded, 'verification', 'passed');
+    validateRegistryVerification(verification, loaded.baseline.registry ?? {});
     return loaded;
 }
 function copyChannelFiles(fromLoaded, toChannel, registry, verification) {
@@ -855,6 +865,8 @@ export function promoteChannel(from = 'edge', to = 'stable') {
     const typedSource = source;
     const registry = { ...validateReport(source, 'registry', 'ready'), channel: toChannel };
     const verification = { ...validateReport(source, 'verification', 'passed'), channel: toChannel };
+    // Relabeling the checked report changes its digest, not its dependency evidence.
+    verification.registrySha256 = sha256(jsonText(registry));
     copyChannelFiles(typedSource, toChannel, registry, verification);
     verification.projectDigest = projectContractDigest(projectRoot);
     writeJsonAtomic(join(projectRoot, artifactPaths(toChannel).verification), verification);
@@ -884,14 +896,23 @@ export function verifyChannel(channel = 'edge', explicitRoot) {
     if (!/^pnpm@\d+\.\d+\.\d+(?:[-+].+)?$/.test(packageManager)) {
         fail('DSH_BASELINE_TOOLCHAIN_INVALID', `unsupported pinned package manager ${packageManager}`);
     }
+    const registry = validateReport(loaded, 'registry');
+    const registrySha256 = loaded.baseline.registry.sha256;
+    const projectDigest = projectContractDigest(projectRoot);
     runInherited('npx', ['--yes', packageManager, 'verify'], {
         DSH_BASELINE_CHANNEL: loaded.channel,
         [loaded.baseline.localResolution?.environmentVariable ?? 'DSH_HARNESS_BASELINE_ROOT']: harnessRoot,
         DSH_HARNESS_ROOT: harnessRoot,
         CI: '1',
     });
+    const current = loadLockedChannel(projectRoot, loaded.channel);
+    if (projectContractDigest(projectRoot) !== projectDigest
+        || current.baseline.catalog?.sha256 !== catalogSummary.sha256
+        || current.baseline.registry?.sha256 !== registrySha256) {
+        fail('DSH_BASELINE_REPORT_STALE', 'verification inputs changed during the run; rerun against unchanged inputs');
+    }
     const report = sortObject({
-        schemaVersion: 1,
+        schemaVersion: 2,
         channel: loaded.channel,
         catalogSha256: catalogSummary.sha256,
         upstream: {
@@ -901,7 +922,9 @@ export function verifyChannel(channel = 'edge', explicitRoot) {
         verifiedAt: new Date().toISOString(),
         status: 'passed',
         command: `npx --yes ${packageManager} verify`,
-        projectDigest: projectContractDigest(projectRoot),
+        projectDigest,
+        registrySha256,
+        registryStatus: registry.status,
     });
     updateReportInLock(loaded, 'verification', report);
     return report;

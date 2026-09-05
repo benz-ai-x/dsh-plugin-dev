@@ -154,9 +154,11 @@ interface EvidenceReport extends JsonObject {
     verifiedAt?: string | null | undefined;
     projectDigest?: string | undefined;
     channel?: string | undefined;
+    registrySha256?: string | undefined;
+    registryStatus?: string | undefined;
 }
 interface VerificationReport extends EvidenceReport {
-    schemaVersion: 1;
+    schemaVersion: 2;
     channel: string;
     catalogSha256: string;
     upstream: {
@@ -167,6 +169,8 @@ interface VerificationReport extends EvidenceReport {
     status: 'passed';
     command: string;
     projectDigest: string;
+    registrySha256: string;
+    registryStatus: string;
 }
 interface CatalogDiff {
     upstream: Record<string, {
@@ -237,6 +241,14 @@ export declare function checkLockedChannel(channel?: string, explicitRoot?: stri
     harnessRoot: string;
     scanned: BaselineCatalog;
 };
+/** A source-only pass cannot authorize publication after Registry availability changes. */
+export declare function validateRegistryVerification(verification: {
+    registryStatus?: unknown;
+    registrySha256?: unknown;
+}, registry: {
+    status?: string | undefined;
+    sha256?: string | undefined;
+}): void;
 export declare function preflightChannel(channel?: string): LoadedChannel;
 export declare function promoteChannel(from?: string, to?: string): BaselineLock;
 export declare function verifyChannel(channel?: string, explicitRoot?: string): VerificationReport;

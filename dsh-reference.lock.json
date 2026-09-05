@@ -5,70 +5,70 @@
         "packageCount": 266,
         "path": "baselines/edge/catalog.json",
         "productSkillCount": 2,
-        "sha256": "699a1b5ef07259d88d6f9aa4930d7a68dfd3646532f440855ba717c041efb1f2",
+        "sha256": "f808b24abaf2d69e9393fdd430520ec39d017f04d7e58b64f75ca3f36444d9b8",
         "skillCount": 17
       },
       "localResolution": {
         "environmentVariable": "DSH_HARNESS_BASELINE_ROOT",
-        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-alpha.4"
+        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-rc.1"
       },
       "registry": {
-        "checkedAt": "2026-09-02T01:50:14.778Z",
+        "checkedAt": "2026-09-05T00:55:22.405Z",
         "path": "baselines/edge/registry.json",
-        "sha256": "dfe5b5461d5181109d1d33622fdaab0a1dac9c38419520ac3b468615df0c4ce7",
+        "sha256": "c49b2305536e698f295ebc6c9fedd6a9f8962a5a79883c02766dbe11274de069",
         "status": "ready"
       },
       "upstream": {
-        "commit": "4e84901e6471b79ec0338099867ebb4606d12bb5",
-        "docsDigest": "b0e83ae78c5bf2523dd860382e72aa331cd65ab64e7d81a50a70251a10e0752e",
+        "commit": "a66e4702047846cdaa10c66c9d3df3951f5ea70d",
+        "docsDigest": "bcf97ba2fec82bf16437ad5ec75bd719487f2bf47ea4504a1a34189ee949f0d9",
         "node": "^22.19.0 || >=24.0.0",
         "packageManager": "pnpm@11.7.0",
         "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
-        "tag": "dsh-v0.1.2-alpha.4",
-        "version": "0.1.2-alpha.4"
+        "tag": "dsh-v0.1.2-rc.1",
+        "version": "0.1.2-rc.1"
       },
       "verification": {
-        "checkedAt": "2026-09-02T01:54:01.933Z",
+        "checkedAt": "2026-09-05T01:08:43.484Z",
         "path": "baselines/edge/verification.json",
-        "sha256": "2e4095e79d069474d8d65bade06f5a9c503fb2db3ced1ace754a03bb76235510",
+        "sha256": "e499ec335240637bf5cb5bdde9916f1c21f15939369ac54a4ece770375e5c3f5",
         "status": "passed"
       },
-      "verifiedOn": "2026-09-02"
+      "verifiedOn": "2026-09-05"
     },
     "stable": {
       "catalog": {
         "packageCount": 266,
         "path": "baselines/stable/catalog.json",
         "productSkillCount": 2,
-        "sha256": "699a1b5ef07259d88d6f9aa4930d7a68dfd3646532f440855ba717c041efb1f2",
+        "sha256": "f808b24abaf2d69e9393fdd430520ec39d017f04d7e58b64f75ca3f36444d9b8",
         "skillCount": 17
       },
       "localResolution": {
         "environmentVariable": "DSH_HARNESS_BASELINE_ROOT",
-        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-alpha.4"
+        "fallbackRelativePath": "../deepseek-harness-baseline-0.1.2-rc.1"
       },
       "registry": {
-        "checkedAt": "2026-09-02T01:50:14.778Z",
+        "checkedAt": "2026-09-05T00:55:22.405Z",
         "path": "baselines/stable/registry.json",
-        "sha256": "ad624f6830238aa24d162010804a842627d00a7bcab00971253558763fa5dad0",
+        "sha256": "a155a1999c60ab57250ece65039906cfdfd49bb8f6fce19267fde3627a8dcb69",
         "status": "ready"
       },
       "upstream": {
-        "commit": "4e84901e6471b79ec0338099867ebb4606d12bb5",
-        "docsDigest": "b0e83ae78c5bf2523dd860382e72aa331cd65ab64e7d81a50a70251a10e0752e",
+        "commit": "a66e4702047846cdaa10c66c9d3df3951f5ea70d",
+        "docsDigest": "bcf97ba2fec82bf16437ad5ec75bd719487f2bf47ea4504a1a34189ee949f0d9",
         "node": "^22.19.0 || >=24.0.0",
         "packageManager": "pnpm@11.7.0",
         "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
-        "tag": "dsh-v0.1.2-alpha.4",
-        "version": "0.1.2-alpha.4"
+        "tag": "dsh-v0.1.2-rc.1",
+        "version": "0.1.2-rc.1"
       },
       "verification": {
-        "checkedAt": "2026-09-02T01:54:01.933Z",
+        "checkedAt": "2026-09-05T01:08:08.895Z",
         "path": "baselines/stable/verification.json",
-        "sha256": "9b56f50c494e3872def3440d60412df68335ca56059ffb36c4d03622c8cbbfad",
+        "sha256": "f82831ef7a502bd44a70beca2a5211d3d360f6fb57c5bd0e9acafa89be4f7525",
         "status": "passed"
       },
-      "verifiedOn": "2026-09-02"
+      "verifiedOn": "2026-09-05"
     }
   },
   "defaultChannel": "stable",

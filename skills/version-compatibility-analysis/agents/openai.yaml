@@ -1,0 +1,4 @@
+interface:
+  display_name: "版本兼容性分析"
+  short_description: "动态读取 Harness 版本与依赖契约，分析升级影响和必要修复"
+  default_prompt: "使用 $version-compatibility-analysis 分析本项目与当前 DeepSeek Harness 候选版本的依赖兼容性，动态读取基线与源码，输出必要修复和验证阻塞。"

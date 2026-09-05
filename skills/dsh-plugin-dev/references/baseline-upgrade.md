@@ -17,9 +17,16 @@ repository. Its mechanical sequence is:
    diff;
 3. revise affected contracts, references, templates, tests, and migration
    guidance;
-4. pass strict source plus the full generated-project verification ladder;
-5. query the complete Tool Registry closure;
+4. query the complete Tool Registry closure and record ready or blocked;
+5. pass strict source plus the selected-channel generated-project ladder;
 6. promote only when verification is passed and Registry closure is ready.
+
+Apply [version-specific contracts](version-contracts.md) to the selected
+commit, not to the moving meaning of `edge`. Registry tests must never
+substitute stable packages for an unpublished candidate. A Registry recheck
+invalidates the prior verification binding; rerun verification with that exact
+ready report before promotion. Source-only passes remain valid edge evidence,
+not release acceptance.
 
 The official product Skill snapshots are upstream instructions for dynamic
 Cordis runtime development. Their presence does not supply runtime-only tools

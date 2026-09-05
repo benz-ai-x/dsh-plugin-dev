@@ -221,6 +221,9 @@ const requiredFiles = [
     claudeAdapterPath,
     'skills/dsh-plugin-dev/agents/openai.yaml',
     'skills/dsh-plugin-dev/references/scaffolding.md',
+    'skills/dsh-plugin-dev/references/version-contracts.md',
+    'docs/decisions/0010-alpha-1-edge-evidence.md',
+    'docs/decisions/0012-rc-1-development-baseline.md',
     'skills/dsh-plugin-dev/scripts/create-project.mjs',
     'scripts/install-user-skill.mjs',
     'scripts/baseline.mjs',
@@ -245,6 +248,21 @@ const requiredFiles = [
     'tsconfig.json',
     'tsconfig.scripts.json',
     'skills/dsh-plugin-dev/tsconfig.json',
+    'skills/version-compatibility-analysis/SKILL.md',
+    '.agents/skills/version-compatibility-analysis/SKILL.md',
+    '.claude/skills/version-compatibility-analysis/SKILL.md',
+    'skills/version-compatibility-analysis/agents/openai.yaml',
+    'skills/version-compatibility-analysis/references/node-projects.md',
+    'skills/version-compatibility-analysis/references/deepseek-harness.md',
+    'skills/version-compatibility-analysis/references/npm-downloads.md',
+    'skills/version-compatibility-analysis/tsconfig.json',
+    'docs/decisions/0009-project-compatibility-skill.md',
+    'docs/decisions/0011-opt-in-compatibility-downloads.md',
+    ...['analyze-project', 'compare-revisions', 'dependencies', 'download-packages'].flatMap(name => [
+        `skills/version-compatibility-analysis/src/${name}.mts`,
+        `skills/version-compatibility-analysis/scripts/${name}.mjs`,
+        `skills/version-compatibility-analysis/scripts/${name}.d.mts`,
+    ]),
     'vitest.config.ts',
     ...requiredTemplates.map(path => `skills/dsh-plugin-dev/assets/tool-project/${path}`),
 ];
@@ -259,6 +277,12 @@ const expectedToolingArtifacts = new Map([
             'skills/dsh-plugin-dev/scripts/create-project.mjs',
             'skills/dsh-plugin-dev/scripts/create-project.d.mts',
         ]],
+    ...['analyze-project', 'compare-revisions', 'dependencies', 'download-packages'].map(name => [
+        `skills/version-compatibility-analysis/src/${name}.mts`, [
+            `skills/version-compatibility-analysis/scripts/${name}.mjs`,
+            `skills/version-compatibility-analysis/scripts/${name}.d.mts`,
+        ],
+    ]),
 ]);
 const toolingArtifacts = parseJson('tooling-artifacts.json');
 if (toolingArtifacts !== undefined) {
@@ -359,11 +383,27 @@ const skillUi = readProjectFile('skills/dsh-plugin-dev/agents/openai.yaml');
 check(skillUi.includes('display_name: "DSH Plugin Dev"'), 'Skill UI has the expected display name');
 check(skillUi.includes('$dsh-plugin-dev'), 'Skill UI default prompt explicitly invokes the skill');
 check(skillUi.includes('allow_implicit_invocation: true'), 'Skill allows implicit invocation');
+const companionPath = 'skills/version-compatibility-analysis/SKILL.md';
+const companion = readProjectFile(companionPath);
+const companionFrontmatter = parseFrontmatter(companionPath, companion);
+check(companionFrontmatter.get('name') === 'version-compatibility-analysis', 'companion skill has its canonical name');
+for (const agent of ['.agents', '.claude']) {
+    const path = `${agent}/skills/version-compatibility-analysis/SKILL.md`;
+    const content = readProjectFile(path);
+    const metadata = parseFrontmatter(path, content);
+    for (const key of ['name', 'description']) {
+        check(metadata.get(key) === companionFrontmatter.get(key), `${path} ${key} matches the canonical companion`);
+    }
+    check(content.length < 2_000 && content.includes('../../../skills/version-compatibility-analysis/SKILL.md'), `${path} remains a thin companion adapter`);
+}
+const companionUi = readProjectFile('skills/version-compatibility-analysis/agents/openai.yaml');
+check(companionUi.includes('$version-compatibility-analysis'), 'companion UI prompt explicitly invokes the skill');
+check(!companionUi.includes('allow_implicit_invocation: false'), 'companion permits implicit invocation');
 const manifest = parseJson('package.json');
 const pluginManifest = parseJson('.codex-plugin/plugin.json');
 if (manifest) {
     check(manifest.name === 'dsh-plugin-dev', 'package name is dsh-plugin-dev');
-    check(manifest.version === '0.3.0', 'package has the 0.3.0 audited-alpha.4 tooling version');
+    check(manifest.version === '0.3.0', 'package retains tooling version 0.3.0; the DSH baseline is selected separately by the lock');
     check(manifest.private === true, 'development-tooling repository package remains private');
     check(manifest.license === 'MIT', 'package is MIT licensed');
     check(manifest.type === 'module', 'project uses ESM');
@@ -389,6 +429,9 @@ if (manifest) {
     check(manifest.scripts?.['release:preflight'] === 'node scripts/baseline.mjs preflight --channel stable', 'release preflight command is exposed');
     check(manifest.files?.includes('.codex-plugin/plugin.json'), 'package includes the Codex Plugin manifest');
     check(manifest.files?.includes('skills/dsh-plugin-dev/**'), 'package includes the canonical Skill');
+    check(manifest.files?.includes('skills/version-compatibility-analysis/**'), 'package includes the project compatibility companion');
+    check(manifest.scripts?.['compatibility:analyze'] === 'node skills/version-compatibility-analysis/scripts/analyze-project.mjs', 'read-only compatibility analysis is exposed');
+    check(manifest.scripts?.['test:compatibility'] === 'vitest run tests/compatibility.unit.test.ts tests/compatibility-downloads.unit.test.ts', 'independent compatibility regression tests are exposed');
     check(manifest.files?.includes('src/**'), 'package includes authoritative TypeScript sources');
     check(manifest.files?.includes('tooling-artifacts.json'), 'package includes source-to-runtime artifact evidence');
     check(manifest.files?.includes('pnpm-workspace.yaml'), 'package includes the pnpm build-supply-chain policy');

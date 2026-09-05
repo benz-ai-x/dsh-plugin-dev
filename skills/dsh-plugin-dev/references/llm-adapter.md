@@ -3,6 +3,10 @@
 Read this reference when implementing a model provider, stream parser, model
 catalog, routing, retry behavior, usage accounting, or provider configuration.
 
+For alpha.1, apply the assistant-stream, file projection and process-proxy
+deltas in [version-specific contracts](version-contracts.md). In particular,
+embedded settlement streams do not authorize adapter-owned model retries.
+
 ## Adapter boundary
 
 An adapter converts immutable Harness `GenerateOptions` into one semantic

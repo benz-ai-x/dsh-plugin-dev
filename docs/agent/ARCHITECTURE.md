@@ -27,6 +27,12 @@ The authoring repository and each generated DSH project have different responsib
 
 `skills/dsh-plugin-dev/` is the canonical skill body. The repository-local `.agents/skills/dsh-plugin-dev/SKILL.md` and `.claude/skills/dsh-plugin-dev/SKILL.md` adapters delegate to it while developing this repository. `scripts/install-user-skill.mjs` preflights and links the canonical directory into both `$HOME/.agents/skills` and `$HOME/.claude/skills`, making it available to Codex and Claude Code in unrelated working directories without copying or drifting the instructions.
 
+`skills/version-compatibility-analysis/` is the project-level companion, with
+its own thin `.agents/skills/` and `.claude/skills/` adapters. It is included in
+the Plugin's `skills/` distribution, but the personal installer deliberately
+continues to install only the development skill. No personal companion copy is
+needed to analyze this project.
+
 `.codex-plugin/plugin.json` packages the canonical skill for Codex Plugin distribution. The plugin manifest points directly at `skills/`, so Codex repository, user-level, and packaged discovery consume one body. Claude Code consumes that same body through its repository adapter or personal Skill link; its explicit invocation syntax is `/dsh-plugin-dev`.
 
 ## Information layers
@@ -48,6 +54,10 @@ The authoritative tooling implementation is strict TypeScript:
 validation, while `skills/dsh-plugin-dev/src/create-project.mts` owns the
 generator. Repository tests and build orchestration are TypeScript and run
 through Vitest/tsx.
+
+The companion's `src/*.mts` owns read-only Git comparison, workspace discovery,
+and declared dependency traversal. Its dependency-free `scripts/*.mjs` are
+compiled and digest-checked by the same build pipeline.
 
 The existing `.mjs` command paths remain the distribution ABI. `pnpm build`
 compiles `.mts` into those paths plus `.d.mts` declarations, without adding a
@@ -81,6 +91,22 @@ the pinned official CLI. Registry evidence is time-bound; a release still uses
 the exact verified archive and repeats project-specific checks.
 
 ## Updating the upstream baseline
+
+Before updating a channel, `pnpm compatibility:analyze --harness-root PATH`
+compares the current lock commit directly with the candidate's committed
+objects. It reads workspace definitions independently at both revisions and
+obtains dependency roots from the selected catalog or explicit inputs. This
+diagnostic path does not require a live old worktree, a candidate build, or
+Registry readiness. It cannot promote a channel or establish runtime
+compatibility. Unknown future metadata is compared; unsupported workspace or
+dependency syntax is reported for agent-led inspection rather than hidden by
+old hardcoded paths. Each invocation refreshes evidence, not the skill code.
+
+An explicit opt-in download boundary consumes that same candidate graph and
+retrieves exact published tarballs using npm with scripts disabled. It writes
+only to separate owned storage, rechecks identity/integrity on cache reuse,
+and returns download/deferred evidence without altering the declarative graph
+or any audited Registry status. It is not an installation solver or updater.
 
 Changing `dsh-reference.lock.json` is an audit task. The updater scans a clean
 official tagged worktree into edge, including the complete workspace package

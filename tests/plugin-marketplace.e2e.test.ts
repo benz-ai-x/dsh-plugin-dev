@@ -139,6 +139,15 @@ test(
         'SKILL.md',
       )
       assert.ok(existsSync(cachedSkill), 'installed cache carries the canonical Skill')
+      const companion = join(installed.installedPath, 'skills/version-compatibility-analysis')
+      assert.equal(
+        await readFile(join(companion, 'SKILL.md'), 'utf8'),
+        await readFile(join(repositoryRoot, 'skills/version-compatibility-analysis/SKILL.md'), 'utf8'),
+        'installed Plugin carries the project companion',
+      )
+      const companionHelp = spawnSync(process.execPath, [join(companion, 'scripts/analyze-project.mjs'), '--help'], { encoding: 'utf8' })
+      assert.equal(companionHelp.status, 0, companionHelp.stderr)
+      assert.match(companionHelp.stdout, /Read-only JSON evidence/)
       assert.equal(
         await readFile(cachedSkill, 'utf8'),
         await readFile(

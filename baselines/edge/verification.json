@@ -1,13 +1,15 @@
 {
-  "catalogSha256": "699a1b5ef07259d88d6f9aa4930d7a68dfd3646532f440855ba717c041efb1f2",
+  "catalogSha256": "f808b24abaf2d69e9393fdd430520ec39d017f04d7e58b64f75ca3f36444d9b8",
   "channel": "edge",
   "command": "npx --yes pnpm@11.7.0 verify",
-  "projectDigest": "8f961270ac8ab7d9148565b072f3ec59d3ee9694275c951a0c0bab11b020722c",
-  "schemaVersion": 1,
+  "projectDigest": "4951abd5f40d8f1fbe3a4f20f41f46fcd7f4ed6a4e1ad73e4aefe30262a21feb",
+  "registrySha256": "c49b2305536e698f295ebc6c9fedd6a9f8962a5a79883c02766dbe11274de069",
+  "registryStatus": "ready",
+  "schemaVersion": 2,
   "status": "passed",
   "upstream": {
-    "commit": "4e84901e6471b79ec0338099867ebb4606d12bb5",
-    "tag": "dsh-v0.1.2-alpha.4"
+    "commit": "a66e4702047846cdaa10c66c9d3df3951f5ea70d",
+    "tag": "dsh-v0.1.2-rc.1"
   },
-  "verifiedAt": "2026-09-02T01:54:01.933Z"
+  "verifiedAt": "2026-09-05T01:08:43.484Z"
 }

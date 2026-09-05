@@ -6,9 +6,9 @@
       "source": "src/scripts/baseline.mts",
       "runtime": "scripts/baseline.mjs",
       "declaration": "scripts/baseline.d.mts",
-      "sourceSha256": "07b45d3851f107e60f1809cfbcf2f71f8fd29fb074b64bdde98c1aa63d00abf7",
-      "runtimeSha256": "43d961f302c2061d48111c38dd5c0b85e7e4d2fea06b8cbc1088d924d4c30301",
-      "declarationSha256": "1e798ef1f2014bd4624a4a1aa62042395d6a39fee4666c114c59e0228b78e00e"
+      "sourceSha256": "ac413e34eaee63b89bce50c3a8144d9a1539bcdd224628d4a4d4d17e5bca656b",
+      "runtimeSha256": "ec9586f66b3d2712eb4bc4adf7b068f5d1fb1247db470d528235aa8623745a84",
+      "declarationSha256": "ce9f43936cebc803fd7da203f6edbc9c6a616446e7111c754aeeed96b743b5a2"
     },
     {
       "source": "src/scripts/install-user-skill.mts",
@@ -22,8 +22,8 @@
       "source": "src/scripts/verify-context.mts",
       "runtime": "scripts/verify-context.mjs",
       "declaration": "scripts/verify-context.d.mts",
-      "sourceSha256": "36dd8c79481fc07ada26c822acabb6dad5d383a5c17e1ed150a006e39b774e27",
-      "runtimeSha256": "c8b6a3c343189124368e79fef33dba618285069a0de7181c7c952a9d44169d6e",
+      "sourceSha256": "f420b24c6ab917b3bacd3df6e3b127ad747a8c86d05a6174bf78a118ae5efe06",
+      "runtimeSha256": "ece99796a9dffd45caae0bb88f98c911fb70fdca89374d4e406cf062e58fe937",
       "declarationSha256": "43e818adf60173644896298637f47b01d5819b17eda46eaa32d0c7d64724d012"
     },
     {
@@ -33,6 +33,38 @@
       "sourceSha256": "5c6d782219698c5e6070f1e839f0f74d5aabb802d325c96e7707e66410c907b4",
       "runtimeSha256": "2d406b32b08244e143a7c3fbadec3d47ed938e5f06937735ac948fcca90188aa",
       "declarationSha256": "6b26c43d958aa841f4fa5ca31307382d012e847c3043edc58ae108c0086e16c6"
+    },
+    {
+      "source": "skills/version-compatibility-analysis/src/analyze-project.mts",
+      "runtime": "skills/version-compatibility-analysis/scripts/analyze-project.mjs",
+      "declaration": "skills/version-compatibility-analysis/scripts/analyze-project.d.mts",
+      "sourceSha256": "c8f1160c011fb1cfdeb2c02ff880e8c10a9e1da6731915cfc8e5a03245ff8bf3",
+      "runtimeSha256": "53eefdb98eb566df5e7e756f2fbe8ce2f5edebefd66d014690cec07c93ccbe58",
+      "declarationSha256": "c1f3d5a285cd6e52d1daacb76c1b690c3fa47715aba28e9e3f520ac3588199f7"
+    },
+    {
+      "source": "skills/version-compatibility-analysis/src/compare-revisions.mts",
+      "runtime": "skills/version-compatibility-analysis/scripts/compare-revisions.mjs",
+      "declaration": "skills/version-compatibility-analysis/scripts/compare-revisions.d.mts",
+      "sourceSha256": "d2b0225ad73cfb6eb0b7e628e2d984bb38a039202f1c0efcadda2eeba3473fe9",
+      "runtimeSha256": "5fbafdf5d5f79c3dc7ba6a70456ce1e3233fe99ab3c5e65931eff8686dc4c35a",
+      "declarationSha256": "741f9dfd5a2eb7b805178aaefc0c2d37e135b59b142a0090246085e83d64493c"
+    },
+    {
+      "source": "skills/version-compatibility-analysis/src/dependencies.mts",
+      "runtime": "skills/version-compatibility-analysis/scripts/dependencies.mjs",
+      "declaration": "skills/version-compatibility-analysis/scripts/dependencies.d.mts",
+      "sourceSha256": "9c2ac3b16ef5a01b86bc0e7f53a54097e8cc3fb4e4d8596010791368d03cbf9f",
+      "runtimeSha256": "d4c0b0ce613eacf0175b94d890ff7b5c5542a474b8f88a5f125089ccd06ca899",
+      "declarationSha256": "c8088dedb2045024abd3be317637e6120ee33e10f7f0713539bce1623a0a6b49"
+    },
+    {
+      "source": "skills/version-compatibility-analysis/src/download-packages.mts",
+      "runtime": "skills/version-compatibility-analysis/scripts/download-packages.mjs",
+      "declaration": "skills/version-compatibility-analysis/scripts/download-packages.d.mts",
+      "sourceSha256": "236c4c1172a39312e6649961f088fed1c524ef9e6cba4f90101f834c72001717",
+      "runtimeSha256": "dd6e3a3072aae4b7882efb278734d7d1bbd106c28f00ef839ac59659d455a757",
+      "declarationSha256": "e7721a84458e1edb2cdf9177de8a5f27284cc8febfc39418792af06b87604afe"
     }
   ]
 }

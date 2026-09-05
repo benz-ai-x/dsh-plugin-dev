@@ -7,6 +7,7 @@
   "include": [
     "src/**/*.mts",
     "skills/dsh-plugin-dev/src/**/*.mts",
+    "skills/version-compatibility-analysis/src/**/*.mts",
     "tests/**/*.ts",
     "tooling/**/*.ts",
     "vitest.config.ts"

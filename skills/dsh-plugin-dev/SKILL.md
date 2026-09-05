@@ -28,10 +28,21 @@ profile or package form the project actually ships.
 Stop and report the mismatch if strict source validation fails. Do not silently
 apply this skill's pinned contracts to a different DSH revision.
 
+In the dsh-plugin-dev repository or packaged Plugin, use the companion
+`version-compatibility-analysis` skill for read-only upstream impact assessment
+before an upgrade. Its canonical body is the sibling
+`../version-compatibility-analysis/SKILL.md` when available. A development-only
+personal install need not contain that companion. Candidate analysis does not
+replace this skill's audited implementation gates.
+
 ## Route the task
 
 Read [core contracts](references/core-contracts.md) for every DSH task, then
 load only the applicable references:
+
+- Resolve the selected lock's exact revision through
+  [version-specific contracts](references/version-contracts.md); apply only
+  the deltas for the task's affected subsystem, not a different channel's API.
 
 - New or empty project, business-requirement classification, or scaffold
   generation: read [new project scaffolding](references/scaffolding.md), then
