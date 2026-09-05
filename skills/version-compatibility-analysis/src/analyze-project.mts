@@ -2,10 +2,11 @@
 
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, realpathSync } from 'node:fs'
-import { isAbsolute, relative, resolve, sep } from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { dirname, isAbsolute, relative, resolve, sep } from 'node:path'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { compareRevisions, fail, reportError } from './compare-revisions.mjs'
 import { isObject, stringList } from './dependencies.mjs'
+import { createDownloadPlan, downloadPackages } from './download-packages.mjs'
 import type { Issue, Manifest } from './dependencies.mjs'
 
 export interface AnalyzeOptions {
@@ -103,10 +104,15 @@ export function analyzeProject(options: AnalyzeOptions = {}, environment: NodeJS
 
 const usage = `Usage: node analyze-project.mjs [--project PATH] [--harness-root PATH] [--target REF]
   [--channel NAME] [--capability NAME] [--base REF] [--root-package NAME ...]
+  [--download-missing --download-dir NEW_OR_OWNED_DIRECTORY [--registry HTTPS_URL]]
 Defaults: project=cwd; base=project lock commit; target=candidate HEAD.
 Candidate: --harness-root > DSH_HARNESS_ROOT > lock environment variable > lock fallback.
-Read-only JSON evidence. No fetch, checkout, install, Registry query or lock update.
-Exit 0 means evidence collected, not compatible; inspect issues and assessment.`
+Read-only JSON evidence by default. No fetch, checkout, install, Registry query or lock update.
+Opt-in downloads: npm required; exact Registry tarballs only, no lifecycle scripts or installation.
+Download directory must be outside the project, Harness and Skill; its parent must exist.
+Default download Registry: https://registry.npmjs.org/ (no automatic private Registry fallback).
+Exit 0 means evidence collected (and selected downloads complete), not compatible.
+Exit 2 means partial downloads/deferred targets; inspect downloads, issues and assessment.`
 
 if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
   try {
@@ -115,21 +121,32 @@ if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.ar
     else {
       const values: Record<string, string> = {}
       const roots: string[] = []
+      let download = false
       for (let index = 0; index < args.length; index += 1) {
         const flag = args[index]!
+        if (flag === '--download-missing') { download = true; continue }
         const value = args[++index]
-        if (!['--project', '--harness-root', '--target', '--channel', '--capability', '--base', '--root-package'].includes(flag) || !value || value.startsWith('--')) fail('COMPAT_USAGE', usage)
+        if (!['--project', '--harness-root', '--target', '--channel', '--capability', '--base', '--root-package', '--download-dir', '--registry'].includes(flag) || !value || value.startsWith('--')) fail('COMPAT_USAGE', usage)
         if (flag === '--root-package') roots.push(value)
         else values[flag.slice(2)] = value
       }
-      console.log(JSON.stringify(analyzeProject({
+      if ((download && !values['download-dir']) || (!download && (values['download-dir'] || values.registry))) fail('COMPAT_USAGE', usage)
+      const analysis = analyzeProject({
         project: values.project ?? '.',
         ...(values['harness-root'] ? { harnessRoot: values['harness-root'] } : {}),
         ...(values.target ? { target: values.target } : {}),
         ...(values.channel ? { channel: values.channel } : {}),
         ...(values.capability ? { capability: values.capability } : {}),
         ...(values.base ? { base: values.base } : {}), roots,
-      }), null, 2))
+      })
+      if (download) {
+        const downloads = await downloadPackages(createDownloadPlan(analysis.dependencies.after), {
+          directory: values['download-dir']!, registry: values.registry ?? 'https://registry.npmjs.org/',
+          protectedRoots: [analysis.project.root, analysis.repository, resolve(dirname(fileURLToPath(import.meta.url)), '..')],
+        })
+        console.log(JSON.stringify({ ...analysis, downloads }, null, 2))
+        if (downloads.status !== 'complete') process.exitCode = 2
+      } else console.log(JSON.stringify(analysis, null, 2))
     }
   } catch (error) { reportError(error) }
 }

@@ -102,6 +102,12 @@ compatibility. Unknown future metadata is compared; unsupported workspace or
 dependency syntax is reported for agent-led inspection rather than hidden by
 old hardcoded paths. Each invocation refreshes evidence, not the skill code.
 
+An explicit opt-in download boundary consumes that same candidate graph and
+retrieves exact published tarballs using npm with scripts disabled. It writes
+only to separate owned storage, rechecks identity/integrity on cache reuse,
+and returns download/deferred evidence without altering the declarative graph
+or any audited Registry status. It is not an installation solver or updater.
+
 Changing `dsh-reference.lock.json` is an audit task. The updater scans a clean
 official tagged worktree into edge, including the complete workspace package
 and DSH/vendor release-family catalogs, all upstream Skills, two materialized

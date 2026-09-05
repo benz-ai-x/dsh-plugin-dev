@@ -22,8 +22,8 @@
       "source": "src/scripts/verify-context.mts",
       "runtime": "scripts/verify-context.mjs",
       "declaration": "scripts/verify-context.d.mts",
-      "sourceSha256": "f8d88b918f705e43fd16ae7675992d6c664ff7e620b54e5e486c242ed710ff2c",
-      "runtimeSha256": "6c4c6e8177d8803b5a3e3b8470ae244fdd3bec6bf28a8e22e3a6be0830729047",
+      "sourceSha256": "f420b24c6ab917b3bacd3df6e3b127ad747a8c86d05a6174bf78a118ae5efe06",
+      "runtimeSha256": "ece99796a9dffd45caae0bb88f98c911fb70fdca89374d4e406cf062e58fe937",
       "declarationSha256": "43e818adf60173644896298637f47b01d5819b17eda46eaa32d0c7d64724d012"
     },
     {
@@ -38,8 +38,8 @@
       "source": "skills/version-compatibility-analysis/src/analyze-project.mts",
       "runtime": "skills/version-compatibility-analysis/scripts/analyze-project.mjs",
       "declaration": "skills/version-compatibility-analysis/scripts/analyze-project.d.mts",
-      "sourceSha256": "f078b7075efadb9b9782f9dba5d5d81316ab0541a224b088064a471e318ce8ae",
-      "runtimeSha256": "8d105008db7d4bee7181fcddc3e8c1e4e563f2b12bf2b0f9838d7927456b2afe",
+      "sourceSha256": "c8f1160c011fb1cfdeb2c02ff880e8c10a9e1da6731915cfc8e5a03245ff8bf3",
+      "runtimeSha256": "53eefdb98eb566df5e7e756f2fbe8ce2f5edebefd66d014690cec07c93ccbe58",
       "declarationSha256": "c1f3d5a285cd6e52d1daacb76c1b690c3fa47715aba28e9e3f520ac3588199f7"
     },
     {
@@ -57,6 +57,14 @@
       "sourceSha256": "9c2ac3b16ef5a01b86bc0e7f53a54097e8cc3fb4e4d8596010791368d03cbf9f",
       "runtimeSha256": "d4c0b0ce613eacf0175b94d890ff7b5c5542a474b8f88a5f125089ccd06ca899",
       "declarationSha256": "c8088dedb2045024abd3be317637e6120ee33e10f7f0713539bce1623a0a6b49"
+    },
+    {
+      "source": "skills/version-compatibility-analysis/src/download-packages.mts",
+      "runtime": "skills/version-compatibility-analysis/scripts/download-packages.mjs",
+      "declaration": "skills/version-compatibility-analysis/scripts/download-packages.d.mts",
+      "sourceSha256": "236c4c1172a39312e6649961f088fed1c524ef9e6cba4f90101f834c72001717",
+      "runtimeSha256": "dd6e3a3072aae4b7882efb278734d7d1bbd106c28f00ef839ac59659d455a757",
+      "declarationSha256": "e7721a84458e1edb2cdf9177de8a5f27284cc8febfc39418792af06b87604afe"
     }
   ]
 }

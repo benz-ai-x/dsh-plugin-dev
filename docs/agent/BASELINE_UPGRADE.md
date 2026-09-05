@@ -146,3 +146,27 @@ a new detached worktree at the locked tag, install/build there, then pass
 strict validation. Keep the preserved directory until its local changes have
 been reviewed; reconstruction of Git metadata is not proof those files were
 clean. This repairs local resolution without changing either channel's API.
+
+## Align an existing local development checkout
+
+Only align the normal checkout when the user requests it and its tracked and
+non-ignored inputs are clean; preserve its branch tip with a detached checkout
+of the selected tag. Continue using a separate tagged worktree for baseline
+evidence. Check candidate-path environment overrides as well as the lock so
+default analysis does not keep selecting a different HEAD.
+
+An older checkout can retain ignored build outputs for packages absent from
+the selected revision. Workspace build globs may still consume those orphan
+directories even though Git reports clean. Inspect the failing paths, confirm
+they contain only ignored build/dependency artifacts, and preserve them
+outside the workspace before rebuilding; do not broadly clean the repository.
+Incremental TypeScript can also retain declaration timestamps older than
+changed manifests. Recompile the affected projects with `tsc -b --force` and
+run the official build and strict gate again, rather than touching timestamps
+or relaxing freshness validation.
+
+A generated source project's static links must agree with its own
+`DSH_HARNESS_ROOT`. An environment override does not rewrite those links:
+use the root recorded during generation, or explicitly run `context:sync`
+for an authorized move. Never migrate user Harness-home data just to align a
+development checkout; verify profiles in isolated homes.

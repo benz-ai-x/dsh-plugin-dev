@@ -5,9 +5,10 @@ sandbox/approval, Session persistence, or subagent boundaries. Load only the
 upstream subsystem documents for the capabilities actually used.
 
 Resolve [version-specific contracts](version-contracts.md) first. The Session
-storage description below is alpha.4; alpha.1 requires its handle, generation,
-and historical-extension rules. Its transport/file deltas also apply only when
-those capabilities are used.
+storage description below applies to alpha.4 and rc.1. For rc.1 derived
+storage, also read its projection-cache recovery section. The historical
+alpha.1 handle, generation, extension and transport/file deltas apply only to
+a project explicitly locked to that version.
 
 ## Filesystem
 

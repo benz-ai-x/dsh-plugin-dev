@@ -2,7 +2,54 @@
 
 This is the live execution queue for the reusable `dsh-plugin-dev` Skill, Codex Plugin, and project generator. Stable rules belong in `docs/agent/PROJECT_CONTRACT.md`; completed product choices belong in `docs/decisions/`.
 
-## Current execution — DSH 0.1.3-alpha.1 compatibility (2026-09-05)
+## Current execution — DSH 0.1.2-rc.1 development baseline (2026-09-05)
+
+- [x] Confirm the official `dsh-v0.1.2-rc.1` tag and inspect the existing
+  worktrees, environment overrides and source-lock gates without disturbing
+  the pending compatibility-download changes.
+- [x] Prepare and build a clean detached rc.1 worktree; review the exact
+  alpha.4-to-rc.1 source and dependency changes.
+- [x] Replace the edge candidate through the audited update command, check
+  its complete Registry closure and verify source plus packed Tool delivery.
+- [x] Update current documentation and Skill version routing, retaining
+  alpha.1 findings only as historical evidence.
+- [x] Promote the verified rc.1 candidate to stable; align the clean local
+  Harness checkout used by `DSH_HARNESS_ROOT` without rewriting its branches.
+- [x] Refresh both channels' final verification and preflight, confirming
+  default analysis and generated projects select rc.1 rather than alpha.1.
+
+Closure: both channels pin `a66e4702047846cdaa10c66c9d3df3951f5ea70d`.
+The normal source checkout is detached at the same tag; its `master` tip and
+all earlier worktrees are retained. Six orphan alpha.1 build/dependency
+directories are backed up outside the workspace. Forced TypeScript and
+official builds plus the local strict gate pass. Default analysis reports
+rc.1 → rc.1 with no differences; source and Registry scaffolds select stable
+rc.1. Final `baselines/*/verification.json` reports and preflight bind the
+closing project state; no user Sessions or existing generated projects were
+migrated. The real-model marketplace leg remains explicitly skipped.
+
+## Historical execution — DSH 0.1.3-alpha.1 compatibility (2026-09-05)
+
+Follow-up — opt-in npm downloads for compatibility analysis:
+
+- [x] Derive exact download targets from each candidate's actual dependency
+  graph, with explicit gaps for private packages and unresolved ranges.
+- [x] Add an explicit download mode with isolated, reusable tarball storage,
+  integrity checks, bounded failures and disabled lifecycle scripts; preserve
+  the default read-only analysis and all project/baseline inputs.
+- [x] Cover downloads, cache reuse, unavailable versions, integrity failures,
+  output safety and relocated/packed execution with regression tests.
+- [x] Update the canonical Skill, usage documentation and decision record;
+  build and validate the shipped tooling without treating downloads as
+  Registry delivery or candidate runtime acceptance.
+
+Download acceptance: 13 companion regressions pass. A public npm smoke at
+2026-09-05 00:28 UTC downloaded and checked five candidate vendor tarballs;
+15 alpha.1 versions remained E404 and four external ranges were deferred.
+A second selected-package run reused its verified cache. No dependencies were
+installed, no Registry report was written by the downloader, and no channel
+was promoted. Verification bindings are refreshed separately for the tooling
+changes, against the existing unchanged Registry reports.
 
 - [x] Create `codex/dsh-0.1.3-compatibility`, preserving the project companion
   migration already in the worktree.
@@ -28,11 +75,11 @@ completion summary/PR link through Feishu CLI. Recipient and bot identity were
 confirmed by the user; GitHub and Feishu receipts belong in the task handoff,
 not in the digest-bound runtime evidence.
 
-External gates: the refreshed public Registry report still records E404 for
-15 exact alpha.1 Tool-closure packages. Stable is ready (24/24); edge remains
-source-only. Recheck Registry and rerun same-channel verification before any
-promotion. Representative historical-load performance acceptance and the
-real-model marketplace smoke remain pending; neither is silently passed.
+Historical external gates: that public Registry report recorded E404 for
+15 exact alpha.1 Tool-closure packages, so alpha.1 remained source-only and
+was not promoted. It has since been replaced by the user-selected rc.1
+baseline. Alpha.1 historical-load performance acceptance was not cleared;
+the real-model marketplace smoke remains pending for the current project.
 
 ## P0 — Audited DSH knowledge foundation
 
@@ -142,6 +189,9 @@ real-model marketplace smoke remain pending; neither is silently passed.
 - [x] Define schema-v2 stable/edge baseline catalogs, official product-Skill
   snapshots, audited upgrade/promotion gates, and generated-project migration
   guidance.
+- [x] Select `dsh-v0.1.2-rc.1` for local development through edge verification
+  and stable promotion, replacing the alpha.1 candidate; audit its
+  storage/projection-cache delta and prove the ready rc.1 Tool closure.
 
 ## Definition of done for the current vertical slice
 
@@ -149,18 +199,19 @@ P1 and P2 are complete when `pnpm verify` passes and a fresh generated Tool proj
 
 Recorded deterministic Tool acceptance was met in both Codex and Claude Code.
 Audited baseline evolution uses content-addressed stable/edge channels; the
-audited baseline remains `0.1.2-alpha.4`. Historical Registry acceptance does
+audited baseline is `0.1.2-rc.1` for both channels. Historical Registry acceptance does
 not establish the current checkout or a newer candidate's compatibility.
 P3's marketplace semantic leg (real-model, `DSH_CODEX_SEMANTIC=1`) remains gated
 on backend connectivity, as do the additional project kinds in P4.
 
 Current evidence (2026-09-05): both channel verification ladders pass with
-30 unit tests passed / 1 conditional skip, and 3 e2e tests passed / 2 skips.
-Stable covers source plus ordinary Registry archive/profile delivery; edge
-covers source delivery plus explicit Registry refusal. The marketplace
-real-model leg is skipped on both. Seven companion regressions include packed
-execution and version-independent discovery; build/typecheck/Skill validation
-pass. The candidate's selected upstream regressions pass 826 tests across
-28 files (migration/leases/resume, stream/Team/upload/proxy, read-only queries).
-These do not certify performance, other operating systems or unsupported P4
-generators. See `docs/agent/ACCEPTANCE.md` for scope and reproduction.
+36 unit tests passed / 1 conditional skip, and 3 e2e tests passed / 2 skips.
+Both rc.1 channels cover source plus ordinary Registry archive/profile
+delivery, with 24/24 Registry requirements available. The marketplace
+real-model leg is skipped on both. Thirteen companion regressions include
+packed execution, version-independent discovery and opt-in npm downloads;
+build/typecheck/Skill validation pass. The rc.1 upstream storage and
+projection-cache regressions passed 91 tests across five files. The older
+826-test alpha.1 run is historical only. These do not certify performance,
+other operating systems, user-data downgrade or unsupported P4 generators.
+See `docs/agent/ACCEPTANCE.md` for scope and reproduction.

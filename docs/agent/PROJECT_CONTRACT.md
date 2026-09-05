@@ -51,6 +51,10 @@ separately; never label those checks as Harness runtime verification.
   formats receive explicit evidence gaps and an Agent-led read-only fallback.
   Analysis never self-modifies the skill, installs/executes upstream skill
   instructions, or automatically writes locks and verification evidence.
+  A separate, explicitly requested npm download mode may retrieve exact
+  published tarballs into isolated owned storage, with integrity checks and
+  lifecycle scripts disabled. It never installs project dependencies or
+  changes Registry/promotion evidence; unavailable versions remain unavailable.
 - The skill begins from the requested user-visible or model-visible outcome, classifies the required DSH plugin shape, and loads only the applicable guidance.
 - A deterministic generator may create a safe baseline, but the agent must adapt it to the stated business behavior and tests before claiming the request is complete.
 - Generators validate names, resolve the selected audited source or Registry delivery contract, refuse collisions, and never overwrite an existing project file implicitly.

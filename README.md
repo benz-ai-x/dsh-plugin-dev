@@ -5,7 +5,7 @@
 [中文使用手册](#中文使用手册) · [English Quick Guide](#english-quick-guide)
 
 [![version](https://img.shields.io/badge/version-0.3.0-4c6ef5)](package.json)
-[![DSH baseline](https://img.shields.io/badge/DSH%20baseline-0.1.2--alpha.4-1c7ed6)](dsh-reference.lock.json)
+[![DSH baseline](https://img.shields.io/badge/DSH%20baseline-0.1.2--rc.1-1c7ed6)](dsh-reference.lock.json)
 [![Codex](https://img.shields.io/badge/agent-Codex-000000)](skills/dsh-plugin-dev/)
 [![Claude Code](https://img.shields.io/badge/agent-Claude%20Code-d97706)](skills/dsh-plugin-dev/)
 [![Node](https://img.shields.io/badge/node-%5E22.19.0%20%7C%7C%20%3E%3D24.0.0-339933)](package.json)
@@ -83,15 +83,26 @@ pnpm compatibility:analyze --harness-root /path/to/deepseek-harness
 
 基线自动取 `dsh-reference.lock.json` 的默认通道 commit，候选默认取指定仓库 HEAD；可加 `--target TAG_OR_COMMIT`、`--channel CHANNEL` 或 `--capability NAME`。未知锁格式可由 Agent 读取后传 `--base REF --root-package NAME`（根节点可重复），不要求修改助手代码。
 
-“自升级”指每轮重新发现当前版本的包目录、依赖、API 和文档证据，不是自动改写 Skill 或升级已审计基线。脚本按各提交 workspace 定义重建声明依赖图，包版本/包名/目录不写死；复杂声明由 Skill 补充只读调查。脚本只输出 JSON，不联网、不安装、不改锁；完整兼容性结论仍需源码、运行、迁移及发布证据，`exit 0` 只代表证据采集完成。
+“自升级”指每轮重新发现当前版本的包目录、依赖、API 和文档证据，不是自动改写 Skill 或升级已审计基线。脚本按各提交 workspace 定义重建声明依赖图，包版本/包名/目录不写死；复杂声明由 Skill 补充只读调查。默认只输出 JSON，不联网、不安装、不改锁；完整兼容性结论仍需源码、运行、迁移及发布证据，`exit 0` 只代表证据采集完成。
 
-当前版本分工：stable 保持 `0.1.2-alpha.4`；edge 为
-`0.1.3-alpha.1`，其公开 Registry Tool 闭包仍缺 15 个精确版本包。
-新版的 Session handle、format v2、流式结算与 Team 消息差异见
+需要自动下载缺失的已发布精确版本包时，明确要求 Skill 下载，或运行：
+
+```sh
+pnpm compatibility:analyze --harness-root /path/to/deepseek-harness \
+  --download-missing --download-dir /path/to/compat-npm-cache
+```
+
+目录必须在项目、Harness 和 Skill 之外，父目录已存在，目标为新目录或助手先前创建的缓存；可用 `--registry HTTPS_URL` 指定源，默认公共 npm。需要本机 npm。它只下载并校验 tarball、复用已验证缓存，不执行脚本或安装依赖。未发布版本无法补齐，范围/私有包保留待处理项；有缺口退出 2，不改发布门槛或基线。详见 [下载模式](skills/version-compatibility-analysis/references/npm-downloads.md)。
+
+当前开发基线：stable 与 edge 均为官方 `dsh-v0.1.2-rc.1`
+（`a66e4702047846cdaa10c66c9d3df3951f5ea70d`），不再使用
+`0.1.3-alpha.1`。rc.1 的完整 Tool Registry 闭包为 **24/24 可用**，
+支持已验证的 source 与 registry 两种交付；此前的 15 个 E404 属于
+alpha.1 的历史结果，不是 rc.1 的缺包。
+rc.1 的投影缓存恢复改动与历史版本边界见
 [按版本选择的契约](skills/dsh-plugin-dev/references/version-contracts.md)。
-可显式选择 `--channel edge --delivery source`；Registry 不就绪时会拒绝
-`--delivery registry`，不会回退到 stable 包。Registry 查询更新后必须重跑
-同通道验证，旧的源码验证不能用于晋升。详见 [验收记录](docs/agent/ACCEPTANCE.md)。
+Registry 不就绪时仍会拒绝 `--delivery registry`，不会跨版本回退；
+查询更新后必须重跑同通道验证。详见 [验收记录](docs/agent/ACCEPTANCE.md)。
 
 分析候选路径采用 `--harness-root` → `DSH_HARNESS_ROOT` → 锁中环境变量 → fallback；仓库 strict 校验继续用 `DSH_HARNESS_BASELINE_ROOT` 指向已审计版本，生成项目使用自己的 `DSH_HARNESS_ROOT`。分析不依赖旧 worktree 或新版构建产物，但需要 Git 中存在比较的两个提交；缺失基线、解析限制和未查询的 Registry 状态会明确报告。
 
@@ -224,8 +235,18 @@ specified repository's HEAD. Use `--target REF` to select another revision.
 Workspace definitions and dependency roots are read from data, not a release
 allowlist. Unknown lock formats can use explicit `--base REF` and repeatable
 `--root-package NAME`; unsupported declarations remain visible evidence gaps
-for agent-led inspection. No checkout, fetch, install, lock update or Registry
-query is performed. Exit zero means evidence collected, not compatibility.
+for agent-led inspection. By default, no checkout, fetch, install, lock update
+or Registry query is performed. Exit zero means evidence collected, not compatibility.
+
+For explicitly authorized tarball downloads, add `--download-missing
+--download-dir /path/to/compat-npm-cache`. The parent must exist; use a new or
+previously owned cache outside the project, Harness and Skill. Local npm is
+required. The Registry defaults to public npm and can be selected with
+`--registry HTTPS_URL`. Exact published versions are integrity-checked and
+reused; no lifecycle scripts, dependency installation or audit updates occur.
+Unpublished versions cannot be downloaded, and ranges/private targets remain
+deferred. Partial results exit 2, not a compatibility or publication verdict.
+See [download mode](skills/version-compatibility-analysis/references/npm-downloads.md).
 
 Self-upgrading means refreshing analysis knowledge each time, not rewriting the
 Skill or promoting stable. The candidate path precedence is `--harness-root`,
@@ -233,13 +254,16 @@ Skill or promoting stable. The candidate path precedence is `--harness-root`,
 repository checks still use `DSH_HARNESS_BASELINE_ROOT`. Both commits must exist
 in the candidate Git repository; an old baseline worktree is not required.
 
-Stable remains `0.1.2-alpha.4`; edge selects `0.1.3-alpha.1`, whose public
-Tool Registry closure is currently missing 15 exact first-party versions.
-Use `--channel edge --delivery source` for source-linked candidate work and
-read the [version-specific contracts](skills/dsh-plugin-dev/references/version-contracts.md).
-Registry generation refuses an unready channel instead of falling back to
-stable packages. Rechecking Registry requires a new same-channel verification
-before promotion; source-only evidence cannot authorize publication.
+Both stable and edge select official `dsh-v0.1.2-rc.1` at
+`a66e4702047846cdaa10c66c9d3df3951f5ea70d`, no longer `0.1.3-alpha.1`.
+The rc.1 Tool Registry closure is ready with 24/24 requirements available;
+both source and Registry Tool delivery are verified. The former 15 E404s
+belong to historical alpha.1 evidence, not rc.1. Read the
+[version-specific contracts](skills/dsh-plugin-dev/references/version-contracts.md)
+for rc.1 cache recovery and explicitly scoped historical APIs.
+Registry generation still refuses an unready channel without cross-version
+fallback. Rechecking Registry requires new same-channel verification;
+source-only evidence cannot authorize publication.
 
 ### Create a plugin from an empty directory
 

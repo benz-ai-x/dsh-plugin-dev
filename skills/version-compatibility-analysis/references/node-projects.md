@@ -66,6 +66,8 @@ npm view '@scope/package@EXACT_VERSION' version dist.integrity --json \
 
 对传递依赖、peer 范围及必要的可选依赖分别核实。错误应保留代码与简短原因；公共 Registry 的 E404 不说明私有 Registry 也没有该包。若不允许联网，把发布状态标为未验证。
 
+用户明确要求自动获取缺失归档时，转到 [npm 下载模式](npm-downloads.md)。默认分析不下载；只有已发布且精确身份可验证的包能获取。下载/缓存命中与完整依赖解算、安装和发布验收分开报告。
+
 版本可用后仍需在交付验收中核对实际解析图和 tarball：普通 Node 按公开 exports 导入；无源码路径、workspace/link 意外泄漏；声明、CSS、客户端入口和原生模块存在。源码与 tarball 清单可能不同。
 
 安装、构建、`npm pack`/`pnpm pack` 可能执行生命周期脚本。分析时先检查脚本并限定副作用；未获相应授权的发布、安装到用户 profile 或外部写入不属于版本查询。

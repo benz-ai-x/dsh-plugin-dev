@@ -1,6 +1,6 @@
 ---
 name: version-compatibility-analysis
-description: 分析本项目或 DSH 插件与新版 DeepSeek Harness 的版本依赖兼容性。动态读取版本锁、候选源码、workspace 和依赖图，定位 API、文档、模板与发布阻塞；适用于上游升级、版本锁失配和升级影响评估，分析不自动修改基线或代码。
+description: 分析本项目或 DSH 插件与新版 DeepSeek Harness 的版本依赖兼容性。动态读取版本锁、候选源码、workspace 和依赖图，定位 API、文档、模板与发布阻塞；支持明确授权后下载缺失的已发布 npm 精确版本包，默认只读、不修改基线或代码。
 ---
 
 # 版本兼容性分析
@@ -46,9 +46,15 @@ node /path/to/skill/scripts/analyze-project.mjs \
 
 默认基线来自项目锁，候选来自指定仓库 HEAD；可选 `--target REF`、`--channel NAME`、`--capability NAME`。若锁格式未知或分析其它交付面，显式指定 `--base REF` 和可重复的 `--root-package NAME`。没有项目锁时也可用 [提交比较助手](scripts/compare-revisions.mjs) 的 `--repo PATH --base REF --target REF`。
 
-助手只输出 JSON，不 fetch、checkout、安装依赖、运行上游代码、查询 Registry 或写入项目。它读取提交对象，不要求旧基线 worktree 存活，也不要求候选已经构建或与锁一致；旧提交缺失仍是证据阻塞，不能自动换基线。先读取摘要与 issues，再按需查看大段字段差异。
+默认助手只输出 JSON，不 fetch、checkout、安装依赖、运行上游代码、查询 Registry 或写入项目。它读取提交对象，不要求旧基线 worktree 存活，也不要求候选已经构建或与锁一致；旧提交缺失仍是证据阻塞，不能自动换基线。先读取摘要与 issues，再按需查看大段字段差异。
 
 输出包括版本身份、工作区偏差、变化规模、全部 manifest 字段变化、实际 workspace、交付根的声明依赖图、可选/peer 边和技能资源变化。`dependencies` 不是完整包管理器解算或发布验证；`registryStatus: not-queried` 必须如实保留。范围不足或 `issues` 非空时说明影响，不把被跳过的包视为兼容。
+
+## 按需自动下载 npm 包
+
+只有用户明确要求下载时才启用；普通分析和“自升级”不隐含联网下载授权。先读取 [npm 下载模式](references/npm-downloads.md)，告知本次 Registry 和隔离目录，再用 `--download-missing --download-dir PATH`。默认查询公共 Registry；私有源需使用用户指定的 `--registry`，不擅自切源、登录或打印认证配置。
+
+下载目标每次从候选依赖图重新生成，不维护特定版本或缺包名单。只获取精确版本 tarball，校验完整性、复用相同缓存且禁止生命周期脚本；不安装到 `node_modules` 或 profile，不改项目/上游源码、锁和审计证据。未发布或当前身份不可见的指定版本无法靠下载补齐；不降级、不换 `latest`、不从源码伪造 Registry 包。范围/私有/未解析目标保留缺口。下载详情在独立 `downloads` 字段，不能据此将 Registry 闭包标为 ready 或晋升基线。
 
 ## 判断与验证
 

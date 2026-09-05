@@ -227,7 +227,7 @@ test('the actual package archive ships a runnable companion with its canonical r
   const unpacked = spawnSync('tar', ['-xzf', archive, '-C', extracted], { encoding: 'utf8' })
   assert.equal(unpacked.status, 0, unpacked.stderr)
   const packagedSkill = join(extracted, 'package/skills/version-compatibility-analysis')
-  for (const path of ['SKILL.md', 'agents/openai.yaml', 'references/node-projects.md', 'references/deepseek-harness.md']) {
+  for (const path of ['SKILL.md', 'agents/openai.yaml', 'references/node-projects.md', 'references/deepseek-harness.md', 'references/npm-downloads.md', 'scripts/download-packages.mjs']) {
     assert.deepEqual(await readFile(join(packagedSkill, path)), await readFile(join(skillRoot, path)))
   }
   const result = spawnSync(process.execPath, [join(packagedSkill, 'scripts/analyze-project.mjs'), '--project', project, '--harness-root', harness], {
@@ -237,4 +237,13 @@ test('the actual package archive ships a runnable companion with its canonical r
   const report = JSON.parse(result.stdout)
   assert.equal(report.workspaces.after.packagePaths.length, 4)
   assert.deepEqual(report.dependencies.added, ['@fixture/bridge'])
+  // A private-only candidate scope exercises the packed opt-in entry and
+  // deferred report without a network request or unpublished fixture package.
+  const download = spawnSync(process.execPath, [join(packagedSkill, 'scripts/analyze-project.mjs'), '--project', project, '--harness-root', harness,
+    '--root-package', '@fixture/native', '--download-missing', '--download-dir', join(root, 'archives')], { cwd: root, encoding: 'utf8', timeout: 15_000 })
+  assert.equal(download.status, 2, download.stderr)
+  const downloads = JSON.parse(download.stdout).downloads
+  assert.equal(downloads.status, 'partial')
+  assert.deepEqual(downloads.packages, [])
+  assert.equal(downloads.deferred[0].reason, 'private-package')
 }))

@@ -1,12 +1,16 @@
 # Version-specific DSH contracts
 
 Read the selected project's lock before using a version-specific API. A
-channel name is not an API version: resolve its exact commit. The shared
-references were audited at `0.1.2-alpha.4`
-(`4e84901e6471b79ec0338099867ebb4606d12bb5`). For
-`0.1.3-alpha.1` (`d347e703908d0406b7a7ef80e3a0e594d86b2215`), apply the
-affected sections below instead of their alpha.4 descriptions. Unchanged
-Cordis/Loader/Tool contracts remain shared.
+channel name is not an API version: resolve its exact commit. The development
+baseline is `0.1.2-rc.1` (`a66e4702047846cdaa10c66c9d3df3951f5ea70d`). It
+retains the shared contracts audited at `0.1.2-alpha.4`
+(`4e84901e6471b79ec0338099867ebb4606d12bb5`), with the storage/cache changes
+below. Cordis/Loader/Tool contracts remain shared.
+
+The later `0.1.3-alpha.1` (`d347e703908d0406b7a7ef80e3a0e594d86b2215`)
+sections are retained only for historical analysis or a project explicitly
+locked to that commit. Neither active channel selects it. Do not apply its
+SessionHandle, format-v2, assistant-stream or Team changes to rc.1.
 
 These are reviewed snapshots, not a future-version allowlist. For another
 commit, rediscover exports, source and tests with the compatibility companion
@@ -14,7 +18,49 @@ before changing the audited channel; never extrapolate this delta to `>=0.1.3`.
 Source verification does not authorize Registry delivery or imply that the
 Service, Client, LLM or Team generators exist.
 
-## Persistence and Agent lifecycle — alpha.1
+## Storage and projection-cache recovery — 0.1.2-rc.1
+
+The alpha.4 → rc.1 review keeps 266 workspace packages, the same manifest
+contracts apart from version fields, and all 17 official Skill resources.
+The substantive changes are in storage-domain, storage-json and
+session-projection-cache, with corresponding tool-cordis API documentation.
+Session persistence, Agent creation, assistant chunks and Team messaging
+retain their alpha.4 implementations; the later alpha.1 APIs below are absent.
+
+`DomainSpec.compatibleVersions` projects onto `KvUnitDescriptor` and widens
+JSON per-record reads plus the legacy whole-unit bootstrap. Entries must be
+non-negative integers below the current domain version; writes always stamp
+the current version. The single layout and SQLite backend remain strict.
+Only declare an older version when current schemas genuinely accept its data.
+
+`invalidRecords: 'backup-and-skip'` is an explicit policy for disposable
+derived records, not authoritative data. It requires the backend's optional
+`KvUnit.backupRecord`; otherwise invalid records still reject the whole open.
+Global validation remains strict. The JSON implementation renames the record
+to a `.json.bak.<YYYYMMDDHHmm>` path and logs the failure; a same-minute backup
+of the same key can replace the prior backup. This is not a general backup or
+data-migration guarantee.
+
+`session_projcache` stays at domain version 5 and accepts versions 3 and 4.
+Absent lineage fields normalize to `isSeeded: false` and
+`inheritedEventCount: 0` when comparing identities. Old unseeded caches can
+serve immediately; seeded identity mismatches still trigger cold rebuilding.
+Keep per-row state-version and identity guards: storage readability alone
+does not establish projection correctness. The legacy bootstrap admits only
+accepted version stamps and leaves its source file unchanged.
+
+Inspect `packages/storage/storage-domain/src/spec.ts`,
+`packages/storage/storage-json/src/per-record-unit.ts`,
+`packages/session/session-projection-cache/src/{spec,index}.ts`, and
+`docs/subsystems/storage.md` in the exact rc.1 checkout. Test the two storage
+packages and all projection-cache tests, including archived v3/v4/v5 and
+lineageless-v5 fixtures, seeded refusal and invalid-record backup/skip.
+
+Selecting rc.1 for development does not downgrade Session data written by
+alpha.1's format-v2 runtime. Use isolated test homes/profiles; do not open,
+rewrite or delete existing user Sessions as part of a baseline switch.
+
+## Persistence and Agent lifecycle — historical 0.1.3-alpha.1
 
 `SessionPersistence.create(header, options?)` returns a write `SessionHandle`;
 `open(id, 'read' | 'write', options?)` returns an owned handle. Move backend
@@ -51,7 +97,7 @@ Inspect in the selected Harness:
 Test competing writers, read-while-owned, cancelled preparation, unpublished
 setup, close after cancellation, crash recovery, and no writes from queries.
 
-## Format v2 and extension vocabulary — alpha.1
+## Format v2 and extension vocabulary — historical 0.1.3-alpha.1
 
 JSONL storage uses immutable adjacent generations, not one physical file per
 Session. `stat`/`list` inspect the highest canonical generation and translate
@@ -85,7 +131,7 @@ The owner must accept old fields in its schemas. A readable storage record
 does not make an old projection checkpoint valid: retain the projection's
 state-version/identity gates when its fold changes.
 
-## Assistant settlement and Client streaming — alpha.1
+## Assistant settlement and Client streaming — historical 0.1.3-alpha.1
 
 Persisted top-level `assistant/chunk` records are replaced by one settlement:
 `assistant/message` carries `data.message` and **sibling `data.stream`**;
@@ -107,7 +153,7 @@ Inspect `packages/core/session/src/types.ts`,
 Test interleaved attempts, retry/cancel settlement, fragmented tool identity,
 history versus live output, reconnect and single accounting.
 
-## Team messages — alpha.1
+## Team messages — historical 0.1.3-alpha.1
 
 The experimental Team tool `send_message` steers a running teammate, starts an
 idle one, and cold-resumes an inactive one. The old quiet-message versus
@@ -119,7 +165,7 @@ attribution, order and cold-resume deduplication. The packages remain private
 and experimental; do not add them to the publishable Tool closure. Inspect
 `packages/experimental/tool-agent-team/src/index.ts` and the Team subsystem.
 
-## Files, transport and native delivery — alpha.1
+## Files, transport and native delivery — historical 0.1.3-alpha.1
 
 General file upload is distinct from image input. `FileBlock` keeps an
 attachment-owned immutable reference in durable user content. Request assembly
@@ -143,7 +189,7 @@ narrow and exercise the target platform's install/lock behavior. These runtime
 dependencies and the six new workspace packages are not automatically direct
 dependencies of the generated Tool: derive its actual closure from the catalog.
 
-## Acceptance boundary
+## Historical alpha.1 acceptance boundary
 
 The official [alpha.1 release notes](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.3-alpha.1)
 record a historical-session loading performance regression. Passing migration

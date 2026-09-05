@@ -52,7 +52,7 @@ const artifacts: readonly ArtifactDefinition[] = [
     declaration: 'skills/dsh-plugin-dev/scripts/create-project.d.mts',
     group: 'skill',
   },
-  ...['analyze-project', 'compare-revisions', 'dependencies'].map(name => ({
+  ...['analyze-project', 'compare-revisions', 'dependencies', 'download-packages'].map(name => ({
     source: `skills/version-compatibility-analysis/src/${name}.mts`,
     runtime: `skills/version-compatibility-analysis/scripts/${name}.mjs`,
     declaration: `skills/version-compatibility-analysis/scripts/${name}.d.mts`,

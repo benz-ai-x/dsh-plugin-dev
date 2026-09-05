@@ -52,6 +52,8 @@
     "docs/decisions/0008-tooling-0.3.0-alpha.4.md",
     "docs/decisions/0009-project-compatibility-skill.md",
     "docs/decisions/0010-alpha-1-edge-evidence.md",
+    "docs/decisions/0011-opt-in-compatibility-downloads.md",
+    "docs/decisions/0012-rc-1-development-baseline.md",
     "dsh-reference.lock.json",
     "README.md"
   ],
@@ -64,7 +66,7 @@
     "context:check:edge": "node scripts/verify-context.mjs --require-source --channel edge",
     "upstream:scan": "node scripts/baseline.mjs scan",
     "compatibility:analyze": "node skills/version-compatibility-analysis/scripts/analyze-project.mjs",
-    "test:compatibility": "vitest run tests/compatibility.unit.test.ts",
+    "test:compatibility": "vitest run tests/compatibility.unit.test.ts tests/compatibility-downloads.unit.test.ts",
     "upstream:update": "node scripts/baseline.mjs update --channel edge",
     "upstream:diff": "node scripts/baseline.mjs diff --from stable --to edge",
     "upstream:check": "node scripts/baseline.mjs check",

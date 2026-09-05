@@ -10,16 +10,32 @@ packaging, profile integration, and release preparation. It is not a DSH
 runtime plugin. Its own implementation is now TypeScript-first while its
 installed public commands remain dependency-free `.mjs` artifacts.
 
-The audited default baseline is DeepSeek Harness `0.1.2-alpha.4`, official tag
-`dsh-v0.1.2-alpha.4`, commit
-`4e84901e6471b79ec0338099867ebb4606d12bb5`. The baseline was scanned from a
+The audited default baseline is DeepSeek Harness `0.1.2-rc.1`, official tag
+`dsh-v0.1.2-rc.1`, commit
+`a66e4702047846cdaa10c66c9d3df3951f5ea70d`. The baseline was scanned from a
 clean detached official-tag worktree built with `pnpm@11.7.0`.
 
-The current source-only edge is `0.1.3-alpha.1` at
-`d347e703908d0406b7a7ef80e3a0e594d86b2215`. Its Tool Registry closure remains
-blocked (15 unavailable first-party versions); do not promote it. Both local
-tagged worktrees have been rebuilt, and the broken old alpha.4 directory was
-preserved outside the fallback path. See current [acceptance](ACCEPTANCE.md).
+Both stable and edge now select rc.1, with ready Tool Registry reports
+(24/24 requirements) and same-channel source/archive verification. Alpha.1 is
+no longer an active development baseline. Its previous 15 E404s and runtime
+regressions are historical, not rc.1 blockers. Earlier worktrees and the
+broken alpha.4 recovery backup remain preserved. See current
+[acceptance](ACCEPTANCE.md) and [decision 0012](../decisions/0012-rc-1-development-baseline.md).
+
+The local fallback is `../deepseek-harness-baseline-0.1.2-rc.1`. This machine's
+`DSH_HARNESS_ROOT` points to `../deepseek-harness`, whose clean checkout is
+also detached at rc.1 and rebuilt; its `master` branch remains unchanged.
+No global shell configuration or user Harness-home data was migrated.
+
+The normal checkout initially failed its downgrade build because six
+alpha.1-only package directories retained ignored outputs. Their `lib` and
+`node_modules` contents were preserved outside the workspace in
+`../dsh-rc1-artifact-backup.GFZhv2/`; no source files were removed. A forced
+Host/Client TypeScript rebuild refreshed unchanged declaration outputs whose
+timestamps would otherwise fail the strict gate after manifest changes;
+the normal checkout now passes all 387 strict checks with zero warnings.
+Existing generated projects still need their environment to match their
+recorded static links; changing `DSH_HARNESS_ROOT` alone is not a link sync.
 
 ## Read first
 
@@ -36,12 +52,19 @@ source baseline.
 ## TypeScript-first tooling
 
 Authoritative implementation lives in `src/scripts/*.mts` and
-`skills/dsh-plugin-dev/src/create-project.mts`, plus the three version-adaptive
+`skills/dsh-plugin-dev/src/create-project.mts`, plus the four version-adaptive
 companion modules under `skills/version-compatibility-analysis/src/`;
-repository tests are `.ts` and run through Vitest. `pnpm build` compiles seven
+repository tests are `.ts` and run through Vitest. `pnpm build` compiles eight
 tooling entries into their
 stable `.mjs` paths plus `.d.mts` declarations. The installed Skill therefore
 does not need `tsx`, TypeScript, or Vitest at runtime.
+
+The compatibility companion remains read-only by default. Its explicit
+`--download-missing --download-dir PATH` mode needs npm and stores only checked
+exact-version tarballs outside the project, Harness and Skill. It does not
+install packages, execute lifecycle scripts or refresh Registry/baseline
+evidence. See the companion's `references/npm-downloads.md` for deferred
+ranges/private targets and the partial-result exit code.
 
 `tooling-artifacts.json` binds the compiler and SHA-256 for each
 source/runtime/declaration triple. `pnpm build:check` compiles into a temporary
@@ -53,8 +76,8 @@ directory and refuses stale or hand-edited output. Do not edit generated
 
 | Item | Stable state |
 |---|---|
-| Harness | `0.1.2-alpha.4` / `dsh-v0.1.2-alpha.4` |
-| Commit | `4e84901e6471b79ec0338099867ebb4606d12bb5` |
+| Harness | `0.1.2-rc.1` / `dsh-v0.1.2-rc.1` |
+| Commit | `a66e4702047846cdaa10c66c9d3df3951f5ea70d` |
 | Node | `^22.19.0 || >=24.0.0` |
 | Package manager | `pnpm@11.7.0` |
 | Workspace packages | 266 |
@@ -68,14 +91,21 @@ The two official Cordis product Skills are materialized and hash-pinned under
 evidence; they are not installed as project-development Skills. The canonical
 development workflow remains this repository's `skills/dsh-plugin-dev/`.
 
-## Alpha.4 changes reviewed
+## RC.1 changes reviewed
 
-This and the older sections below are historical reviews, not alpha.1 API
-guidance. For the current delta use
+The alpha.4 → rc.1 diff has 280 changed paths, no workspace additions/removals,
+no manifest contract changes beyond versions, and no official Skill resource
+changes. The runtime changes add declared JSON per-record read compatibility,
+version-gated legacy bootstrap, and opt-in invalid derived-record backup/skip.
+Projection-cache v5 reads compatible v3/v4 records while preserving lineage
+and state-version guards. Its archived-fixture recovery tests and the storage
+tests pass: 91 tests across five files. For the exact boundary use
 [version-specific contracts](../../skills/dsh-plugin-dev/references/version-contracts.md):
-persistence handles and async Agent creation, immutable format-v2 migration,
-settlement/transient streams, Team steering, general-file projection and
-process-level proxy transport.
+rc.1 retains the earlier Session/Agent/stream/Team implementations, not
+alpha.1's handles or format-v2 API. Do not use this baseline change to
+downgrade or rewrite existing alpha.1 Session data.
+
+## Alpha.4 changes reviewed (historical)
 
 The stable-to-edge review (2371 files, 297 commits) renamed subagent
 continuation messaging — `followup()` is now `sendMessage()` with narrowed

@@ -33,7 +33,8 @@ pnpm verify
   the same canonical resources and executable helpers are shipped in archives.
 - `pnpm test:compatibility` exercises new arbitrary versions, package moves,
   workspace changes/exclusions, dependency/peer/optional edges, skill-resource
-  drift, invalid inputs, missing revisions, and relocated distribution.
+  drift, invalid inputs, missing revisions, relocated distribution, and opt-in
+  exact npm downloads with cache reuse, integrity and side-effect boundaries.
 - Committed-object analysis leaves lock files, Git HEAD/index and worktree
   state unchanged and works without the old baseline worktree or a build of
   the candidate. It reads no historical Registry status as current readiness.
@@ -43,47 +44,73 @@ pnpm verify
 - Passing these checks proves the analysis tool, not the candidate runtime or
   the current health of the pinned Harness checkout.
 
-Recorded 2026-09-05: seven companion tests pass, including arbitrary successive
-version/layout fixtures, no-write assertions and execution from an actual
-tarball. The isolated marketplace test also installs and runs the companion;
-the real-model semantic leg was not run. Live committed-object analysis found
+Recorded 2026-09-05: thirteen companion tests pass, including arbitrary successive
+version/layout fixtures, no-write assertions, explicit downloads through a
+real local npm Registry, and execution from an actual tarball. Default analysis
+does not query npm or create a download directory. The isolated marketplace
+test also installs and runs the companion;
+the real-model semantic leg was not run. Historical committed-object analysis found
 266 → 272 workspace packages between the locked alpha.4 and local alpha.1 of
 the next minor release, with an unchanged 20-node Tool declaration graph.
 This analysis alone is not runtime or Registry evidence. The broken old
 worktree was subsequently preserved and reconstructed at its exact official
-tag; both channels now pass strict source checks. The following current
-verification supersedes the earlier environment-blocked run.
+tag. These alpha.1 findings are retained as history; the current rc.1
+verification below supersedes them for active development.
+
+The follow-up public npm download smoke (2026-09-05 00:28 UTC) selected the
+actual alpha.1 candidate graph: five vendor archives were downloaded and
+integrity-checked, 15 exact first-party versions returned E404, and four
+external ranges remained deferred. A second selected-package run reported a
+verified cache hit. The downloader did not install dependencies or write
+Registry/audit evidence; its partial result did not clear alpha.1 publication.
+It is not a current rc.1 package-availability report. The rc.1 switch uses the
+separate complete Registry and same-channel runtime gates below.
 
 ## Current stable/edge verification — 2026-09-05
 
-Both official tagged worktrees were freshly installed with the frozen lock and
-built through `build:official` using Node `26.4.0` and pnpm `11.7.0` on macOS
-arm64. Stable remains alpha.4 at `4e84901e6471b79ec0338099867ebb4606d12bb5`;
-edge is alpha.1 at `d347e703908d0406b7a7ef80e3a0e594d86b2215`.
+Both channels select official tag `dsh-v0.1.2-rc.1`, commit
+`a66e4702047846cdaa10c66c9d3df3951f5ea70d`. Its clean detached worktree was
+freshly installed with the frozen lock and built through `build:official`
+using Node `26.4.0` and pnpm `11.7.0` on macOS arm64. The normal local Harness
+checkout used by `DSH_HARNESS_ROOT` is also detached at rc.1 and rebuilt;
+its branch history and previous baseline directories remain intact.
 
-| Evidence | Stable alpha.4 | Edge alpha.1 |
+The normal checkout also passes strict context validation (387 checks,
+zero warnings) after orphan-output isolation and a forced TypeScript rebuild.
+Default companion analysis resolves rc.1 for both base and HEAD, with zero
+changed paths and no issues. Newly generated source and Registry fixtures
+select stable rc.1 without a channel override; their pre-install strict
+checks pass (71 source / 54 Registry checks). A source fixture explicitly
+using the normal local checkout also passes all 71 checks. Source verifiers
+use the same root as their static links; an unrelated inherited
+`DSH_HARNESS_ROOT` is not a link migration.
+
+| Evidence | Stable rc.1 | Edge rc.1 |
 |---|---|---|
 | Build freshness, typecheck, strict source | Passed | Passed |
-| Repository units | 30 passed, 1 conditional skip | 30 passed, 1 conditional skip |
+| Repository units | 36 passed, 1 conditional skip | 36 passed, 1 conditional skip |
 | Repository e2e | 3 passed, 2 skips | 3 passed, 2 skips |
 | Source Tool Loader/HMR, build/pack, profile boot/SIGTERM/remove | Passed | Passed |
-| Exact Registry archive, clean consumer import and profile lifecycle | Passed | Skipped: Registry blocked |
-| Unready Registry generation refusal | Not applicable | Passed |
-| Public Registry requirements | 24 available, 0 blocked | 9 available, 15 E404 |
+| Exact Registry archive, clean consumer import and profile lifecycle | Passed | Passed |
+| Unready Registry generation refusal | Not applicable | Not applicable |
+| Public Registry requirements | 24 available, 0 blocked | 24 available, 0 blocked |
 | Real-model marketplace semantic leg | Not run | Not run |
 
 The unit skip is the opposite Registry-state branch. The e2e skips are the
 opposite Registry-state branch and the explicitly disabled real-model leg.
 The deterministic marketplace install/reinstall/remove and both packaged
-Skills are verified. Source profile boot is now tested even without Registry
-availability. It is not mislabeled as an ordinary-dependency archive install.
+Skills are verified. Both source profile boot and ordinary-dependency archive
+installation are exercised with the same rc.1 CLI, without cross-version
+package fallback. All profile tests use isolated homes, not user Sessions.
 
 `node scripts/baseline.mjs verify --channel stable` and the equivalent edge
 command generate schema-v2 reports, binding the current project, selected
 catalog and exact Registry report/status. They run the complete `pnpm verify`
 with the locked toolchain. Re-run them after edits to this document; do not
 manually update a passed digest. The reports under `baselines/` are the
-authoritative current bindings. Promotion remains blocked for edge.
+authoritative current bindings. The rc.1 candidate was promoted only after
+the ready Registry report and full edge verification passed; both channels'
+final preflight gates pass.
 
 Regression coverage now also exercises the actual copied baseline CLI:
 historical unbound, source-only and rechecked-Registry reports refuse
@@ -91,7 +118,30 @@ preflight; a correctly bound ready report passes, and promotion preserves
 the binding after channel relabeling. Fixtures use no live Registry or real
 repository mutation.
 
-Candidate upstream verification (all against the exact alpha.1 worktree):
+The rc.1-specific upstream regressions pass **91 tests across five files**,
+covering declared version compatibility, legacy-bootstrap version refusal,
+derived-record backup/skip, lineage validation and archived v3/v4/v5 recovery.
+Reproduce from the clean rc.1 worktree:
+
+```sh
+CI=true DSH_TELEMETRY_DISABLED=1 pnpm exec vitest run \
+  packages/storage/storage-domain/tests \
+  packages/storage/storage-json/tests \
+  packages/session/session-projection-cache/tests
+```
+
+This is targeted upstream correctness evidence, not the full Harness suite,
+cross-platform certification or a downgrade of alpha.1 format-v2 Sessions.
+Service/Client/LLM/Team generators and the real-model semantic leg remain
+outside current deterministic acceptance.
+
+## Historical alpha.1 verification — no longer the active baseline
+
+The previous stable alpha.4 report covered source and Registry Tool delivery;
+the former edge alpha.1 report covered source delivery and explicit Registry
+refusal (9 available requirements, 15 E404s). Those reports are superseded by
+rc.1 for both active channels. Previous targeted upstream verification, all
+against the exact alpha.1 worktree:
 
 - 551 tests / 13 files: JSONL generation, write leases and storage; released
   v0/v1 migration codecs; Agent-loop resume and contract regressions.
@@ -131,8 +181,9 @@ production data migration or cross-platform certification. The official
 [alpha.1 release notes](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.3-alpha.1)
 identify a historical-session loading performance regression. Representative
 cold-open/query latency and memory budgets remain a deployment gate; passing
-the correctness suites does not clear it. No new deterministic P4 project
-kind or baseline promotion is claimed.
+the correctness suites did not clear it. That historical run did not promote
+alpha.1 or establish any new deterministic P4 project kind. It is not rc.1
+runtime or performance evidence.
 
 ## Empty-directory acceptance
 
